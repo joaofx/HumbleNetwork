@@ -1,0 +1,296 @@
+<Configuration>
+  <UnitTestSessions>
+    <Session>
+      <Name>Session #1</Name>
+      <Elements>
+        <UnitTestElement Provider="nUnit" Id="HumbleServer.Tests.Performance.BurstRequestsTest" type="NUnitTestFixtureElement" Project="55E1E4FC-3DED-442E-8C10-32E51E82C427" />
+        <UnitTestElement Provider="nUnit" Id="HumbleServer.Tests.HumbleServerTest" type="NUnitTestFixtureElement" Project="55E1E4FC-3DED-442E-8C10-32E51E82C427" />
+        <UnitTestElement Provider="nUnit" Id="HumbleServer.Tests.HumbleTestBase" type="NUnitTestFixtureElement" Project="55E1E4FC-3DED-442E-8C10-32E51E82C427" />
+        <UnitTestElement Provider="nUnit" Id="HumbleServer.Tests.HumbleServerTest.Shoud_process_echo_command_many_times" ParentId="HumbleServer.Tests.HumbleServerTest" type="NUnitTestElement" TypeName="HumbleServer.Tests.HumbleServerTest" MethodName="Shoud_process_echo_command_many_times" Project="55E1E4FC-3DED-442E-8C10-32E51E82C427" />
+        <UnitTestElement Provider="nUnit" Id="HumbleServer.Tests.HumbleServerTest.Shoud_process_ping_command" ParentId="HumbleServer.Tests.HumbleServerTest" type="NUnitTestElement" TypeName="HumbleServer.Tests.HumbleServerTest" MethodName="Shoud_process_ping_command" Project="55E1E4FC-3DED-442E-8C10-32E51E82C427" />
+        <UnitTestElement Provider="nUnit" Id="HumbleServer.Tests.HumbleServerTest.Shoud_process_ping_command_many_times" ParentId="HumbleServer.Tests.HumbleServerTest" type="NUnitTestElement" TypeName="HumbleServer.Tests.HumbleServerTest" MethodName="Shoud_process_ping_command_many_times" Project="55E1E4FC-3DED-442E-8C10-32E51E82C427" />
+        <UnitTestElement Provider="nUnit" Id="HumbleServer.Tests.Performance.BurstRequestsTest.Should_execute_less_than_3_seconds" ParentId="HumbleServer.Tests.Performance.BurstRequestsTest" type="NUnitTestElement" TypeName="HumbleServer.Tests.Performance.BurstRequestsTest" MethodName="Should_execute_less_than_3_seconds" Project="55E1E4FC-3DED-442E-8C10-32E51E82C427" />
+        <UnitTestElement Provider="nUnit" Id="HumbleServer.Tests.HumbleServerTest.Should_process_echo_command" ParentId="HumbleServer.Tests.HumbleServerTest" type="NUnitTestElement" TypeName="HumbleServer.Tests.HumbleServerTest" MethodName="Should_process_echo_command" Project="55E1E4FC-3DED-442E-8C10-32E51E82C427" />
+        <UnitTestElement Provider="nUnit" Id="HumbleServer.Tests.HumbleServerTest.Should_treat_unknow_command_with_a_custom_handler" ParentId="HumbleServer.Tests.HumbleServerTest" type="NUnitTestElement" TypeName="HumbleServer.Tests.HumbleServerTest" MethodName="Should_treat_unknow_command_with_a_custom_handler" Project="55E1E4FC-3DED-442E-8C10-32E51E82C427" />
+        <UnitTestElement Provider="nUnit" Id="HumbleServer.Tests.HumbleServerTest.Should_treat_unknow_command_without_set_a_handler" ParentId="HumbleServer.Tests.HumbleServerTest" type="NUnitTestElement" TypeName="HumbleServer.Tests.HumbleServerTest" MethodName="Should_treat_unknow_command_without_set_a_handler" Project="55E1E4FC-3DED-442E-8C10-32E51E82C427" />
+      </Elements>
+    </Session>
+  </UnitTestSessions>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:ClientConnection.cs" caret="10" fromTop="0" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:ICommand.cs" caret="172" fromTop="9" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:NetworkClient.cs" caret="249" fromTop="11" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/f:HumbleTestBase.cs" caret="244" fromTop="12" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:BaseCommand.cs" caret="240" fromTop="10" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:NetworkServer.cs" caret="525" fromTop="17" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/f:HumbleServerTest.cs" caret="620" fromTop="9" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Performance/f:BurstRequestsTest.cs" caret="2792" fromTop="26" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:WaitCommand.cs" caret="189" fromTop="7" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:PingCommand.cs" caret="199" fromTop="8" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:EchoCommand.cs" caret="174" fromTop="7" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:CustomUnknowCommand.cs" caret="0" fromTop="0" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:UnknowCommand.cs" caret="188" fromTop="8" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:NetworkServer.cs" caret="2259" fromTop="32" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:NetworkServer.cs" caret="1963" fromTop="22" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:NetworkServer.cs" caret="1795" fromTop="8" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:BaseCommand.cs" caret="10" fromTop="0" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:BaseCommand.cs" caret="287" fromTop="11" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:UnknowCommand.cs" caret="22" fromTop="0" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:UnknowCommand.cs" caret="345" fromTop="13" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:UnknowCommand.cs" caret="276" fromTop="10" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:BaseCommand.cs" caret="146" fromTop="6" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:BaseCommand.cs" caret="240" fromTop="10" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/f:HumbleServerTest.cs" caret="2299" fromTop="24" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/f:HumbleServerTest.cs" caret="2660" fromTop="34" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/f:HumbleServerTest.cs" caret="2663" fromTop="27" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:CustomUnknowCommand.cs" caret="275" fromTop="9" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:CustomUnknowCommand.cs" caret="135" fromTop="5" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:CustomUnknowCommand.cs" caret="21" fromTop="0" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:NetworkServer.cs" caret="525" fromTop="17" />
+      <File id="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF/f:UnknowCommand.cs" caret="88" fromTop="5" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/f:HumbleServerTest.cs" caret="2537" fromTop="25" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Performance/f:BurstRequestsTest.cs" caret="2456" fromTop="28" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Performance/f:BurstRequestsTest.cs" caret="2637" fromTop="33" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Performance/f:BurstRequestsTest.cs" caret="1949" fromTop="21" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Performance/f:BurstRequestsTest.cs" caret="2967" fromTop="26" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:WaitCommand.cs" caret="30" fromTop="0" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:WaitCommand.cs" caret="222" fromTop="9" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:WaitCommand.cs" caret="378" fromTop="13" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:EchoCommand.cs" caret="532" fromTop="16" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:EchoCommand.cs" caret="174" fromTop="7" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:PingCommand.cs" caret="356" fromTop="11" />
+      <File id="55E1E4FC-3DED-442E-8C10-32E51E82C427/d:Commands/f:PingCommand.cs" caret="174" fromTop="7" />
+    </RecentEdits>
+  </RecentFiles>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="CSharpCodeCompletionContext">
+      <Item value="new" priority="608" />
+      <Item value="ICommand`0" priority="157" />
+      <Item value="this" priority="1471" />
+      <Item value="commandName" priority="63" />
+      <Item value="IDictionary" priority="30" />
+      <Item value="string" priority="157" />
+      <Item value="Func" priority="125" />
+      <Item value="ClientConnection`0" priority="62" />
+      <Item value="String`0" priority="30" />
+      <Item value="private" priority="127" />
+      <Item value="listener" priority="32" />
+      <Item value="TcpListener" priority="28" />
+      <Item value="ar" priority="127" />
+      <Item value="var" priority="799" />
+      <Item value="ClientConnection" priority="87" />
+      <Item value="client" priority="640" />
+      <Item value="buffer" priority="223" />
+      <Item value="SocketFlags`0" priority="128" />
+      <Item value="byte" priority="147" />
+      <Item value="Encoding`0" priority="223" />
+      <Item value="TcpClient`0" priority="30" />
+      <Item value="TcpClient" priority="58" />
+      <Item value="NetworkStream`0" priority="63" />
+      <Item value="Length" priority="215" />
+      <Item value="return" priority="191" />
+      <Item value="command" priority="63" />
+      <Item value="func" priority="31" />
+      <Item value="null" priority="63" />
+      <Item value="void" priority="127" />
+      <Item value="stream" priority="31" />
+      <Item value="abstract" priority="158" />
+      <Item value="public" priority="127" />
+      <Item value="if" priority="95" />
+      <Item value="switch" priority="31" />
+      <Item value="EchoCommand" priority="57" />
+      <Item value="echo" priority="63" />
+      <Item value="Socket`0" priority="157" />
+      <Item value="data" priority="31" />
+      <Item value="char" priority="31" />
+      <Item value="NetworkClient`0" priority="63" />
+      <Item value="BitConverter`0" priority="63" />
+      <Item value="EchoCommand`0" priority="31" />
+      <Item value="PingCommand" priority="29" />
+      <Item value="ObjectDisposedException`0" priority="31" />
+      <Item value="NetworkServer" priority="29" />
+      <Item value="server" priority="31" />
+      <Item value="Thread`0" priority="31" />
+      <Item value="TimeSpan`0" priority="31" />
+      <Item value="NetworkClient" priority="28" />
+      <Item value="EnvironmentVariableTarget`0" priority="31" />
+      <Item value="false" priority="31" />
+      <Item value="tuple" priority="63" />
+      <Item value="Console`0" priority="31" />
+      <Item value="ThreadPool`0" priority="31" />
+      <Item value="Is`0" priority="31" />
+      <Item value="ThreadProc`0" priority="31" />
+      <Item value="out" priority="63" />
+      <Item value="workerThreads" priority="31" />
+      <Item value="protected" priority="127" />
+      <Item value="virtual" priority="31" />
+      <Item value="SetUpAttribute`0" priority="31" />
+      <Item value="override" priority="186" />
+      <Item value="ServerTestBase`0" priority="31" />
+      <Item value="HumbleTestBase`0" priority="31" />
+      <Item value="Assert`0" priority="63" />
+      <Item value="else" priority="31" />
+      <Item value="BaseCommand`0" priority="89" />
+      <Item value="sealed" priority="31" />
+      <Item value="UnknowCommand" priority="28" />
+      <Item value="timeSpan" priority="31" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:HumbleServer.Tests.IntegratedTest+NetworkServer">
+      <Item value="listener" priority="80" />
+      <Item value="AcceptClients`0" priority="26" />
+      <Item value="commands" priority="26" />
+      <Item value="WaitForCommand`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Net.IPAddress">
+      <Item value="Any" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Net.Sockets.TcpListener">
+      <Item value="Start`0" priority="26" />
+      <Item value="EndAcceptSocket`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Net.Sockets.Socket">
+      <Item value="BeginAccept`0" priority="26" />
+      <Item value="BeginReceive`0" priority="49" />
+      <Item value="EndReceive`0" priority="53" />
+      <Item value="Receive`0" priority="26" />
+      <Item value="Send`0" priority="80" />
+      <Item value="Blocking" priority="26" />
+      <Item value="BeginSend`0" priority="26" />
+      <Item value="EndSend`0" priority="49" />
+      <Item value="BeginSendTo`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Net.Sockets.SocketFlags">
+      <Item value="None" priority="135" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Text.Encoding">
+      <Item value="UTF8" priority="134" />
+      <Item value="ASCII" priority="81" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Text.Encoding">
+      <Item value="GetString`0" priority="136" />
+      <Item value="GetBytes`0" priority="161" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Net.Sockets.TcpClient">
+      <Item value="Connect`0" priority="22" />
+      <Item value="GetStream`0" priority="107" />
+      <Item value="Client" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:HumbleServer.Tests.IntegratedTest+NetworkClient">
+      <Item value="tcpClient" priority="53" />
+      <Item value="stream" priority="80" />
+      <Item value="Send`0" priority="108" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Net.Sockets.NetworkStream">
+      <Item value="Write`0" priority="53" />
+      <Item value="Read`0" priority="53" />
+      <Item value="BeginWrite`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:HumbleServer.Tests.IntegratedTest+ICommand">
+      <Item value="Execute`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:HumbleServer.Tests.IntegratedTest+EchoCommand">
+      <Item value="Execute`0" priority="53" />
+      <Item value="socket" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.String">
+      <Item value="Replace`0" priority="26" />
+      <Item value="ToLower`0" priority="53" />
+      <Item value="Equals`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.String">
+      <Item value="Empty" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:HumbleServer.NetworkServer">
+      <Item value="commands" priority="53" />
+      <Item value="Start`0" priority="26" />
+      <Item value="AddCommand`0" priority="26" />
+      <Item value="UnknowCommand" priority="80" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:HumbleServer.Tests.Performance.WaitCommand">
+      <Item value="client" priority="135" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Threading.Thread">
+      <Item value="Sleep`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.TimeSpan">
+      <Item value="FromSeconds`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.BitConverter">
+      <Item value="GetBytes`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:HumbleServer.NetworkClient">
+      <Item value="Receive`0" priority="26" />
+      <Item value="Send`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.DateTime">
+      <Item value="Now" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.DateTime">
+      <Item value="ToString`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:HumbleServer.Tests.Performance.BurstRequestsTest">
+      <Item value="Log`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.IAsyncResult">
+      <Item value="AsyncState" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Tuple`2">
+      <Item value="Item1" priority="26" />
+      <Item value="Item2" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Console">
+      <Item value="WriteLine`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Threading.ThreadPool">
+      <Item value="SetMinThreads`0" priority="82" />
+      <Item value="GetMinThreads`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@NUnit.Framework.Is">
+      <Item value="LessThan`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:HumbleServer.Tests.ServerTestBase">
+      <Item value="BeforeTest`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@NUnit.Framework.Assert">
+      <Item value="Fail`0" priority="26" />
+      <Item value="Ignore`0" priority="49" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:HumbleServer.Tests.HumbleServerTest">
+      <Item value="server" priority="26" />
+      <Item value="client" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.IDictionary`2">
+      <Item value="ContainsKey`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:HumbleServer.UnknowCommand">
+      <Item value="client" priority="27" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:HumbleServer.Tests.CustomUnknowCommand">
+      <Item value="socket" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.TimeSpan">
+      <Item value="Seconds" priority="26" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir IsNull="False">
+    </NUnitInstallDir>
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+</Configuration>

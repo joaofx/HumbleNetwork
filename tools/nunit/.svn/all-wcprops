@@ -1,0 +1,107 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/mdi/!svn/ver/129/csharp/trunk/tools/nunit
+END
+nunit.fixtures.dll
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit.fixtures.dll
+END
+nunit.core.interfaces.dll
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit.core.interfaces.dll
+END
+nunit-console.exe.config
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit-console.exe.config
+END
+nunit.mocks.dll
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit.mocks.dll
+END
+pnunit.framework.dll
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/pnunit.framework.dll
+END
+nunit.util.dll
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit.util.dll
+END
+log4net.dll
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/log4net.dll
+END
+pnunit.tests.dll
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/pnunit.tests.dll
+END
+nunit.framework.xml
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit.framework.xml
+END
+nunit.uikit.dll
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit.uikit.dll
+END
+fit.dll
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/fit.dll
+END
+nunit.core.dll
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit.core.dll
+END
+nunit-gui-runner.dll
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit-gui-runner.dll
+END
+nunit.uiexception.dll
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit.uiexception.dll
+END
+nunit.framework.dll
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit.framework.dll
+END
+nunit-console.exe
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit-console.exe
+END
+nunit-console-runner.dll
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/mdi/!svn/ver/122/csharp/trunk/tools/nunit/nunit-console-runner.dll
+END

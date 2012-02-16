@@ -1,0 +1,4 @@
+<Modules>
+  <Module PersistentId="55E1E4FC-3DED-442E-8C10-32E51E82C427" ModuleId="HumbleServer.Tests" />
+  <Module PersistentId="2BB6D7F3-05AF-4417-848E-39DE3A26F7DF" ModuleId="HumbleServer" />
+</Modules>

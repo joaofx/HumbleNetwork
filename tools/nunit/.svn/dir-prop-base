@@ -1,0 +1,26 @@
+K 10
+svn:ignore
+V 180
+build
+*.log
+*.Log
+Logs
+logs
+obj
+bin
+Obj
+Bin
+*.suo
+*.Suo
+*.user
+*.User
+*.cache
+*.Cache
+SourceAnalysisViolations.xml
+_ReSharper*
+*.resharper*
+*database.config
+*log.config
+.cvsignore
+
+END

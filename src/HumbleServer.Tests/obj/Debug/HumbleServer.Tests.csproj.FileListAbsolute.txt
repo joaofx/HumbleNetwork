@@ -1,0 +1,9 @@
+D:\Projetos\HumbleServer\src\HumbleServer.Tests\bin\Debug\HumbleServer.Tests.dll
+D:\Projetos\HumbleServer\src\HumbleServer.Tests\bin\Debug\HumbleServer.Tests.pdb
+D:\Projetos\HumbleServer\src\HumbleServer.Tests\bin\Debug\nunit.framework.dll
+D:\Projetos\HumbleServer\src\HumbleServer.Tests\bin\Debug\nunit.framework.xml
+D:\Projetos\HumbleServer\src\HumbleServer.Tests\obj\Debug\ResolveAssemblyReference.cache
+D:\Projetos\HumbleServer\src\HumbleServer.Tests\obj\Debug\HumbleServer.Tests.dll
+D:\Projetos\HumbleServer\src\HumbleServer.Tests\obj\Debug\HumbleServer.Tests.pdb
+D:\Projetos\HumbleServer\src\HumbleServer.Tests\bin\Debug\HumbleServer.dll
+D:\Projetos\HumbleServer\src\HumbleServer.Tests\bin\Debug\HumbleServer.pdb
