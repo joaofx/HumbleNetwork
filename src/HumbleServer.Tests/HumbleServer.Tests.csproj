@@ -43,15 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\EchoCommand.cs" />
-    <Compile Include="Commands\PingCommand.cs" />
-    <Compile Include="Commands\CustomUnknowCommand.cs" />
+    <Compile Include="Commands\Echo.cs" />
+    <Compile Include="Commands\Ping.cs" />
+    <Compile Include="Commands\CustomUnknow.cs" />
     <Compile Include="HumbleTestBase.cs" />
     <Compile Include="Performance\BurstRequestsTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="HumbleServerTest.cs" />
-    <Compile Include="Commands\WaitCommand.cs" />
+    <Compile Include="Commands\Wait.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

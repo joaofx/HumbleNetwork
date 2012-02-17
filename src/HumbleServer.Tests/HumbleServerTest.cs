@@ -2,16 +2,16 @@
 
 namespace HumbleServer.Tests
 {
+    using System;
     using Commands;
 
-    /// TODO: grande quantidade de bytes
+    /// TODO: grande quantidade de bytes [stream test]
     /// TODO: mensagem com tamanho pré-fixada (padrao)
     /// TODO: mensagem com delimitador
     /// TODO: tratar mensagens quebradas
     /// TODO: timeout
     /// TODO: tratamento de erro
     /// TODO: retornar porta
-    /// TODO: aceitar comandos anonimos nao ICommand
     /// TODO: tratar comando desconhecido
     [TestFixture]
     public class HumbleServerTest : HumbleTestBase
@@ -20,8 +20,8 @@ namespace HumbleServer.Tests
 
         protected override void BeforeTest()
         {
-		    this.server.AddCommand("echo", () => new EchoCommand());
-            this.server.AddCommand("ping", () => new PingCommand());
+		    this.server.AddCommand("echo", () => new Echo());
+            this.server.AddCommand("ping", () => new Ping());
 
             this.client = new NetworkClient().Connect("localhost", 987);
         }
@@ -69,7 +69,7 @@ namespace HumbleServer.Tests
         [Test]
         public void Should_treat_unknow_command_with_a_custom_handler()
         {
-            this.server.UnknowCommand = () => new CustomUnknowCommand();
+            this.server.UnknowCommand = () => new CustomUnknow();
 
             this.client.Send("????");
             Assert.That(client.Receive(), Is.EqualTo("CustomUnknow"));
@@ -80,6 +80,23 @@ namespace HumbleServer.Tests
         {
             this.client.Send("????");
             Assert.That(client.Receive(), Is.EqualTo("UNKN"));
+        }
+
+        [Test]
+        public void Should_treat_exception_on_server_side()
+        {
+            this.server.UnknowCommand = () => new ThrowException();
+
+            this.client.Send("EXCE");
+            Assert.That(client.Receive(), Is.EqualTo("InvalidOperationException: An exception was thrown"));
+        }
+    }
+
+    public class ThrowException : CommandBase
+    {
+        public override void Execute()
+        {
+            throw new InvalidOperationException("An exception was thrown");
         }
     }
 }

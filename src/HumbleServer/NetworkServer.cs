@@ -15,7 +15,7 @@ namespace HumbleServer
 
         public NetworkServer()
         {
-            this.UnknowCommand = () => new UnknowCommand();
+            this.UnknowCommand = () => new Unknow();
         }
 
         public Func<ICommand> UnknowCommand
@@ -62,11 +62,21 @@ namespace HumbleServer
             client.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ar =>
             {
                 client.EndReceive(ar);
-                var commandName = Encoding.ASCII.GetString(buffer).ToLower();
-                
-                ICommand command = this.GetCommand(commandName);
-                command.SetContext(client);
-                command.Execute();
+                try
+                {
+                    var commandName = Encoding.ASCII.GetString(buffer).ToLower();
+
+                    //// TODO: criar abstracao de socket
+                    ICommand command = this.GetCommand(commandName);
+                    command.SetContext(client);
+                    command.Execute();
+                }
+                catch (Exception exception)
+                {
+                    var message = exception.GetType().Name + ": " + exception.Message;
+                    var data = Encoding.ASCII.GetBytes(message);
+                    client.Send(data, 0, data.Length, SocketFlags.None);
+                }
 
                 this.WaitForCommand(client);
             }, client);

@@ -17,7 +17,7 @@
 
         protected override void BeforeTest()
         {
-            server.AddCommand("wait", () => new WaitCommand());
+            server.AddCommand("wait", () => new Wait());
         }
 
         /// <summary>
