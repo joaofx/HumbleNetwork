@@ -1,10 +1,11 @@
 namespace HumbleServer
 {
     using System.Net.Sockets;
+    using Streams;
 
     public interface ICommand
     {
-        void SetContext(Socket socket);
         void Execute();
+        void SetContext(TcpClient client, IHumbleStream stream);
     }
 }

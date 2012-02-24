@@ -4,24 +4,28 @@ namespace HumbleServer
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
-    using System.Text;
+    using Commands;
+    using Streams;
 
-    //// TODO: mudar parametro threadpool.setmin
     public class NetworkServer
     {
         private TcpListener listener;
-        private readonly IDictionary<string, Func<ICommand>> commands =
-            new Dictionary<String, Func<ICommand>>();
+        private readonly IDictionary<string, Func<ICommand>> commands = new Dictionary<String, Func<ICommand>>();
 
         public NetworkServer()
         {
-            this.UnknowCommand = () => new Unknow();
+            this.UnknowCommand = () => new UnknowCommand();
         }
 
         public Func<ICommand> UnknowCommand
         {
             get;
             set;
+        }
+
+        public int Port
+        {
+            get { return ((IPEndPoint)this.listener.LocalEndpoint).Port; }
         }
 
         public NetworkServer Start(int port)
@@ -32,14 +36,24 @@ namespace HumbleServer
             return this;
         }
 
+        public ICommand GetCommand(string commandName)
+        {
+            if (this.commands.ContainsKey(commandName.ToLower()) == false)
+            {
+                return this.UnknowCommand();
+            }
+
+            return this.commands[commandName.ToLower()]();
+        }
+
         private void AcceptClients()
         {
             this.listener.BeginAcceptTcpClient(ar =>
             {
-                Socket client;
+                TcpClient client;
                 try
                 {
-                    client = this.listener.EndAcceptSocket(ar);
+                    client = this.listener.EndAcceptTcpClient(ar);
                 }
                 catch (ObjectDisposedException)
                 {
@@ -51,45 +65,32 @@ namespace HumbleServer
             }, null);
         }
 
+        private void WaitForCommand(TcpClient client)
+        {
+            //// TODO: async
+            IHumbleStream stream = new FixedLengthStream(client.GetStream());
+
+            try
+            {
+                var commandName = stream.Receive().ToLower();
+
+                //// TODO: criar abstracao de socket
+                ICommand command = this.GetCommand(commandName);
+                command.SetContext(client, stream);
+                command.Execute();
+            }
+            catch (Exception exception)
+            {
+                var message = exception.GetType().Name + ": " + exception.Message;
+                stream.Send(message);
+            }
+
+            this.WaitForCommand(client);
+        }
+
         public void Stop()
         {
             this.listener.Stop();
-        }
-
-        private void WaitForCommand(Socket client)
-        {
-            var buffer = new byte[4];
-            client.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, ar =>
-            {
-                client.EndReceive(ar);
-                try
-                {
-                    var commandName = Encoding.ASCII.GetString(buffer).ToLower();
-
-                    //// TODO: criar abstracao de socket
-                    ICommand command = this.GetCommand(commandName);
-                    command.SetContext(client);
-                    command.Execute();
-                }
-                catch (Exception exception)
-                {
-                    var message = exception.GetType().Name + ": " + exception.Message;
-                    var data = Encoding.ASCII.GetBytes(message);
-                    client.Send(data, 0, data.Length, SocketFlags.None);
-                }
-
-                this.WaitForCommand(client);
-            }, client);
-        }
-
-        private ICommand GetCommand(string commandName)
-        {
-            if (this.commands.ContainsKey(commandName) == false)
-            {
-                return this.UnknowCommand();
-            }
-
-            return this.commands[commandName.ToLower()]();
         }
 
         public void AddCommand(string commandName, Func<ICommand> howToInstanceCommand)

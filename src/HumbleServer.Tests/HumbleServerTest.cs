@@ -3,15 +3,12 @@
 namespace HumbleServer.Tests
 {
     using System;
-    using Commands;
+    using Helpers;
 
-    /// TODO: grande quantidade de bytes [stream test]
-    /// TODO: mensagem com tamanho pré-fixada (padrao)
     /// TODO: mensagem com delimitador
     /// TODO: tratar mensagens quebradas
     /// TODO: timeout
     /// TODO: tratamento de erro
-    /// TODO: retornar porta
     /// TODO: tratar comando desconhecido
     [TestFixture]
     public class HumbleServerTest : HumbleTestBase
@@ -20,10 +17,16 @@ namespace HumbleServer.Tests
 
         protected override void BeforeTest()
         {
-		    this.server.AddCommand("echo", () => new Echo());
-            this.server.AddCommand("ping", () => new Ping());
+		    this.server.AddCommand("echo", () => new EchoCommand());
+            this.server.AddCommand("ping", () => new PingCommand());
 
             this.client = new NetworkClient().Connect("localhost", 987);
+        }
+
+        [Test]
+        public void Should_return_server_port()
+        {
+            Assert.That(this.server.Port, Is.EqualTo(987));
         }
 
         [Test]
@@ -44,6 +47,17 @@ namespace HumbleServer.Tests
 
             client.Send("ECHO").Send("Third hello");
             Assert.That(client.Receive(), Is.EqualTo("Third hello"));
+        }
+
+        [Test]
+        public void Should_process_echo_command_with_big_message()
+        {
+            var message = StringExtension.GenerateRandomString(1 << 16);
+            this.client.Send("ECHO").Send(message);
+            var received = this.client.Receive();
+
+            Assert.That(received.Length, Is.EqualTo(message.Length));
+            Assert.That(received, Is.EqualTo(message));
         }
 
         [Test]
@@ -85,14 +99,14 @@ namespace HumbleServer.Tests
         [Test]
         public void Should_treat_exception_on_server_side()
         {
-            this.server.UnknowCommand = () => new ThrowException();
+            this.server.UnknowCommand = () => new ThrowExceptionCommand();
 
             this.client.Send("EXCE");
             Assert.That(client.Receive(), Is.EqualTo("InvalidOperationException: An exception was thrown"));
         }
     }
 
-    public class ThrowException : CommandBase
+    public class ThrowExceptionCommand : CommandBase
     {
         public override void Execute()
         {

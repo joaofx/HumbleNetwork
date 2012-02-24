@@ -1,12 +1,13 @@
 ﻿namespace HumbleServer.Tests.Performance
 {
     using System;
-    using Commands;
+    using Helpers;
     using NUnit.Framework;
     using System.Threading;
 
     /// <summary>
     /// TODO: refatorar
+    /// TODO: o teste passa mas parece que demora para thread ser liberada
     /// </summary>
     [TestFixture]
     public class BurstRequestsTest : HumbleTestBase
@@ -17,7 +18,7 @@
 
         protected override void BeforeTest()
         {
-            server.AddCommand("wait", () => new Wait());
+            server.AddCommand("wait", () => new WaitCommand());
         }
 
         /// <summary>

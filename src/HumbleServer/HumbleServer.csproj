@@ -48,11 +48,13 @@
   <ItemGroup>
     <Compile Include="ClientConnection.cs" />
     <Compile Include="CommandBase.cs" />
+    <Compile Include="Streams\FixedLengthStream.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="NetworkClient.cs" />
     <Compile Include="NetworkServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Unknow.cs" />
+    <Compile Include="Commands\UnknowCommand.cs" />
+    <Compile Include="Streams\IHumbleStream.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
