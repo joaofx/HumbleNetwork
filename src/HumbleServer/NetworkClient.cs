@@ -1,8 +1,6 @@
 namespace HumbleServer
 {
-    using System;
     using System.Net.Sockets;
-    using System.Text;
     using Streams;
 
     /// <summary>
@@ -13,24 +11,21 @@ namespace HumbleServer
         private readonly TcpClient tcpClient = new TcpClient();
         private FixedLengthStream stream;
 
+        public int ReceiveTimeOut
+        {
+            get { return this.stream.NetworkStream.ReadTimeout; }
+            set { this.stream.NetworkStream.ReadTimeout = value; }
+        }
+
         public NetworkClient Send(string data)
         {
             this.stream.Send(data);
-
-            ////var buffer = Encoding.ASCII.GetBytes(data);
-            ////this.stream.Write(buffer, 0, buffer.Length);
-
             return this;
         }
 
         public string Receive()
         {
             return this.stream.Receive();
-
-            ////var buffer = new byte[2048];
-            ////this.stream.Read(buffer, 0, buffer.Length);
-            ////var data = Encoding.ASCII.GetString(buffer);
-            ////return data.Replace("\0", String.Empty);
         }
 
         public NetworkClient Connect(string host, int port)

@@ -28,7 +28,7 @@
         /// for each thread and send the response. 
         /// So this test doesn't has to take more than 3 seconds
         /// </summary>
-        [Test]
+        [Ignore]
         public void Should_execute_less_than_3_seconds()
         {
             ThreadPool.SetMinThreads(NumThreads, NumThreads);

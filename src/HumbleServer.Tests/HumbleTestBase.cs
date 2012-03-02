@@ -2,9 +2,6 @@
 
 namespace HumbleServer.Tests
 {
-    using System;
-    using System.Text;
-
     [TestFixture]
     public class HumbleTestBase
     {
