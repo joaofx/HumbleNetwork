@@ -16,6 +16,11 @@ namespace HumbleServer
             this.client = client;
         }
 
+        ~Session()
+        {
+            this.Dispose();
+        }
+
         public void ProcessCommand()
         {
             ExecuteHandlingExceptions(() =>
@@ -35,6 +40,12 @@ namespace HumbleServer
 
                 this.ProcessCommand();
             });
+        }
+
+        public void Dispose()
+        {
+	        this.client.Close();
+	        GC.SuppressFinalize(this);
         }
 
         private IHumbleStream CreateStream()
@@ -66,16 +77,5 @@ namespace HumbleServer
                 Dispose();
             }
         }
-
-		public void Dispose()
-		{
-			this.client.Close();
-			GC.SuppressFinalize(this);
-		}
-
-		~Session()
-		{
-			Dispose();
-		}
     }
 }
