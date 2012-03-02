@@ -2,14 +2,10 @@
 
 namespace HumbleServer.Tests
 {
-    using System;
+    using System.IO;
     using Helpers;
 
-    /// TODO: mensagem com delimitador
-    /// TODO: tratar mensagens quebradas
-    /// TODO: timeout
-    /// TODO: tratamento de erro
-    /// TODO: tratar comando desconhecido
+    /// TODO: control connected clients
     [TestFixture]
     public class HumbleServerTest : HumbleTestBase
     {
@@ -17,8 +13,10 @@ namespace HumbleServer.Tests
 
         protected override void BeforeTest()
         {
+            this.server.MessageFraming = MessageFraming.LengthPrefixing;
 		    this.server.AddCommand("echo", () => new EchoCommand());
             this.server.AddCommand("ping", () => new PingCommand());
+            this.server.AddCommand("wait", () => new WaitCommand());
 
             this.client = new NetworkClient().Connect("localhost", 987);
         }
@@ -83,10 +81,10 @@ namespace HumbleServer.Tests
         [Test]
         public void Should_treat_unknow_command_with_a_custom_handler()
         {
-            this.server.UnknowCommand = () => new CustomUnknow();
+            this.server.UnknowCommandHandler = () => new CustomUnknowCommandHandler();
 
             this.client.Send("????");
-            Assert.That(client.Receive(), Is.EqualTo("CustomUnknow"));
+            Assert.That(client.Receive(), Is.EqualTo("CustomUnknowCommandHandler"));
         }
 
         [Test]
@@ -97,20 +95,31 @@ namespace HumbleServer.Tests
         }
 
         [Test]
-        public void Should_treat_exception_on_server_side()
+        public void Should_treat_exception_without_a_handler()
         {
-            this.server.UnknowCommand = () => new ThrowExceptionCommand();
+            this.server.AddCommand("EXCE", ()=> new ThrowExceptionCommand());
 
             this.client.Send("EXCE");
             Assert.That(client.Receive(), Is.EqualTo("InvalidOperationException: An exception was thrown"));
         }
-    }
 
-    public class ThrowExceptionCommand : CommandBase
-    {
-        public override void Execute()
+        [Test]
+        public void Should_treat_exception_with_a_custom_handler()
         {
-            throw new InvalidOperationException("An exception was thrown");
+            this.server.ExceptionHandler = () => new CustomExceptionHandler();
+            this.server.AddCommand("EXCE", () => new ThrowExceptionCommand());
+
+            this.client.Send("EXCE");
+            Assert.That(client.Receive(), Is.EqualTo("CustomExceptionHandler: InvalidOperationException"));
+        }
+
+        [Test]
+        [ExpectedException(typeof(IOException))]
+        public void Should_throw_exception_when_read_timeout_was_fired()
+        {
+            this.client.ReceiveTimeOut = 1000;
+            this.client.Send("WAIT");
+            this.client.Receive();
         }
     }
 }

@@ -43,9 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\CustomExceptionHandler.cs" />
     <Compile Include="Helpers\EchoCommand.cs" />
     <Compile Include="Helpers\PingCommand.cs" />
-    <Compile Include="Helpers\CustomUnknow.cs" />
+    <Compile Include="Helpers\CustomUnknowCommandHandler.cs" />
     <Compile Include="Helpers\StringExtension.cs" />
     <Compile Include="HumbleTestBase.cs" />
     <Compile Include="Performance\BurstRequestsTest.cs">
@@ -54,8 +55,11 @@
     <Compile Include="HumbleServerTest.cs" />
     <Compile Include="Helpers\WaitCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Streams\ChunkMessageBufferTest.cs" />
+    <Compile Include="Streams\DelimitedStreamTest.cs" />
     <Compile Include="Streams\FixedLengthStreamTest.cs" />
     <Compile Include="Streams\StreamTestBase.cs" />
+    <Compile Include="Helpers\ThrowExceptionCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HumbleServer\HumbleServer.csproj">

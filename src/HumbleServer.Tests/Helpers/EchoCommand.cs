@@ -1,11 +1,14 @@
 namespace HumbleServer.Tests.Helpers
 {
-    public class EchoCommand : CommandBase
+    using System.Net.Sockets;
+    using HumbleServer.Streams;
+
+    public class EchoCommand : ICommand
     {
-        public override void Execute()
+        public void Execute(TcpClient client, IHumbleStream stream)
         {
-            var message = this.stream.Receive();
-            this.stream.Send(message);
+            var message = stream.Receive();
+            stream.Send(message);
         }
     }
 }

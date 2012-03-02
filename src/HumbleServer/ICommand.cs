@@ -5,7 +5,6 @@ namespace HumbleServer
 
     public interface ICommand
     {
-        void Execute();
-        void SetContext(TcpClient client, IHumbleStream stream);
+        void Execute(TcpClient client, IHumbleStream stream);
     }
 }

@@ -5,7 +5,7 @@ namespace HumbleServer
     using System.Net;
     using System.Net.Sockets;
     using Commands;
-    using Streams;
+    using Handlers;
 
     public class NetworkServer
     {
@@ -14,10 +14,12 @@ namespace HumbleServer
 
         public NetworkServer()
         {
-            this.UnknowCommand = () => new UnknowCommand();
+            this.UnknowCommandHandler = () => new DefaultUnknowCommandHandler();
+            this.ExceptionHandler = () => new DefaultExceptionHandler();
+            this.MessageFraming = MessageFraming.LengthPrefixing;
         }
 
-        public Func<ICommand> UnknowCommand
+        public Func<IUnknowCommandHandler> UnknowCommandHandler
         {
             get;
             set;
@@ -26,6 +28,18 @@ namespace HumbleServer
         public int Port
         {
             get { return ((IPEndPoint)this.listener.LocalEndpoint).Port; }
+        }
+
+        public Func<IExceptionHandler> ExceptionHandler
+        {
+            get;
+            set;
+        }
+
+        public MessageFraming MessageFraming
+        {
+            get;
+            set;
         }
 
         public NetworkServer Start(int port)
@@ -40,7 +54,7 @@ namespace HumbleServer
         {
             if (this.commands.ContainsKey(commandName.ToLower()) == false)
             {
-                return this.UnknowCommand();
+                return this.UnknowCommandHandler();
             }
 
             return this.commands[commandName.ToLower()]();
@@ -50,42 +64,17 @@ namespace HumbleServer
         {
             this.listener.BeginAcceptTcpClient(ar =>
             {
-                TcpClient client;
                 try
                 {
-                    client = this.listener.EndAcceptTcpClient(ar);
+                    TcpClient client = this.listener.EndAcceptTcpClient(ar);
+                    this.AcceptClients();
+                    new Session(this, client).ProcessCommand();
                 }
                 catch (ObjectDisposedException)
                 {
                     return;
                 }
-
-                this.AcceptClients();
-                this.WaitForCommand(client);
             }, null);
-        }
-
-        private void WaitForCommand(TcpClient client)
-        {
-            //// TODO: async
-            IHumbleStream stream = new FixedLengthStream(client.GetStream());
-
-            try
-            {
-                var commandName = stream.Receive().ToLower();
-
-                //// TODO: criar abstracao de socket
-                ICommand command = this.GetCommand(commandName);
-                command.SetContext(client, stream);
-                command.Execute();
-            }
-            catch (Exception exception)
-            {
-                var message = exception.GetType().Name + ": " + exception.Message;
-                stream.Send(message);
-            }
-
-            this.WaitForCommand(client);
         }
 
         public void Stop()
