@@ -2,7 +2,6 @@
 
 namespace HumbleServer.Tests
 {
-    [TestFixture]
     public class HumbleTestBase
     {
 		protected NetworkServer server;
