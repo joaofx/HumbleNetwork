@@ -24,6 +24,16 @@ namespace HumbleServer.Tests.Streams
         }
 
         [Test]
+        public void Should_send_and_receive_different_characters()
+        {
+            this.StreamTest((sender, receiver) =>
+            {
+                sender.Send("ú");
+                Assert.That(receiver.Receive(), Is.EqualTo("ú"));
+            });
+        }
+
+        [Test]
         public void Should_send_and_receive_batch_of_messages()
         {
             this.StreamTest((sender, receiver) =>

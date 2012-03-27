@@ -6,8 +6,7 @@
     using System.Threading;
 
     /// <summary>
-    /// TODO: refatorar
-    /// TODO: o teste passa mas parece que demora para thread ser liberada
+    /// TODO: this test pass and finish but seems that some threads still working
     /// </summary>
     [TestFixture]
     public class BurstRequestsTest : HumbleTestBase
@@ -40,7 +39,7 @@
 
             for (var i = 0; i < NumThreads; i++)
             {
-                new Thread(this.ThreadProc) { Name = "Thread " + i }.Start();
+                new Thread(this.OneThreadExecution) { Name = "Thread " + i }.Start();
             }
 
             this.countdown.Wait();
@@ -59,7 +58,7 @@
             }
         }
 
-        private void ThreadProc()
+        private void OneThreadExecution()
         {
             this.countdown.Signal();
 

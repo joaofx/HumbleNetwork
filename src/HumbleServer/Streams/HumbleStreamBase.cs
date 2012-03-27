@@ -26,7 +26,7 @@ namespace HumbleServer.Streams
 
         protected void SendMessage(string message)
         {
-            var messageBytes = Encoding.ASCII.GetBytes(message);
+            var messageBytes = Encoding.Default.GetBytes(message);
             this.stream.Write(messageBytes, 0, messageBytes.Length);
         }
 
@@ -51,7 +51,7 @@ namespace HumbleServer.Streams
                 }
             }
 
-            return Encoding.ASCII.GetString(messageBytes);
+            return Encoding.Default.GetString(messageBytes);
         }
     }
 }

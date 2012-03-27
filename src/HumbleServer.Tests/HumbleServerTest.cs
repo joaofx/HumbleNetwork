@@ -6,6 +6,7 @@ namespace HumbleServer.Tests
     using Helpers;
 
     /// TODO: control connected clients
+    /// TODO: fix encoding bug
     [TestFixture]
     public class HumbleServerTest : HumbleTestBase
     {
@@ -111,6 +112,13 @@ namespace HumbleServer.Tests
 
             this.client.Send("EXCE");
             Assert.That(client.Receive(), Is.EqualTo("CustomExceptionHandler: InvalidOperationException"));
+        }
+
+        [Test]
+        public void Should_return_if_client_is_connected()
+        {
+            Assert.That(this.client.IsItReallyConnected(), Is.True);
+
         }
 
         [Test]
