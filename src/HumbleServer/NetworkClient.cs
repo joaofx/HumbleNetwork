@@ -5,13 +5,24 @@ namespace HumbleServer
     using Streams;
 
     /// <summary>
-    /// TODO: host procurar dns
+    /// TODO: host search dns
     /// TODO: send command
     /// </summary>
     public class NetworkClient : IDisposable
     {
+        private readonly MessageFraming messageFraming;
         private readonly TcpClient tcpClient = new TcpClient();
-        private FixedLengthStream stream;
+        private IHumbleStream stream;
+
+        public NetworkClient()
+            : this(MessageFraming.LengthPrefixing)
+        {
+        }
+
+        public NetworkClient(MessageFraming messageFraming)
+        {
+            this.messageFraming = messageFraming;
+        }
 
         public int ReceiveTimeOut
         {
@@ -33,8 +44,16 @@ namespace HumbleServer
         public NetworkClient Connect(string host, int port)
         {
             this.tcpClient.Connect(host, port);
-            this.stream = new FixedLengthStream(this.tcpClient.GetStream());
+            this.CreateStream();
             return this;
+        }
+
+        private void CreateStream()
+        {
+            //// TODO: refactor, not elegant
+            this.stream = this.messageFraming == MessageFraming.LengthPrefixing ?
+                (IHumbleStream)new FixedLengthStream(this.tcpClient.GetStream()) :
+                new DelimitedStream(this.tcpClient.GetStream());
         }
 
         /// <summary>
