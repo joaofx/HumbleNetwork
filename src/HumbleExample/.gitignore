@@ -1,0 +1,10 @@
+
+/src/_ReSharper.HumbleServer
+/src/HumbleServer/obj
+/src/HumbleServer/_ReSharper.HumbleServer
+/src/HumbleServer/bin
+/src/HumbleServer.Tests/obj
+/src/HumbleServer.Tests/bin
+/src/HumbleServer.6.0.ReSharper.user
+/src/HumbleServer.suo
+/src/nuget.config
