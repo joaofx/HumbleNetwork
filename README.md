@@ -3,7 +3,8 @@ HumbleNetwork
 
 It's a library to help build network services based in sockets. It offers a client and a server class and a stream helper. See the example:
 
-public class Program
+<code>
+class Program
 {
 	static void Main(string[] args)
 	{
@@ -27,7 +28,7 @@ public class EchoCommand : ICommand
 		stream.Send(stream.Receive());
 	}
 }
-
+</code>
 
 TODO
 ----
