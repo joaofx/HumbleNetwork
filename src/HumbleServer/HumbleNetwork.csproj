@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{55E1E4FC-3DED-442E-8C10-32E51E82C427}</ProjectGuid>
+    <ProjectGuid>{2BB6D7F3-05AF-4417-848E-39DE3A26F7DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HumbleServer.Tests</RootNamespace>
-    <AssemblyName>HumbleServer.Tests</AssemblyName>
+    <RootNamespace>HumbleNetwork</RootNamespace>
+    <AssemblyName>HumbleNetwork</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,10 +30,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\tools\nunit\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,31 +43,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\CustomExceptionHandler.cs" />
-    <Compile Include="Helpers\EchoCommand.cs" />
-    <Compile Include="Helpers\PingCommand.cs" />
-    <Compile Include="Helpers\CustomUnknowCommandHandler.cs" />
-    <Compile Include="Helpers\StringExtension.cs" />
-    <Compile Include="HumbleTestBase.cs" />
-    <Compile Include="Performance\BurstRequestsTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="HumbleServerTest.cs" />
-    <Compile Include="Helpers\WaitCommand.cs" />
+    <Compile Include="IHumbleClient.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="IUnknowCommandHandler.cs" />
+    <Compile Include="Handlers\DefaultExceptionHandler.cs" />
+    <Compile Include="IExceptionHandler.cs" />
+    <Compile Include="MessageFraming.cs" />
+    <Compile Include="Streams\ChunkMessageBuffer.cs" />
+    <Compile Include="Streams\HumbleStreamBase.cs" />
+    <Compile Include="Streams\DelimitedStream.cs" />
+    <Compile Include="Streams\FixedLengthStream.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="HumbleClient.cs" />
+    <Compile Include="HumbleServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Streams\ChunkMessageBufferTest.cs" />
-    <Compile Include="Streams\DelimitedStreamTest.cs" />
-    <Compile Include="Streams\FixedLengthStreamTest.cs" />
-    <Compile Include="Streams\StreamTestBase.cs" />
-    <Compile Include="Helpers\ThrowExceptionCommand.cs" />
+    <Compile Include="Commands\DefaultUnknowCommandHandler.cs" />
+    <Compile Include="Streams\IHumbleStream.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HumbleServer\HumbleServer.csproj">
-      <Project>{2BB6D7F3-05AF-4417-848E-39DE3A26F7DF}</Project>
-      <Name>HumbleServer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

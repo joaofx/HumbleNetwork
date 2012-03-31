@@ -1,12 +1,12 @@
-namespace HumbleServer.Tests.Helpers
+namespace HumbleNetwork.Tests.Helpers
 {
     using System;
-    using System.Net.Sockets;
-    using HumbleServer.Streams;
+    using HumbleNetwork;
+    using HumbleNetwork.Streams;
 
     public class ThrowExceptionCommand : ICommand
     {
-        public void Execute(TcpClient client, IHumbleStream stream)
+        public void Execute(IHumbleStream stream)
         {
             throw new InvalidOperationException("An exception was thrown");
         }

@@ -1,17 +1,17 @@
 ﻿
-namespace HumbleServer.Tests.Streams
+namespace HumbleNetwork.Tests.Streams
 {
     using System;
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
     using Helpers;
-    using HumbleServer.Streams;
+    using HumbleNetwork.Streams;
     using NUnit.Framework;
 
     public abstract class StreamTestBase
     {
-        protected abstract IHumbleStream CreateStream(NetworkStream stream);
+        protected abstract IHumbleStream CreateStream(TcpClient client);
 
         [Test]
         public void Should_send_and_receive_message()
@@ -73,8 +73,8 @@ namespace HumbleServer.Tests.Streams
 
                 try
                 {
-                    var sender = this.CreateStream(tcpSender.GetStream());
-                    var receiver = this.CreateStream(tcpReceiver.GetStream());
+                    var sender = this.CreateStream(tcpSender);
+                    var receiver = this.CreateStream(tcpReceiver);
 
                     action(sender, receiver);
                 }

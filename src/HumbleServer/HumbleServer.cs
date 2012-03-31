@@ -1,4 +1,4 @@
-namespace HumbleServer
+namespace HumbleNetwork
 {
     using System;
     using System.Collections.Generic;
@@ -7,12 +7,12 @@ namespace HumbleServer
     using Commands;
     using Handlers;
 
-    public class NetworkServer
+    public class HumbleServer
     {
         private TcpListener listener;
         private readonly IDictionary<string, Func<ICommand>> commands = new Dictionary<String, Func<ICommand>>();
 
-        public NetworkServer()
+        public HumbleServer()
         {
             this.UnknowCommandHandler = () => new DefaultUnknowCommandHandler();
             this.ExceptionHandler = () => new DefaultExceptionHandler();
@@ -42,7 +42,7 @@ namespace HumbleServer
             set;
         }
 
-        public NetworkServer Start(int port)
+        public HumbleServer Start(int port)
         {
             this.listener = new TcpListener(IPAddress.Any, port);
             this.listener.Start();

@@ -1,12 +1,12 @@
-namespace HumbleServer.Handlers
+namespace HumbleNetwork.Handlers
 {
     using System;
-    using System.Net.Sockets;
-    using HumbleServer.Streams;
+    using HumbleNetwork;
+    using HumbleNetwork.Streams;
 
     public class DefaultExceptionHandler : IExceptionHandler
     {
-        public void Execute(TcpClient client, IHumbleStream stream, Exception exception)
+        public void Execute(IHumbleStream stream, Exception exception)
         {
             var message = exception.GetType().Name + ": " + exception.Message;
             stream.Send(message);

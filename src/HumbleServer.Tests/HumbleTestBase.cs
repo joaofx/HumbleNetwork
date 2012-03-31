@@ -1,15 +1,15 @@
-﻿using NUnit.Framework;
-
-namespace HumbleServer.Tests
+﻿namespace HumbleNetwork.Tests
 {
+    using NUnit.Framework;
+
     public class HumbleTestBase
     {
-		protected NetworkServer server;
+		protected HumbleServer server;
 		
 		[SetUp]
 		public void Setup()
 		{
-			this.server = new NetworkServer().Start(987);
+			this.server = new HumbleServer().Start(987);
             this.BeforeTest();
 		}
 		

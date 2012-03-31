@@ -1,11 +1,12 @@
-namespace HumbleServer.Streams
+namespace HumbleNetwork.Streams
 {
     using System;
     using System.Net.Sockets;
 
     public class FixedLengthStream : HumbleStreamBase
     {
-        public FixedLengthStream(NetworkStream stream) : base(stream)
+        public FixedLengthStream(TcpClient client)
+            : base(client)
         {
         }
 

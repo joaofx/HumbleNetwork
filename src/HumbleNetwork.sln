@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumbleServer", "HumbleServer\HumbleServer.csproj", "{2BB6D7F3-05AF-4417-848E-39DE3A26F7DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumbleNetwork", "HumbleServer\HumbleNetwork.csproj", "{2BB6D7F3-05AF-4417-848E-39DE3A26F7DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumbleServer.Tests", "HumbleServer.Tests\HumbleServer.Tests.csproj", "{55E1E4FC-3DED-442E-8C10-32E51E82C427}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumbleNetwork.Tests", "HumbleServer.Tests\HumbleNetwork.Tests.csproj", "{55E1E4FC-3DED-442E-8C10-32E51E82C427}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-namespace HumbleServer.Streams
+namespace HumbleNetwork.Streams
 {
     using System.Net.Sockets;
     using System.Text;
@@ -6,6 +6,7 @@ namespace HumbleServer.Streams
     public abstract class HumbleStreamBase : IHumbleStream
     {
         protected readonly NetworkStream stream;
+        private readonly TcpClient client;
 
         public abstract void Send(string message);
 
@@ -19,9 +20,18 @@ namespace HumbleServer.Streams
             }
         }
 
-        protected HumbleStreamBase(NetworkStream stream)
+        public TcpClient TcpClient
         {
-            this.stream = stream;
+            get
+            {
+                return this.client;
+            }
+        }
+
+        protected HumbleStreamBase(TcpClient client)
+        {
+            this.client = client;
+            this.stream = client.GetStream();
         }
 
         protected void SendMessage(string message)

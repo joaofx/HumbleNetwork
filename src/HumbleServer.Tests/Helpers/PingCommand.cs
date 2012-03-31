@@ -1,11 +1,11 @@
-namespace HumbleServer.Tests.Helpers
+namespace HumbleNetwork.Tests.Helpers
 {
-    using System.Net.Sockets;
-    using HumbleServer.Streams;
+    using HumbleNetwork;
+    using HumbleNetwork.Streams;
 
     public class PingCommand : ICommand
     {
-        public void Execute(TcpClient client, IHumbleStream stream)
+        public void Execute(IHumbleStream stream)
         {
             stream.Send("PONG");
         }

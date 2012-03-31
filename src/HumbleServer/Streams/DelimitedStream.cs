@@ -1,14 +1,15 @@
-namespace HumbleServer.Streams
+namespace HumbleNetwork.Streams
 {
     using System.Net.Sockets;
 
     public class DelimitedStream : HumbleStreamBase
     {
+        public static string Delimiter = "\n\r";
         private readonly ChunkMessageBuffer buffer;
         private const int BufferSize = 2048;
-        private const string Delimiter = "\n\r";
 
-        public DelimitedStream(NetworkStream stream) : base(stream)
+        public DelimitedStream(TcpClient client)
+            : base(client)
         {
             this.buffer = new ChunkMessageBuffer(Delimiter);
         }

@@ -1,16 +1,16 @@
-﻿using NUnit.Framework;
-
-namespace HumbleServer.Tests
+﻿namespace HumbleNetwork.Tests
 {
-    using System.IO;
     using Helpers;
+    using NUnit.Framework;
+    using System.IO;
+    using HumbleNetwork;
 
     /// TODO: control connected clients
     /// TODO: fix encoding bug
     [TestFixture]
-    public class HumbleServerTest : HumbleTestBase
+    public class HumbleNetworkTest : HumbleTestBase
     {
-        private NetworkClient client;
+        private HumbleClient client;
 
         protected override void BeforeTest()
         {
@@ -19,7 +19,7 @@ namespace HumbleServer.Tests
             this.server.AddCommand("ping", () => new PingCommand());
             this.server.AddCommand("wait", () => new WaitCommand());
 
-            this.client = new NetworkClient().Connect("localhost", 987);
+            this.client = new HumbleClient().Connect("localhost", 987);
         }
 
         [Test]
@@ -39,13 +39,13 @@ namespace HumbleServer.Tests
         public void Shoud_process_echo_command_many_times()
         {
             this.client.Send("ECHO").Send("hello");
-            Assert.That(client.Receive(), Is.EqualTo("hello"));
+            Assert.That(this.client.Receive(), Is.EqualTo("hello"));
 
-            client.Send("ECHO").Send("Other hello");
-            Assert.That(client.Receive(), Is.EqualTo("Other hello"));
+            this.client.Send("ECHO").Send("Other hello");
+            Assert.That(this.client.Receive(), Is.EqualTo("Other hello"));
 
-            client.Send("ECHO").Send("Third hello");
-            Assert.That(client.Receive(), Is.EqualTo("Third hello"));
+            this.client.Send("ECHO").Send("Third hello");
+            Assert.That(this.client.Receive(), Is.EqualTo("Third hello"));
         }
 
         [Test]
@@ -63,20 +63,20 @@ namespace HumbleServer.Tests
         public void Shoud_process_ping_command()
         {
             this.client.Send("PING");
-            Assert.That(client.Receive(), Is.EqualTo("PONG"));
+            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
         }
 
         [Test]
         public void Shoud_process_ping_command_many_times()
         {
             this.client.Send("PING");
-            Assert.That(client.Receive(), Is.EqualTo("PONG"));
+            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
 
             this.client.Send("PING");
-            Assert.That(client.Receive(), Is.EqualTo("PONG"));
+            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
 
             this.client.Send("PING");
-            Assert.That(client.Receive(), Is.EqualTo("PONG"));
+            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
         }
 
         [Test]
@@ -85,14 +85,14 @@ namespace HumbleServer.Tests
             this.server.UnknowCommandHandler = () => new CustomUnknowCommandHandler();
 
             this.client.Send("????");
-            Assert.That(client.Receive(), Is.EqualTo("CustomUnknowCommandHandler"));
+            Assert.That(this.client.Receive(), Is.EqualTo("CustomUnknowCommandHandler"));
         }
 
         [Test]
         public void Should_treat_unknow_command_without_set_a_handler()
         {
             this.client.Send("????");
-            Assert.That(client.Receive(), Is.EqualTo("UNKN"));
+            Assert.That(this.client.Receive(), Is.EqualTo("UNKN"));
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace HumbleServer.Tests
             this.server.AddCommand("EXCE", ()=> new ThrowExceptionCommand());
 
             this.client.Send("EXCE");
-            Assert.That(client.Receive(), Is.EqualTo("InvalidOperationException: An exception was thrown"));
+            Assert.That(this.client.Receive(), Is.EqualTo("InvalidOperationException: An exception was thrown"));
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace HumbleServer.Tests
             this.server.AddCommand("EXCE", () => new ThrowExceptionCommand());
 
             this.client.Send("EXCE");
-            Assert.That(client.Receive(), Is.EqualTo("CustomExceptionHandler: InvalidOperationException"));
+            Assert.That(this.client.Receive(), Is.EqualTo("CustomExceptionHandler: InvalidOperationException"));
         }
 
         [Test]

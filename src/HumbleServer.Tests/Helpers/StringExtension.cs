@@ -1,8 +1,8 @@
-﻿using System;
-using System.Text;
-
-namespace HumbleServer.Tests.Helpers
+﻿namespace HumbleNetwork.Tests.Helpers
 {
+    using System;
+    using System.Text;
+
     public class StringExtension
     {
         public static string GenerateRandomString(int lenght)

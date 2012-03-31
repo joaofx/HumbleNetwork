@@ -1,11 +1,10 @@
-namespace HumbleServer.Tests.Helpers
+namespace HumbleNetwork.Tests.Helpers
 {
-    using System.Net.Sockets;
-    using HumbleServer.Streams;
+    using HumbleNetwork.Streams;
 
     public class CustomUnknowCommandHandler : IUnknowCommandHandler
     {
-        public void Execute(TcpClient client, IHumbleStream stream)
+        public void Execute(IHumbleStream stream)
         {
             stream.Send("CustomUnknowCommandHandler");
         }

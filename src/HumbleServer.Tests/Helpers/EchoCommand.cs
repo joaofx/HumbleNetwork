@@ -1,11 +1,11 @@
-namespace HumbleServer.Tests.Helpers
+namespace HumbleNetwork.Tests.Helpers
 {
-    using System.Net.Sockets;
-    using HumbleServer.Streams;
+    using HumbleNetwork;
+    using HumbleNetwork.Streams;
 
     public class EchoCommand : ICommand
     {
-        public void Execute(TcpClient client, IHumbleStream stream)
+        public void Execute(IHumbleStream stream)
         {
             var message = stream.Receive();
             stream.Send(message);

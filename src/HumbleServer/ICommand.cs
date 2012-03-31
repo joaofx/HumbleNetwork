@@ -1,4 +1,4 @@
-namespace HumbleServer
+namespace HumbleNetwork
 {
     using System.Net.Sockets;
     using Streams;
@@ -8,6 +8,6 @@ namespace HumbleServer
     /// </summary>
     public interface ICommand
     {
-        void Execute(TcpClient client, IHumbleStream stream);
+        void Execute(IHumbleStream stream);
     }
 }

@@ -1,7 +1,7 @@
 ﻿
-namespace HumbleServer.Tests.Streams
+namespace HumbleNetwork.Tests.Streams
 {
-    using HumbleServer.Streams;
+    using HumbleNetwork.Streams;
     using NUnit.Framework;
 
     [TestFixture]

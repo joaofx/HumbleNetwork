@@ -1,25 +1,25 @@
-namespace HumbleServer
+namespace HumbleNetwork
 {
-    using System;
     using System.Net.Sockets;
     using Streams;
 
     /// <summary>
     /// TODO: host search dns
     /// TODO: send command
+    /// TODO: close or disconnect method
     /// </summary>
-    public class NetworkClient : IDisposable
+    public class HumbleClient : IHumbleClient
     {
         private readonly MessageFraming messageFraming;
         private readonly TcpClient tcpClient = new TcpClient();
         private IHumbleStream stream;
 
-        public NetworkClient()
+        public HumbleClient()
             : this(MessageFraming.LengthPrefixing)
         {
         }
 
-        public NetworkClient(MessageFraming messageFraming)
+        public HumbleClient(MessageFraming messageFraming)
         {
             this.messageFraming = messageFraming;
         }
@@ -30,7 +30,7 @@ namespace HumbleServer
             set { this.stream.NetworkStream.ReadTimeout = value; }
         }
 
-        public NetworkClient Send(string data)
+        public HumbleClient Send(string data)
         {
             this.stream.Send(data);
             return this;
@@ -41,7 +41,7 @@ namespace HumbleServer
             return this.stream.Receive();
         }
 
-        public NetworkClient Connect(string host, int port)
+        public HumbleClient Connect(string host, int port)
         {
             this.tcpClient.Connect(host, port);
             this.CreateStream();
@@ -52,8 +52,8 @@ namespace HumbleServer
         {
             //// TODO: refactor, not elegant
             this.stream = this.messageFraming == MessageFraming.LengthPrefixing ?
-                (IHumbleStream)new FixedLengthStream(this.tcpClient.GetStream()) :
-                new DelimitedStream(this.tcpClient.GetStream());
+                (IHumbleStream)new FixedLengthStream(this.tcpClient) :
+                new DelimitedStream(this.tcpClient);
         }
 
         /// <summary>

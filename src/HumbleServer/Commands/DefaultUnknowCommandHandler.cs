@@ -1,11 +1,10 @@
-namespace HumbleServer.Commands
+namespace HumbleNetwork.Commands
 {
-    using System.Net.Sockets;
-    using Streams;
+    using HumbleNetwork.Streams;
 
     internal class DefaultUnknowCommandHandler : IUnknowCommandHandler
     {
-        public void Execute(TcpClient client, IHumbleStream stream)
+        public void Execute(IHumbleStream stream)
         {
             stream.Send("UNKN");
         }

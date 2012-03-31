@@ -1,16 +1,16 @@
-namespace HumbleServer
+namespace HumbleNetwork
 {
     using System;
     using System.IO;
     using System.Net.Sockets;
-    using Streams;
+    using HumbleNetwork.Streams;
 
     public class Session : IDisposable
     {
-        private readonly NetworkServer server;
+        private readonly HumbleServer server;
         private readonly TcpClient client;
 
-        public Session(NetworkServer server, TcpClient client)
+        public Session(HumbleServer server, TcpClient client)
         {
             this.server = server;
             this.client = client;
@@ -23,7 +23,7 @@ namespace HumbleServer
 
         public void ProcessCommand()
         {
-            ExecuteHandlingExceptions(() =>
+            this.ExecuteHandlingExceptions(() =>
             {
                 var stream = this.CreateStream();
 
@@ -31,11 +31,11 @@ namespace HumbleServer
                 {
                     var commandName = stream.Receive().ToLower();
                     var command = this.server.GetCommand(commandName);
-                    command.Execute(client, stream);
+                    command.Execute(stream);
                 }
                 catch (Exception exception)
                 {
-                    this.server.ExceptionHandler().Execute(client, stream, exception);
+                    this.server.ExceptionHandler().Execute(stream, exception);
                 }
 
                 this.ProcessCommand();
@@ -52,10 +52,10 @@ namespace HumbleServer
         {
             if (this.server.MessageFraming == MessageFraming.Delimiters)
             {
-                return new DelimitedStream(this.client.GetStream());
+                return new DelimitedStream(this.client);
             }
 
-            return new FixedLengthStream(this.client.GetStream());
+            return new FixedLengthStream(this.client);
         }
 
         private void ExecuteHandlingExceptions(Action action)
@@ -66,15 +66,15 @@ namespace HumbleServer
             }
             catch (IOException)
             {
-                Dispose();
+                this.Dispose();
             }
             catch (SocketException)
             {
-                Dispose();
+                this.Dispose();
             }
             catch (ObjectDisposedException)
             {
-                Dispose();
+                this.Dispose();
             }
         }
     }

@@ -1,7 +1,8 @@
-﻿namespace HumbleServer.Tests.Performance
+﻿namespace HumbleNetwork.Tests.Performance
 {
     using System;
     using Helpers;
+    using HumbleNetwork;
     using NUnit.Framework;
     using System.Threading;
 
@@ -17,7 +18,7 @@
 
         protected override void BeforeTest()
         {
-            server.AddCommand("wait", () => new WaitCommand());
+            this.server.AddCommand("wait", () => new WaitCommand());
         }
 
         /// <summary>
@@ -62,7 +63,7 @@
         {
             this.countdown.Signal();
 
-            var client = new NetworkClient();
+            var client = new HumbleClient();
             this.mre.WaitOne();
             client.Connect("localhost", 987);
             client.Send("wait");

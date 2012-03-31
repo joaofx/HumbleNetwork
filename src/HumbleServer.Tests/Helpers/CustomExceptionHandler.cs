@@ -1,12 +1,12 @@
-namespace HumbleServer.Tests.Helpers
+namespace HumbleNetwork.Tests.Helpers
 {
     using System;
-    using System.Net.Sockets;
-    using HumbleServer.Streams;
+    using HumbleNetwork;
+    using HumbleNetwork.Streams;
 
     public class CustomExceptionHandler : IExceptionHandler
     {
-        public void Execute(TcpClient client, IHumbleStream stream, Exception exception)
+        public void Execute(IHumbleStream stream, Exception exception)
         {
             stream.Send("CustomExceptionHandler: " + exception.GetType().Name);
         }

@@ -1,8 +1,7 @@
-namespace HumbleServer.Streams
+namespace HumbleNetwork.Streams
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     public class ChunkMessageBuffer
     {
@@ -20,7 +19,7 @@ namespace HumbleServer.Streams
         {
             while (true)
             {
-                var delimiterIndex = this.buffer.IndexOf(demiliter);
+                var delimiterIndex = this.buffer.IndexOf(this.demiliter);
 
                 if (delimiterIndex == -1)
                 {

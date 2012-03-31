@@ -1,4 +1,4 @@
-namespace HumbleServer.Streams
+namespace HumbleNetwork.Streams
 {
     using System.Net.Sockets;
 
@@ -12,6 +12,11 @@ namespace HumbleServer.Streams
         /// TODO: encapsulate
         /// </summary>
         NetworkStream NetworkStream
+        {
+            get;
+        }
+
+        TcpClient TcpClient
         {
             get;
         }

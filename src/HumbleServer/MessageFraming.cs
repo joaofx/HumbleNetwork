@@ -1,4 +1,4 @@
-namespace HumbleServer
+namespace HumbleNetwork
 {
     public enum MessageFraming
     {
