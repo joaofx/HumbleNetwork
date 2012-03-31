@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumbleNetwork.Tests", "Humb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumbleNetwork", "HumbleNetwork\HumbleNetwork.csproj", "{2BB6D7F3-05AF-4417-848E-39DE3A26F7DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumbleExample", "HumbleExample\HumbleExample.csproj", "{9971E27E-E744-4533-B37A-724FBD30488B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{2BB6D7F3-05AF-4417-848E-39DE3A26F7DF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2BB6D7F3-05AF-4417-848E-39DE3A26F7DF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2BB6D7F3-05AF-4417-848E-39DE3A26F7DF}.Release|x86.ActiveCfg = Release|Any CPU
+		{9971E27E-E744-4533-B37A-724FBD30488B}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9971E27E-E744-4533-B37A-724FBD30488B}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{9971E27E-E744-4533-B37A-724FBD30488B}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{9971E27E-E744-4533-B37A-724FBD30488B}.Debug|x86.ActiveCfg = Debug|x86
+		{9971E27E-E744-4533-B37A-724FBD30488B}.Debug|x86.Build.0 = Debug|x86
+		{9971E27E-E744-4533-B37A-724FBD30488B}.Release|Any CPU.ActiveCfg = Release|x86
+		{9971E27E-E744-4533-B37A-724FBD30488B}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{9971E27E-E744-4533-B37A-724FBD30488B}.Release|Mixed Platforms.Build.0 = Release|x86
+		{9971E27E-E744-4533-B37A-724FBD30488B}.Release|x86.ActiveCfg = Release|x86
+		{9971E27E-E744-4533-B37A-724FBD30488B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

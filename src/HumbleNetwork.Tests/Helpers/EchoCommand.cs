@@ -3,7 +3,7 @@ namespace HumbleNetwork.Tests.Helpers
     using HumbleNetwork;
     using HumbleNetwork.Streams;
 
-    public class EchoCommand : ICommand
+    internal class EchoCommand : ICommand
     {
         public void Execute(IHumbleStream stream)
         {

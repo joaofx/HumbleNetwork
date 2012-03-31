@@ -62,7 +62,7 @@
     <Compile Include="Helpers\ThrowExceptionCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HumbleServer\HumbleNetwork.csproj">
+    <ProjectReference Include="..\HumbleNetwork\HumbleNetwork.csproj">
       <Project>{2BB6D7F3-05AF-4417-848E-39DE3A26F7DF}</Project>
       <Name>HumbleNetwork</Name>
     </ProjectReference>

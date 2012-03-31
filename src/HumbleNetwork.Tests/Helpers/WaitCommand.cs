@@ -5,7 +5,7 @@ namespace HumbleNetwork.Tests.Helpers
     using HumbleNetwork;
     using HumbleNetwork.Streams;
 
-    public class WaitCommand : ICommand
+    internal class WaitCommand : ICommand
     {
         public void Execute(IHumbleStream stream)
         {

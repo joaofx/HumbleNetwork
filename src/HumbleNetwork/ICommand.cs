@@ -1,6 +1,5 @@
 namespace HumbleNetwork
 {
-    using System.Net.Sockets;
     using Streams;
 
     /// <summary>

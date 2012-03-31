@@ -4,7 +4,7 @@ namespace HumbleNetwork.Tests.Helpers
     using HumbleNetwork;
     using HumbleNetwork.Streams;
 
-    public class CustomExceptionHandler : IExceptionHandler
+    internal class CustomExceptionHandler : IExceptionHandler
     {
         public void Execute(IHumbleStream stream, Exception exception)
         {

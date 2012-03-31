@@ -3,7 +3,7 @@
     using System;
     using System.Text;
 
-    public class StringExtension
+    internal class StringExtension
     {
         public static string GenerateRandomString(int lenght)
         {

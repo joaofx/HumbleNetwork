@@ -15,7 +15,7 @@
         protected override void BeforeTest()
         {
             this.server.MessageFraming = MessageFraming.LengthPrefixing;
-		    this.server.AddCommand("echo", () => new EchoCommand());
+            this.server.AddCommand("echo", () => new EchoCommand());
             this.server.AddCommand("ping", () => new PingCommand());
             this.server.AddCommand("wait", () => new WaitCommand());
 
@@ -98,7 +98,7 @@
         [Test]
         public void Should_treat_exception_without_a_handler()
         {
-            this.server.AddCommand("EXCE", ()=> new ThrowExceptionCommand());
+            this.server.AddCommand("EXCE", () => new ThrowExceptionCommand());
 
             this.client.Send("EXCE");
             Assert.That(this.client.Receive(), Is.EqualTo("InvalidOperationException: An exception was thrown"));

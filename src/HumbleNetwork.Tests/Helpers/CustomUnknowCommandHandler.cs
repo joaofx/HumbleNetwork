@@ -2,7 +2,7 @@ namespace HumbleNetwork.Tests.Helpers
 {
     using HumbleNetwork.Streams;
 
-    public class CustomUnknowCommandHandler : IUnknowCommandHandler
+    internal class CustomUnknowCommandHandler : IUnknowCommandHandler
     {
         public void Execute(IHumbleStream stream)
         {
