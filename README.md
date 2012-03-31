@@ -3,7 +3,7 @@ HumbleNetwork
 
 It's a library to help build network services based in sockets. It offers a client and a server class and a stream helper. See the example:
 
-class Program
+public class Program
 {
 	static void Main(string[] args)
 	{
