@@ -58,7 +58,7 @@
     <Compile Include="HumbleServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\DefaultUnknowCommandHandler.cs" />
-    <Compile Include="Streams\IHumbleStream.cs" />
+    <Compile Include="IHumbleStream.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

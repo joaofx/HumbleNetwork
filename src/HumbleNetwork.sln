@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumbleNetwork", "HumbleNetw
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumbleExample", "HumbleExample\HumbleExample.csproj", "{9971E27E-E744-4533-B37A-724FBD30488B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Script", "Script", "{43B7D10F-EFAF-42A5-9527-D6CC4E4119A6}"
+	ProjectSection(SolutionItems) = preProject
+		..\script\main.build = ..\script\main.build
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

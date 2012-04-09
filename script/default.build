@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="HumbleNetwork" xmlns="http://nant.sf.net/schemas/nant.xsd">
+    
+    <target name="compile" depends="clean, init, copy.config">
+
+        <if test="${property::exists('CCNetLabel')}">
+            <property name="version" value="${CCNetLabel}"/>
+            <call target="compile.apply.version" />
+        </if>
+
+        <msbuild projectFile="${compile.project}" targets="Clean" verbosity="Minimal" workingDirectory=".">
+            <property name="Configuration" value="Release" />
+            <property name="OutputPath" value="${build.dir}" />
+            <property name="PostBuildEvent" value="" />
+        </msbuild>
+
+        <msbuild projectFile="${compile.project}" targets="Build" verbosity="Minimal" workingDirectory=".">
+            <property name="Configuration" value="Release" />
+            <property name="OutputPath" value="${build.dir}" />
+            <property name="PostBuildEvent" value="" />
+        </msbuild>
+
+        <call target="compile.disable.log.debug" />
+
+    </target>
+    
+</project>
