@@ -19,7 +19,7 @@ namespace HumbleNetwork.Streams
         {
             while (true)
             {
-                var delimiterIndex = this.buffer.IndexOf(this.demiliter);
+                var delimiterIndex = this.buffer.IndexOf(this.demiliter, System.StringComparison.Ordinal);
 
                 if (delimiterIndex == -1)
                 {

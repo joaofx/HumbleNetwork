@@ -1,27 +1,24 @@
 namespace HumbleNetwork
 {
     using System.Net.Sockets;
-    using Streams;
 
     /// <summary>
-    /// TODO: host search dns
-    /// TODO: send command
-    /// TODO: close or disconnect method
+
     /// </summary>
     public class HumbleClient : IHumbleClient
     {
-        private readonly MessageFraming messageFraming;
+        private readonly MessageFramingTypes messageFramingType;
         private readonly TcpClient tcpClient = new TcpClient();
         private IHumbleStream stream;
 
         public HumbleClient()
-            : this(MessageFraming.LengthPrefixing)
+            : this(MessageFramingTypes.LengthPrefixing)
         {
         }
 
-        public HumbleClient(MessageFraming messageFraming)
+        public HumbleClient(MessageFramingTypes messageFramingType)
         {
-            this.messageFraming = messageFraming;
+            this.messageFramingType = messageFramingType;
         }
 
         public int ReceiveTimeOut
@@ -50,10 +47,7 @@ namespace HumbleNetwork
 
         private void CreateStream()
         {
-            //// TODO: refactor, not elegant
-            this.stream = this.messageFraming == MessageFraming.LengthPrefixing ?
-                (IHumbleStream)new FixedLengthStream(this.tcpClient) :
-                new DelimitedStream(this.tcpClient);
+            this.stream = MessageFraming.Create(this.messageFramingType, this.tcpClient);
         }
 
         /// <summary>

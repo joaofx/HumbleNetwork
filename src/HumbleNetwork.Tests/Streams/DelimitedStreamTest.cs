@@ -10,13 +10,13 @@ namespace HumbleNetwork.Tests.Streams
     {
         protected override IHumbleStream CreateStream(TcpClient tcpClient)
         {
-            return new DelimitedStream(tcpClient);
+            return MessageFraming.Create(MessageFramingTypes.Delimiters, tcpClient);
         }
 
         [Test]
         public void Should_be_able_to_change_the_delimited_string()
         {
-            DelimitedStream.Delimiter = "__";
+            MessageFraming.Delimiter = "__";
             this.StreamTest((sender, receiver) =>
             {
                 sender.Send("hello 1");

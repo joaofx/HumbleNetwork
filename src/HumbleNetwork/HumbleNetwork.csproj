@@ -43,12 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MessageFraming.cs" />
     <Compile Include="IHumbleClient.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="IUnknowCommandHandler.cs" />
     <Compile Include="Handlers\DefaultExceptionHandler.cs" />
     <Compile Include="IExceptionHandler.cs" />
-    <Compile Include="MessageFraming.cs" />
+    <Compile Include="MessageFramingTypes.cs" />
     <Compile Include="Streams\ChunkMessageBuffer.cs" />
     <Compile Include="Streams\HumbleStreamBase.cs" />
     <Compile Include="Streams\DelimitedStream.cs" />

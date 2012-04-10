@@ -6,7 +6,6 @@ namespace HumbleNetwork.Tests.Streams
     using System.Net.Sockets;
     using System.Threading;
     using Helpers;
-    using HumbleNetwork.Streams;
     using NUnit.Framework;
 
     public abstract class StreamTestBase
@@ -20,6 +19,29 @@ namespace HumbleNetwork.Tests.Streams
             {
                 sender.Send("hello");
                 Assert.That(receiver.Receive(), Is.EqualTo("hello"));
+            });
+        }
+
+        [Test]
+        public void Should_send_message_and_receive_a_little_on_each_call()
+        {
+            this.StreamTest((sender, receiver) =>
+            {
+                sender.Send("hello world");
+                Assert.That(receiver.Receive(5), Is.EqualTo("hello"));
+                Assert.That(receiver.Receive(1), Is.EqualTo(" "));
+                Assert.That(receiver.Receive(5), Is.EqualTo("world"));
+            });
+        }
+
+        [Test]
+        public void Shoud_handle_send_and_receive_and_internal_buffer()
+        {
+            this.StreamTest((sender, receiver) =>
+            {
+                sender.Send("hello world!!!");
+                Assert.That(receiver.Receive(5), Is.EqualTo("hello"));
+                Assert.That(receiver.Receive(), Is.EqualTo(" world!!!"));
             });
         }
 

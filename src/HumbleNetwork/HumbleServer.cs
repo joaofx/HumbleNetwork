@@ -12,11 +12,15 @@ namespace HumbleNetwork
         private TcpListener listener;
         private readonly IDictionary<string, Func<ICommand>> commands = new Dictionary<String, Func<ICommand>>();
 
-        public HumbleServer()
+        public HumbleServer() : this(MessageFramingTypes.LengthPrefixing)
+        {
+        }
+
+        public HumbleServer(MessageFramingTypes messageFramingTypes)
         {
             this.UnknowCommandHandler = () => new DefaultUnknowCommandHandler();
             this.ExceptionHandler = () => new DefaultExceptionHandler();
-            this.MessageFraming = MessageFraming.LengthPrefixing;
+            this.MessageFramingTypes = messageFramingTypes;
         }
 
         public Func<IUnknowCommandHandler> UnknowCommandHandler
@@ -36,7 +40,7 @@ namespace HumbleNetwork
             set;
         }
 
-        public MessageFraming MessageFraming
+        public MessageFramingTypes MessageFramingTypes
         {
             get;
             set;
@@ -72,7 +76,6 @@ namespace HumbleNetwork
                 }
                 catch (ObjectDisposedException)
                 {
-                    return;
                 }
             }, null);
         }

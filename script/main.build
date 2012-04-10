@@ -126,6 +126,7 @@
         <copy todir="${dir.package}">
             <fileset basedir="${dir.release}">
                 <include name="HumbleNetwork.dll" />
+                <include name="HumbleNetwork.pdb" />
             </fileset>
         </copy>
 

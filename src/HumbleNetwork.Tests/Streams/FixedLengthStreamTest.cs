@@ -2,7 +2,6 @@
 namespace HumbleNetwork.Tests.Streams
 {
     using System.Net.Sockets;
-    using HumbleNetwork.Streams;
     using NUnit.Framework;
 
     [TestFixture]
@@ -10,7 +9,7 @@ namespace HumbleNetwork.Tests.Streams
     {
         protected override IHumbleStream CreateStream(TcpClient client)
         {
-            return new FixedLengthStream(client);
+            return MessageFraming.Create(MessageFramingTypes.LengthPrefixing, client);
         }
     }
 }

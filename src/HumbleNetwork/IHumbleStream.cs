@@ -8,6 +8,8 @@ namespace HumbleNetwork
 
         string Receive();
 
+        string Receive(int length);
+
         /// <summary>
         /// TODO: encapsulate
         /// </summary>

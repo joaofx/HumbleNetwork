@@ -7,9 +7,9 @@ namespace HumbleNetwork.Streams
     {
         protected readonly NetworkStream stream;
         private readonly TcpClient client;
+        private readonly StringBuilder buffer = new StringBuilder();
 
         public abstract void Send(string message);
-
         public abstract string Receive();
 
         public NetworkStream NetworkStream
@@ -32,6 +32,39 @@ namespace HumbleNetwork.Streams
         {
             this.client = client;
             this.stream = client.GetStream();
+        }
+
+        protected int BufferSize
+        {
+            get
+            {
+                return this.buffer.Length;
+            }
+        }
+
+        protected bool ThereIsDataInBuffer
+        {
+            get
+            {
+                return this.buffer.Length > 0;
+            }
+        }
+
+        public string Receive(int length)
+        {
+            if (this.ThereIsDataInBuffer == false)
+            {
+                this.AppendBuffer(this.Receive());
+            }
+
+            return this.GetFromBuffer(length);
+        }
+
+        protected string GetFromBuffer(int length)
+        {
+            var tosend = this.buffer.ToString(0, length);
+            this.buffer.Remove(0, length);
+            return tosend;
         }
 
         protected void SendMessage(string message)
@@ -62,6 +95,11 @@ namespace HumbleNetwork.Streams
             }
 
             return Encoding.Default.GetString(messageBytes);
+        }
+
+        protected void AppendBuffer(string data)
+        {
+            this.buffer.Append(data);
         }
     }
 }

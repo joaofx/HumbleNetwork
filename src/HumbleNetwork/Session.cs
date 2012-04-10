@@ -27,10 +27,11 @@ namespace HumbleNetwork
             {
                 var stream = this.CreateStream();
 
+                var commandName = stream.Receive(4).ToLower();
+                var command = this.server.GetCommand(commandName);
+
                 try
                 {
-                    var commandName = stream.Receive().ToLower();
-                    var command = this.server.GetCommand(commandName);
                     command.Execute(stream);
                 }
                 catch (Exception exception)
@@ -50,7 +51,7 @@ namespace HumbleNetwork
 
         private IHumbleStream CreateStream()
         {
-            if (this.server.MessageFraming == MessageFraming.Delimiters)
+            if (this.server.MessageFramingTypes == MessageFramingTypes.Delimiters)
             {
                 return new DelimitedStream(this.client);
             }

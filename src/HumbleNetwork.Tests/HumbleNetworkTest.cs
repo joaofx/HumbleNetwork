@@ -5,8 +5,6 @@
     using System.IO;
     using HumbleNetwork;
 
-    /// TODO: control connected clients
-    /// TODO: fix encoding bug
     [TestFixture]
     public class HumbleNetworkTest : HumbleTestBase
     {
@@ -14,7 +12,7 @@
 
         protected override void BeforeTest()
         {
-            this.server.MessageFraming = MessageFraming.LengthPrefixing;
+            this.server.MessageFramingTypes = MessageFramingTypes.LengthPrefixing;
             this.server.AddCommand("echo", () => new EchoCommand());
             this.server.AddCommand("ping", () => new PingCommand());
             this.server.AddCommand("wait", () => new WaitCommand());
@@ -32,6 +30,13 @@
         public void Should_process_echo_command()
         {
             this.client.Send("ECHO").Send("hello");
+            Assert.That(this.client.Receive(), Is.EqualTo("hello"));
+        }
+
+        [Test]
+        public void Should_process_echo_command_in_one_request()
+        {
+            this.client.Send("ECHOhello");
             Assert.That(this.client.Receive(), Is.EqualTo("hello"));
         }
 

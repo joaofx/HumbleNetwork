@@ -34,5 +34,12 @@ TODO
 ----
 
 * Build script
+* Continous Integration
 * Accept send and receive stream
-* Async calls for streams
+* Work with other types of data
+* Send and receive file
+* Server wait for command using async on streams
+* Server works with async on streams
+* Stream send command method
+* Client close or disconnect method
+* Control connected clients

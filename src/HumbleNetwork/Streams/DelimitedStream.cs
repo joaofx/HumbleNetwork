@@ -4,29 +4,32 @@ namespace HumbleNetwork.Streams
 
     public class DelimitedStream : HumbleStreamBase
     {
-        public static string Delimiter = "\n\r";
-        private readonly ChunkMessageBuffer buffer;
-        private const int BufferSize = 2048;
+        private readonly ChunkMessageBuffer chunkedMessage;
+        private const int ChunkedBufferSize = 2048;
 
-        public DelimitedStream(TcpClient client)
-            : base(client)
+        public DelimitedStream(TcpClient client) : base(client)
         {
-            this.buffer = new ChunkMessageBuffer(Delimiter);
+            this.chunkedMessage = new ChunkMessageBuffer(MessageFraming.Delimiter);
         }
 
         public override void Send(string message)
         {
-            this.SendMessage(message + Delimiter);
+            this.SendMessage(message + MessageFraming.Delimiter);
         }
 
         public override string Receive()
         {
-            while (this.buffer.HasCompleteMessage == false)
+            if (this.ThereIsDataInBuffer)
             {
-                this.buffer.Append(this.ReceiveMessage(BufferSize, true));
+                return this.GetFromBuffer(this.BufferSize);
             }
 
-            return this.buffer.GetMessage();
+            while (this.chunkedMessage.HasCompleteMessage == false)
+            {
+                this.chunkedMessage.Append(this.ReceiveMessage(ChunkedBufferSize, true));
+            }
+
+            return this.chunkedMessage.GetMessage();
         }
     }
 }

@@ -2,6 +2,7 @@ namespace HumbleNetwork.Streams
 {
     using System;
     using System.Net.Sockets;
+    using System.Text;
 
     public class FixedLengthStream : HumbleStreamBase
     {
@@ -24,6 +25,11 @@ namespace HumbleNetwork.Streams
 
         public override string Receive()
         {
+            if (this.ThereIsDataInBuffer)
+            {
+                return this.GetFromBuffer(this.BufferSize);
+            }
+
             var length = this.ReceiveLength();
             return this.ReceiveMessage(length);
         }
