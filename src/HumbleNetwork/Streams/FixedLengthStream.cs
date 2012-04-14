@@ -41,5 +41,24 @@ namespace HumbleNetwork.Streams
             var length = BitConverter.ToInt32(lengthBytes, 0);
             return length;
         }
+
+        private string ReceiveMessage(int length)
+        {
+            var messageBytes = new byte[length];
+            var currentBufferIndex = 0;
+            var bytesRead = -1;
+
+            while (bytesRead != 0 && currentBufferIndex < messageBytes.Length)
+            {
+                bytesRead = this.stream.Read(
+                    messageBytes,
+                    currentBufferIndex,
+                    messageBytes.Length - currentBufferIndex);
+
+                currentBufferIndex += bytesRead;
+            }
+
+            return Encoding.Default.GetString(messageBytes);
+        }
     }
 }

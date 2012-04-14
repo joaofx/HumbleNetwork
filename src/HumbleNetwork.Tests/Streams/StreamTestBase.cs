@@ -69,6 +69,9 @@ namespace HumbleNetwork.Tests.Streams
             });
         }
 
+        /// <summary>
+        /// TODO: Too much slow. Fix it.
+        /// </summary>
         [Test]
         public void Should_send_and_receive_big_message()
         {

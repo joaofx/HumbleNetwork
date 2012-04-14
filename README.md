@@ -43,3 +43,5 @@ TODO
 * Stream send command method
 * Client close or disconnect method
 * Control connected clients
+* Cryptography messages
+* Compact messages

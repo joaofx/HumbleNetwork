@@ -1,15 +1,16 @@
 namespace HumbleNetwork.Streams
 {
+    using System.IO;
     using System.Net.Sockets;
+    using System.Text;
 
     public class DelimitedStream : HumbleStreamBase
     {
-        private readonly ChunkMessageBuffer chunkedMessage;
-        private const int ChunkedBufferSize = 2048;
+        private readonly byte[] delimiterBytes;
 
         public DelimitedStream(TcpClient client) : base(client)
         {
-            this.chunkedMessage = new ChunkMessageBuffer(MessageFraming.Delimiter);
+            this.delimiterBytes = Encoding.UTF8.GetBytes(MessageFraming.Delimiter);
         }
 
         public override void Send(string message)
@@ -24,12 +25,43 @@ namespace HumbleNetwork.Streams
                 return this.GetFromBuffer(this.BufferSize);
             }
 
-            while (this.chunkedMessage.HasCompleteMessage == false)
+            return this.ReceiveMessage();
+        }
+
+        protected string ReceiveMessage()
+        {
+            var buffer = new MemoryStream();
+            int @byte;
+            bool possibleDelimiterIsComing;
+            var possibleDelimiterCount = 0;
+
+            while ((@byte = stream.ReadByte()) != -1)
             {
-                this.chunkedMessage.Append(this.ReceiveMessage(ChunkedBufferSize, true));
+                buffer.WriteByte((byte)@byte);
+
+                if (@byte == this.delimiterBytes[possibleDelimiterCount])
+                {
+                    possibleDelimiterIsComing = true;
+                    possibleDelimiterCount++;
+                }
+                else
+                {
+                    possibleDelimiterIsComing = false;
+                    possibleDelimiterCount = 0;
+                }
+
+                if (possibleDelimiterIsComing && this.delimiterBytes.Length == possibleDelimiterCount)
+                {
+                    // complete message received, return removing the delimiters
+                    return Encoding.Default.GetString(
+                        buffer.GetBuffer(), 
+                        0, 
+                        (int) (buffer.Length - this.delimiterBytes.Length));
+                }
             }
 
-            return this.chunkedMessage.GetMessage();
+            // return incomplete message
+            return Encoding.Default.GetString(buffer.GetBuffer());
         }
     }
 }
