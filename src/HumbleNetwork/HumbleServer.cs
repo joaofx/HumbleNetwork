@@ -9,18 +9,17 @@ namespace HumbleNetwork
 
     public class HumbleServer
     {
+        private readonly string delimiter;
         private TcpListener listener;
         private readonly IDictionary<string, Func<ICommand>> commands = new Dictionary<String, Func<ICommand>>();
+        private readonly Framing framing;
 
-        public HumbleServer() : this(MessageFramingTypes.LengthPrefixing)
+        public HumbleServer(Framing framing = Framing.LengthPrefixed, string delimiter = MessageFraming.DefaultDelimiter)
         {
-        }
-
-        public HumbleServer(MessageFramingTypes messageFramingTypes)
-        {
+            this.delimiter = delimiter;
             this.UnknowCommandHandler = () => new DefaultUnknowCommandHandler();
             this.ExceptionHandler = () => new DefaultExceptionHandler();
-            this.MessageFramingTypes = messageFramingTypes;
+            this.framing = framing;
         }
 
         public Func<IUnknowCommandHandler> UnknowCommandHandler
@@ -35,12 +34,6 @@ namespace HumbleNetwork
         }
 
         public Func<IExceptionHandler> ExceptionHandler
-        {
-            get;
-            set;
-        }
-
-        public MessageFramingTypes MessageFramingTypes
         {
             get;
             set;
@@ -72,7 +65,7 @@ namespace HumbleNetwork
                 {
                     TcpClient client = this.listener.EndAcceptTcpClient(ar);
                     this.AcceptClients();
-                    new Session(this, client).ProcessCommand();
+                    new Session(this, client, this.framing, this.delimiter).ProcessCommand();
                 }
                 catch (ObjectDisposedException)
                 {

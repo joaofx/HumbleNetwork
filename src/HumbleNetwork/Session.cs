@@ -3,15 +3,16 @@ namespace HumbleNetwork
     using System;
     using System.IO;
     using System.Net.Sockets;
-    using HumbleNetwork.Streams;
 
     public class Session : IDisposable
     {
         private readonly HumbleServer server;
         private readonly TcpClient client;
+        private readonly IHumbleStream stream;
 
-        public Session(HumbleServer server, TcpClient client)
+        public Session(HumbleServer server, TcpClient client, Framing framing, string delimiter)
         {
+            this.stream = MessageFraming.Create(framing, client, delimiter);
             this.server = server;
             this.client = client;
         }
@@ -25,9 +26,16 @@ namespace HumbleNetwork
         {
             this.ExecuteHandlingExceptions(() =>
             {
-                var stream = this.CreateStream();
+                var commandName = this.stream.Receive(4).ToLower();
 
-                var commandName = stream.Receive(4).ToLower();
+                if (string.IsNullOrEmpty(commandName))
+                {
+                    if (this.client.IsItReallyConnected() == false)
+                    {
+                        return;
+                    }
+                }
+
                 var command = this.server.GetCommand(commandName);
 
                 try
@@ -46,17 +54,6 @@ namespace HumbleNetwork
         public void Dispose()
         {
 	        this.client.Close();
-	        GC.SuppressFinalize(this);
-        }
-
-        private IHumbleStream CreateStream()
-        {
-            if (this.server.MessageFramingTypes == MessageFramingTypes.Delimiters)
-            {
-                return new DelimitedStream(this.client);
-            }
-
-            return new FixedLengthStream(this.client);
         }
 
         private void ExecuteHandlingExceptions(Action action)

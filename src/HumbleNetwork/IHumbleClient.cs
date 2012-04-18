@@ -15,7 +15,5 @@ namespace HumbleNetwork
         string Receive();
 
         HumbleClient Connect(string host, int port);
-
-        bool IsItReallyConnected();
     }
 }

@@ -1,5 +1,6 @@
 namespace HumbleNetwork
 {
+    using System;
     using System.Net.Sockets;
 
     public interface IHumbleStream
@@ -22,5 +23,7 @@ namespace HumbleNetwork
         {
             get;
         }
+
+        void ReceiveCommand(Action<string, IHumbleStream> processCommandAction);
     }
 }

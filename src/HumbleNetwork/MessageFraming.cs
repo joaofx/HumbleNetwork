@@ -3,15 +3,21 @@ namespace HumbleNetwork
     using System.Net.Sockets;
     using Streams;
 
+    /// <summary>
+    /// TODO: message framing has resposability to create stream?
+    /// </summary>
     public class MessageFraming
     {
-        public static string Delimiter = "\n\r";
+        public const string DefaultDelimiter = "\n\r";
 
-        public static IHumbleStream Create(MessageFramingTypes messageFramingType, TcpClient tcpClient)
+        public static IHumbleStream Create(
+            Framing framing, 
+            TcpClient tcpClient, 
+            string delimiter)
         {
-            return messageFramingType == MessageFramingTypes.LengthPrefixing ?
+            return framing == Framing.LengthPrefixed ?
                 (IHumbleStream)new FixedLengthStream(tcpClient) :
-                new DelimitedStream(tcpClient);
+                new DelimitedStream(tcpClient, delimiter);
         }
     }
 }

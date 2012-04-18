@@ -9,7 +9,7 @@
 		[SetUp]
 		public void Setup()
 		{
-			this.server = new HumbleServer().Start(987);
+			this.server = new HumbleServer().Start(0);
             this.BeforeTest();
 		}
 		

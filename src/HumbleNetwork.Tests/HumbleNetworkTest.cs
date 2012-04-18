@@ -5,6 +5,9 @@
     using System.IO;
     using HumbleNetwork;
 
+    /// <summary>
+    /// TODO: client is not really connected 
+    /// </summary>
     [TestFixture]
     public class HumbleNetworkTest : HumbleTestBase
     {
@@ -12,18 +15,17 @@
 
         protected override void BeforeTest()
         {
-            this.server.MessageFramingTypes = MessageFramingTypes.LengthPrefixing;
             this.server.AddCommand("echo", () => new EchoCommand());
             this.server.AddCommand("ping", () => new PingCommand());
             this.server.AddCommand("wait", () => new WaitCommand());
 
-            this.client = new HumbleClient().Connect("localhost", 987);
+            this.client = new HumbleClient().Connect("localhost", this.server.Port);
         }
 
         [Test]
         public void Should_return_server_port()
         {
-            Assert.That(this.server.Port, Is.EqualTo(987));
+            Assert.That(this.server.Port, Is.Not.EqualTo(0));
         }
 
         [Test]
@@ -115,15 +117,33 @@
             this.server.ExceptionHandler = () => new CustomExceptionHandler();
             this.server.AddCommand("EXCE", () => new ThrowExceptionCommand());
 
-            this.client.Send("EXCE");
+            this.client.Send("EXCEblablablablablablablabla");
             Assert.That(this.client.Receive(), Is.EqualTo("CustomExceptionHandler: InvalidOperationException"));
         }
 
         [Test]
-        public void Should_return_if_client_is_connected()
+        public void Should_accept_differents_delimiters_for_differents_instances()
         {
-            Assert.That(this.client.IsItReallyConnected(), Is.True);
+            var server1 = new HumbleServer(Framing.Delimitered, "[DEL1]");
+            var server2 = new HumbleServer(Framing.Delimitered, "[DEL2]");
+            
+            server1.AddCommand("echo", () => new EchoCommand());
+            server2.AddCommand("echo", () => new EchoCommand());
 
+            server1.Start(0);
+            server2.Start(0);
+
+            var client1 = new HumbleClient(Framing.Delimitered, "[DEL1]");
+            var client2 = new HumbleClient(Framing.Delimitered, "[DEL2]");
+
+            client1.Connect("localhost", server1.Port);
+            client2.Connect("localhost", server2.Port);
+
+            Assert.That(client1.Send("echohello1").Receive(), Is.EqualTo("hello1"));
+            Assert.That(client2.Send("echohello2").Receive(), Is.EqualTo("hello2"));
+
+            server1.Stop();
+            server2.Stop();
         }
 
         [Test]

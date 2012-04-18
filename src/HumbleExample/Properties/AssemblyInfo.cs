@@ -14,11 +14,11 @@ using System.Runtime.CompilerServices;
 //------------------------------------------------------------------------------
 
 [assembly: ComVisibleAttribute(false)]
-[assembly: AssemblyVersionAttribute("0.0.0.1")]
-[assembly: AssemblyFileVersionAttribute("0.0.0.1")]
+[assembly: AssemblyVersionAttribute("0.0.0.4")]
+[assembly: AssemblyFileVersionAttribute("0.0.0.4")]
 [assembly: AssemblyCopyrightAttribute("Copyright HumbleNetwork 2012")]
 [assembly: AssemblyProductAttribute("HumbleNetwork")]
 [assembly: AssemblyCompanyAttribute("HumbleNetwork")]
 [assembly: AssemblyConfigurationAttribute("release")]
-[assembly: AssemblyInformationalVersionAttribute("0.0.0.1")]
+[assembly: AssemblyInformationalVersionAttribute("0.0.0.4")]
 

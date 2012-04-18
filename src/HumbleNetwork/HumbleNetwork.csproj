@@ -49,7 +49,7 @@
     <Compile Include="IUnknowCommandHandler.cs" />
     <Compile Include="Handlers\DefaultExceptionHandler.cs" />
     <Compile Include="IExceptionHandler.cs" />
-    <Compile Include="MessageFramingTypes.cs" />
+    <Compile Include="Framing.cs" />
     <Compile Include="Streams\ChunkMessageBuffer.cs" />
     <Compile Include="Streams\HumbleStreamBase.cs" />
     <Compile Include="Streams\DelimitedStream.cs" />
@@ -60,6 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\DefaultUnknowCommandHandler.cs" />
     <Compile Include="IHumbleStream.cs" />
+    <Compile Include="TcpClientExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

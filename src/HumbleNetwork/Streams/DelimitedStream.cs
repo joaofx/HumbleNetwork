@@ -1,21 +1,24 @@
 namespace HumbleNetwork.Streams
 {
+    using System;
     using System.IO;
     using System.Net.Sockets;
     using System.Text;
 
     public class DelimitedStream : HumbleStreamBase
     {
+        private readonly string delimiter;
         private readonly byte[] delimiterBytes;
 
-        public DelimitedStream(TcpClient client) : base(client)
+        public DelimitedStream(TcpClient client, string delimiter) : base(client)
         {
-            this.delimiterBytes = Encoding.UTF8.GetBytes(MessageFraming.Delimiter);
+            this.delimiter = delimiter;
+            this.delimiterBytes = Encoding.UTF8.GetBytes(this.delimiter);
         }
 
         public override void Send(string message)
         {
-            this.SendMessage(message + MessageFraming.Delimiter);
+            this.SendMessage(message + this.delimiter);
         }
 
         public override string Receive()
@@ -28,6 +31,10 @@ namespace HumbleNetwork.Streams
             return this.ReceiveMessage();
         }
 
+        public override void ReceiveCommand(Action<string, IHumbleStream> processCommandAction)
+        {
+        }
+
         protected string ReceiveMessage()
         {
             var buffer = new MemoryStream();
@@ -35,6 +42,20 @@ namespace HumbleNetwork.Streams
             bool possibleDelimiterIsComing;
             var possibleDelimiterCount = 0;
 
+            ////var messageBytes = new byte[1024];
+            ////var currentBufferIndex = 0;
+            ////var bytesRead = -1;
+
+            ////while (bytesRead != 0 && currentBufferIndex < messageBytes.Length)
+            ////{
+            ////    bytesRead = this.stream.Read(
+            ////        messageBytes,
+            ////        currentBufferIndex,
+            ////        messageBytes.Length - currentBufferIndex);
+
+            ////    currentBufferIndex += bytesRead;
+            ////}
+            
             while ((@byte = stream.ReadByte()) != -1)
             {
                 buffer.WriteByte((byte)@byte);

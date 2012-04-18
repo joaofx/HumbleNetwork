@@ -2,7 +2,6 @@
 namespace HumbleNetwork.Tests.Streams
 {
     using System.Net.Sockets;
-    using HumbleNetwork.Streams;
     using NUnit.Framework;
 
     [TestFixture]
@@ -10,20 +9,7 @@ namespace HumbleNetwork.Tests.Streams
     {
         protected override IHumbleStream CreateStream(TcpClient tcpClient)
         {
-            return MessageFraming.Create(MessageFramingTypes.Delimiters, tcpClient);
-        }
-
-        [Test]
-        public void Should_be_able_to_change_the_delimited_string()
-        {
-            MessageFraming.Delimiter = "__";
-            this.StreamTest((sender, receiver) =>
-            {
-                sender.Send("hello 1");
-                sender.Send("hello 2");
-                Assert.That(receiver.Receive(), Is.EqualTo("hello 1"));
-                Assert.That(receiver.Receive(), Is.EqualTo("hello 2"));
-            });
+            return MessageFraming.Create(Framing.Delimitered, tcpClient, MessageFraming.DefaultDelimiter);
         }
     }
 }

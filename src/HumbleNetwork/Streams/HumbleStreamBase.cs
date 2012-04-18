@@ -1,5 +1,6 @@
 namespace HumbleNetwork.Streams
 {
+    using System;
     using System.Net.Sockets;
     using System.Text;
 
@@ -27,6 +28,8 @@ namespace HumbleNetwork.Streams
                 return this.client;
             }
         }
+
+        public abstract void ReceiveCommand(Action<string, IHumbleStream> processCommandAction);
 
         protected HumbleStreamBase(TcpClient client)
         {

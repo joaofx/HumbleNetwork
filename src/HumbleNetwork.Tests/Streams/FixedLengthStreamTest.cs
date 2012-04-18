@@ -9,7 +9,7 @@ namespace HumbleNetwork.Tests.Streams
     {
         protected override IHumbleStream CreateStream(TcpClient client)
         {
-            return MessageFraming.Create(MessageFramingTypes.LengthPrefixing, client);
+            return MessageFraming.Create(Framing.LengthPrefixed, client, MessageFraming.DefaultDelimiter);
         }
     }
 }

@@ -66,7 +66,7 @@
 
             var client = new HumbleClient();
             this.mre.WaitOne();
-            client.Connect("localhost", 987);
+            client.Connect("localhost", this.server.Port);
             client.Send("wait");
 
             try

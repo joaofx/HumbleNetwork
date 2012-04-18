@@ -7,18 +7,15 @@ namespace HumbleNetwork
     /// </summary>
     public class HumbleClient : IHumbleClient
     {
-        private readonly MessageFramingTypes messageFramingType;
+        private readonly Framing framing;
+        private readonly string delimiter;
         private readonly TcpClient tcpClient = new TcpClient();
         private IHumbleStream stream;
 
-        public HumbleClient()
-            : this(MessageFramingTypes.LengthPrefixing)
+        public HumbleClient(Framing framing = Framing.LengthPrefixed, string delimiter = MessageFraming.DefaultDelimiter)
         {
-        }
-
-        public HumbleClient(MessageFramingTypes messageFramingType)
-        {
-            this.messageFramingType = messageFramingType;
+            this.framing = framing;
+            this.delimiter = delimiter;
         }
 
         public int ReceiveTimeOut
@@ -47,50 +44,7 @@ namespace HumbleNetwork
 
         private void CreateStream()
         {
-            this.stream = MessageFraming.Create(this.messageFramingType, this.tcpClient);
-        }
-
-        /// <summary>
-        /// There's no method to really know if the client is connected on the server.
-        /// So I'm using this workaround that I found in some sites on internet
-        /// </summary>
-        /// <returns></returns>
-        public bool IsItReallyConnected()
-        {
-            if (this.tcpClient.Connected == false)
-            {
-                return false;
-            }
-
-            if (this.tcpClient.Available > 0)
-            {
-                return false;
-            }
-
-            var blockingState = this.tcpClient.Client.Blocking;
-            try
-            {
-                var tmp = new byte[1];
-
-                this.tcpClient.Client.Blocking = false;
-                var received = this.tcpClient.Client.Receive(tmp, 0, 0);
-                return received > 0;
-            }
-            catch (SocketException e)
-            {
-                if (e.NativeErrorCode.Equals(10035))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            finally
-            {
-                this.tcpClient.Client.Blocking = blockingState;
-            }
+            this.stream = MessageFraming.Create(this.framing, this.tcpClient, this.delimiter);
         }
 
         /// <summary>
