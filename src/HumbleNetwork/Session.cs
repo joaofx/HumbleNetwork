@@ -1,8 +1,8 @@
 namespace HumbleNetwork
 {
     using System;
-    using System.IO;
     using System.Net.Sockets;
+    using System.Threading.Tasks;
 
     public class Session : IDisposable
     {
@@ -22,32 +22,48 @@ namespace HumbleNetwork
             this.Dispose();
         }
 
-        public void ProcessCommand()
+        public void ProcessNextCommand()
         {
-            this.ExecuteHandlingExceptions(() =>
+            var taskExecute = Task<string>.Factory.StartNew(
+                () => this.ExecuteHandlingExceptions(() => this.stream.Receive(4)));
+
+            var commandProcessed = taskExecute.ContinueWith(antecedent =>
             {
-                var commandName = this.stream.Receive(4).ToLower();
-
-                if (string.IsNullOrEmpty(commandName))
+                if (antecedent.Status == TaskStatus.Faulted)
                 {
-                    if (this.client.IsItReallyConnected() == false)
+                    return false;
+                }
+
+                return this.ExecuteHandlingExceptions(() =>
+                {
+                    var commandName = antecedent.Result.ToLower();
+
+                    if (string.IsNullOrEmpty(commandName))
                     {
-                        return;
+                        return false;
                     }
-                }
 
-                var command = this.server.GetCommand(commandName);
+                    var command = this.server.GetCommand(commandName);
 
-                try
+                    try
+                    {
+                        command.Execute(stream);
+                    }
+                    catch (Exception exception)
+                    {
+                        this.server.ExceptionHandler().Execute(stream, exception);
+                    }
+
+                    return true;
+                });
+            });
+
+            commandProcessed.ContinueWith(antecedent =>
+            {
+                if (antecedent.Result)
                 {
-                    command.Execute(stream);
+                    this.ProcessNextCommand();
                 }
-                catch (Exception exception)
-                {
-                    this.server.ExceptionHandler().Execute(stream, exception);
-                }
-
-                this.ProcessCommand();
             });
         }
 
@@ -56,23 +72,16 @@ namespace HumbleNetwork
 	        this.client.Close();
         }
 
-        private void ExecuteHandlingExceptions(Action action)
+        private T ExecuteHandlingExceptions<T>(Func<T> action)
         {
             try
             {
-                action();
+                return action();
             }
-            catch (IOException)
+            catch (Exception)
             {
                 this.Dispose();
-            }
-            catch (SocketException)
-            {
-                this.Dispose();
-            }
-            catch (ObjectDisposedException)
-            {
-                this.Dispose();
+                return default(T);
             }
         }
     }

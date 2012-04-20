@@ -29,8 +29,6 @@ namespace HumbleNetwork.Streams
             }
         }
 
-        public abstract void ReceiveCommand(Action<string, IHumbleStream> processCommandAction);
-
         protected HumbleStreamBase(TcpClient client)
         {
             this.client = client;

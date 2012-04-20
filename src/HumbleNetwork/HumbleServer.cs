@@ -13,7 +13,7 @@ namespace HumbleNetwork
         private TcpListener listener;
         private readonly IDictionary<string, Func<ICommand>> commands = new Dictionary<String, Func<ICommand>>();
         private readonly Framing framing;
-
+           
         public HumbleServer(Framing framing = Framing.LengthPrefixed, string delimiter = MessageFraming.DefaultDelimiter)
         {
             this.delimiter = delimiter;
@@ -65,7 +65,7 @@ namespace HumbleNetwork
                 {
                     TcpClient client = this.listener.EndAcceptTcpClient(ar);
                     this.AcceptClients();
-                    new Session(this, client, this.framing, this.delimiter).ProcessCommand();
+                    new Session(this, client, this.framing, this.delimiter).ProcessNextCommand();
                 }
                 catch (ObjectDisposedException)
                 {

@@ -34,10 +34,6 @@ namespace HumbleNetwork.Streams
             return this.ReceiveMessage(length);
         }
 
-        public override void ReceiveCommand(Action<string, IHumbleStream> processCommandAction)
-        {
-        }
-
         private int ReceiveLength()
         {
             var lengthBytes = new byte[4];

@@ -31,10 +31,6 @@ namespace HumbleNetwork.Streams
             return this.ReceiveMessage();
         }
 
-        public override void ReceiveCommand(Action<string, IHumbleStream> processCommandAction)
-        {
-        }
-
         protected string ReceiveMessage()
         {
             var buffer = new MemoryStream();
@@ -42,20 +38,6 @@ namespace HumbleNetwork.Streams
             bool possibleDelimiterIsComing;
             var possibleDelimiterCount = 0;
 
-            ////var messageBytes = new byte[1024];
-            ////var currentBufferIndex = 0;
-            ////var bytesRead = -1;
-
-            ////while (bytesRead != 0 && currentBufferIndex < messageBytes.Length)
-            ////{
-            ////    bytesRead = this.stream.Read(
-            ////        messageBytes,
-            ////        currentBufferIndex,
-            ////        messageBytes.Length - currentBufferIndex);
-
-            ////    currentBufferIndex += bytesRead;
-            ////}
-            
             while ((@byte = stream.ReadByte()) != -1)
             {
                 buffer.WriteByte((byte)@byte);
