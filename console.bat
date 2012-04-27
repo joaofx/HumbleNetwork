@@ -1,1 +1,1 @@
-start tools\console\console.exe
+start tools\build\console\console.exe

@@ -1,5 +1,5 @@
 @echo off
-tools\nant\nant.exe -buildfile:script\main.build %*
+tools\build\nant\nant.exe -buildfile:main.build %*
 
 
 

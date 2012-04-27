@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Script de build do Veros Ecm
+Veros Information Technology Copyright
+
+Help do nant: http://nant.sourceforge.net/release/latest/help/index.html
+
+O build é organizado em 5 fases:
+	- Pré build => preparação do build
+	- Build => execução do build
+	- Build pré test => preparação dos testes
+	- Build test => execução dos testes
+	- Pós build => finaliza build	
+-->
+
+<project name="Ecm" xmlns="http://nant.sf.net/release/0.85/nant.xsd" basedir="..\">
+
+	<script language="C#" prefix="ecm" >
+          <code>
+            <![CDATA[
+			
+              [Function("userfolder")]
+              public static string userfolder() {
+                  return System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+              }
+			  
+			  [Function("programFiles")]
+			  public static string programFiles() 
+			  {
+				return System.Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+			  }
+			  
+            ]]>
+          </code>
+	</script>
+
+	<property name="vs.schemas.dir" value="${ecm::programFiles()}\Microsoft Visual Studio 9.0\Xml\Schemas" />
+    
+    <property name="resharper61.local.config" value="${ecm::userfolder()}\JetBrains\ReSharper\v6.1\vs10.0\UserSettings.xml" />
+    <property name="resharper61.shared.config" value="${tools.dir}\resharper\61.ecm.xml" />
+    
+    <property name="resharper51.local.config" value="${ecm::userfolder()}\JetBrains\ReSharper\v5.1\vs10.0\UserSettings.xml" />
+    <property name="resharper51.shared.config" value="${tools.dir}\resharper\51.ecm.xml" />
+    
+    <target name="upresharper51" description="copia configuracoes do resharper da maquina local para o compartilhado do ecm">
+
+		<echo message="Local: ${resharper51.local.config}" />
+		<echo message="Shared: ${resharper51.shared.config}" />
+		
+		<copy 
+			file="${resharper51.local.config}"
+			tofile="${resharper51.shared.config}"
+			overwrite="true" />
+	
+	</target>
+
+    <target name="upresharper61" description="copia configuracoes do resharper da maquina local para o compartilhado do ecm">
+
+        <echo message="Local: ${resharper61.local.config}" />
+        <echo message="Shared: ${resharper61.shared.config}" />
+
+        <copy
+			file="${resharper61.local.config}"
+			tofile="${resharper61.shared.config}"
+			overwrite="true" />
+
+    </target>
+
+    <target name="resharper51" description="atualiza configuracoes local do resharper a partir do compartilhado do ecm">
+
+        <copy
+			file="${resharper51.shared.config}"
+			tofile="${resharper51.local.config}"
+			overwrite="true" />
+
+    </target>
+
+    <target name="resharper61" description="atualiza configuracoes local do resharper a partir do compartilhado do ecm">
+
+        <copy
+			file="${resharper61.shared.config}"
+			tofile="${resharper61.local.config}"
+			overwrite="true" />
+
+    </target>
+    
+    <target name="clean-ignored" description="limpa pastas do codigo fonte removendo obj, bin, suo etc">
+	
+		<foreach item="Folder" property="foldername">
+            <in>
+                <items basedir=".">
+                    <include name="**\bin" />
+                    <include name="**\obj" />
+                    <include name="**\_ReSharper.*" />
+                </items>
+            </in>
+            <do>
+                <delete dir="${foldername}" />
+            </do>
+        </foreach>
+        <foreach item="File" property="filename">
+            <in>
+                <items basedir=".">
+                    <include name="**\*.user" />
+                    <include name="**\*.suo" />
+                </items>
+            </in>
+            <do>
+                <delete file="${filename}" />
+            </do>
+        </foreach>
+
+	</target>
+
+	<target name="nhibernate-mapping" description="habilita os schemas de mapping do nhibernate no visual studio">
+
+		<echo message="Copiando xsd's do nhibernate para ${vs.schemas.dir}" />
+		
+		<copy 
+			todir="${vs.schemas.dir}"
+			overwrite="true" >
+			
+			<fileset basedir="${tools.dir}\nhibernate">
+				<include name="*.xsd" />
+			</fileset>
+			
+		</copy>
+		
+	</target>
+	
+	<target name="remotedbconfig" description="configura o database.config de uma maquina remota">
+
+		<property name="database.config" value="${config.dir}/${enviroment}_database.config" />
+		<property name="server" value="" />
+		
+		<xmlpeek
+			file="${database.config}"
+			xpath="/connectionStrings/add[@name = 'EcmConnectionString']/@connectionString"
+			property="db.connectionstring" />
+			
+		<xmlpeek
+			file="${database.config}"
+			xpath="/connectionStrings/add[@name = 'EcmConnectionString']/@providerName"
+			property="db.provider" />
+			
+		<echo message="Ambiente é ${enviroment} no servidor ${server} " />
+		<echo message="Provider do database é ${db.provider}" />
+		<echo message="String de conexão do database é ${db.connectionstring}" />
+
+		<exec program="${deploy.psexec.file}"
+			commandline="\\${server} -u ecm -p v3r0s1@ verosecmutil database config">
+			<arg value="${db.provider}" />
+			<arg value="${db.connectionstring}" />
+		</exec>
+
+	</target>
+	
+	<target name="remotedbupdate" description="atualiza o banco de dados de uma maquina remota">
+
+		<echo message="Atualizando ${server}" />
+
+		<exec program="${deploy.psexec.file}"
+			commandline="\\${server} -u ecm -p v3r0s1@ verosecmutil database update">
+		</exec>
+
+	</target>
+
+  <target name="svnignore" descripton="ignora arquivos que não são usados no subversion">
+
+    <property name="subversion.ignore.file" value="${script.dir}\svn.ignore" />
+    
+    <foreach item="Folder" property="folder">
+      <in>
+        <items>
+          <include name="${source.root.dir}\**" />
+          <exclude name="${source.root.dir}\**\.svn\**" />
+          <exclude name="${source.root.dir}\**\bin\**" />
+          <exclude name="${source.root.dir}\**\obj\**" />
+          <exclude name="${source.root.dir}\**\_ReSharper*\**" />
+          <exclude name="${source.root.dir}\**\build*\**" />
+        </items>
+      </in>
+      <do>
+        <echo message="diretório ${folder}" />
+        <exec program="svn.exe" verbose="true">
+          <arg value="propset" />
+          <arg value="svn:ignore" />
+          <arg value="-F" />
+          <arg value="${subversion.ignore.file}" />
+          <arg value="${folder}" />
+        </exec>
+      </do>
+    </foreach>    
+      
+  </target>
+
+  <target name="log">
+    <exec program="${tools.dir}\tail\tail.exe">
+      <arg value="${old.source.dir}\EcmWeb\Logs\web.log" />
+    </exec>
+  </target>
+  
+</project>

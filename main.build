@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project default="quick" xmlns="http://nant.sourceforge.net/release/0.91/nant.xsd">
+
+    <include buildfile="tools\build\script\common.build" />
+    
+    <property name="project.name" value="HumbleNetwork" />
+	<property name="project.company" value="HumbleNetwork" />
+
+	<property name="project.file" value="${source.dir}\HumbleNetwork.sln" />
+	
+	<fileset id="test.files">
+		<include name="${binary.dir}\HumbleNetwork.Tests.dll" />
+	</fileset>
+	
+	<fileset id="release.files" basedir="${binary.dir}">
+		<include name="HumbleNetwork.dll" />
+		<include name="HumbleNetwork.pdb" />
+	</fileset>
+	
+	<!--
+	<fileset id="binary.files">
+		<include name="${binary.dir}\Veros.Framework.dll" />
+	</fileset>
+	-->
+	
+	<target name="package.before" />
+	
+</project>
