@@ -70,24 +70,24 @@
 	
   </target>
 
-  <target name="statistic.gendarme">
+	<target name="statistic.gendarme">
 
-    <property name="gendarme.output.file" value="gendarme.xml" />
-    
-    <gendarme
-      executable="${buildtools.dir}\gendarme\gendarme.exe"
-      outputType="XmlFile"
-      outputFile="${report.dir}\${gendarme.output.file}"
-      workingDirectory="${binary.dir}">
-      
-      <assemblies refid="binary.files" />
+		<property name="gendarme.output.file" value="gendarme.xml" />
+		
+		<gendarme
+		  executable="${buildtools.dir}\gendarme\gendarme.exe"
+		  outputType="XmlFile"
+		  outputFile="${report.dir}\${gendarme.output.file}"
+		  workingDirectory="${binary.dir}">
+		  
+		  <assemblies refid="project.binary.files" />
 
-    </gendarme>
+		</gendarme>
 
-    <echo message="" />
-    <echo message="Relatório do gendarme gerado em: ${report.dir}\${gendarme.output.file}" />
-    <echo message="" />
+		<echo message="" />
+		<echo message="Relatório do gendarme gerado em: ${report.dir}\${gendarme.output.file}" />
+		<echo message="" />
 
-  </target>
+	  </target>
 
 </project>

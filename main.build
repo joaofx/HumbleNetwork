@@ -17,11 +17,9 @@
 		<include name="HumbleNetwork.pdb" />
 	</fileset>
 	
-	<!--
-	<fileset id="binary.files">
-		<include name="${binary.dir}\Veros.Framework.dll" />
+	<fileset id="project.binary.files">
+		<include name="${binary.dir}\HumbleNetwork.dll" />
 	</fileset>
-	-->
 	
 	<target name="package.before" />
 	
