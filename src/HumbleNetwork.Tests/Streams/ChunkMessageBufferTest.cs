@@ -1,5 +1,4 @@
-﻿
-namespace HumbleNetwork.Tests.Streams
+﻿namespace HumbleNetwork.Tests.Streams
 {
     using HumbleNetwork.Streams;
     using NUnit.Framework;

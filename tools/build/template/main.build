@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project default="quick" xmlns="http://nant.sourceforge.net/release/0.91/nant.xsd">
+
+    <include buildfile="tools\build\common.build" />
+    
+	<property name="project.name" value="Nome do Projeto" />
+	<property name="project.company" value="M2Sys Tecnologia e Serviços" />
+	<property name="project.description" value="Descricao do projeto" />
+	<property name="project.id" value="Veros.Framework" />
+
+	<!-- caso o projeto seja library -->
+	<!--<property name="project.is.lib" value="true" />-->
+	
+	<!-- lista de solucao do projeto -->
+	<fileset basedir="${binary.dir}" id="project.solutions">
+		<include name="${source.dir}\Solucao.sln" />
+	</fileset>
+	
+	<!-- lista dos assemblies de teste -->
+	<!--
+	<fileset id="test.files">
+		<include name="${binary.dir}\AssemblyTest.dll" />
+	</fileset>
+	-->
+	
+	<!-- lista dos arquivos que sao distribuidos -->
+	<!--
+	<fileset basedir="${binary.dir}" id="release.files">
+		<include name="Assembly.dll" />
+		<include name="Assembly.pdb" />
+	</fileset>
+	-->
+	
+	<!-- assemblies que sao serao analisados -->
+	<!--
+	<fileset id="project.binary.files">
+		<include name="${binary.dir}\Assembly.dll" />
+	</fileset>
+	-->
+	
+	<!-- caso projeto seja lib, nuspec para gerar pacote do nuget -->
+	<!--
+	<property name="project.nuspec" value="${script.dir}\Veros.Framework.nuspec" />
+	-->
+	
+	<target name="package.before" />
+
+</project>

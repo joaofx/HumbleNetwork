@@ -1,5 +1,4 @@
-﻿
-namespace HumbleNetwork.Tests.Streams
+﻿namespace HumbleNetwork.Tests.Streams
 {
     using System.Net.Sockets;
     using NUnit.Framework;

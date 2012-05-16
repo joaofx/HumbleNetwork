@@ -1,9 +1,9 @@
 ﻿namespace HumbleNetwork.Tests
 {
-    using Helpers;
-    using NUnit.Framework;
     using System.IO;
+    using Helpers;
     using HumbleNetwork;
+    using NUnit.Framework;
 
     /// <summary>
     /// TODO: client is not really connected 
@@ -12,15 +12,6 @@
     public class HumbleNetworkTest : HumbleTestBase
     {
         private HumbleClient client;
-
-        protected override void BeforeTest()
-        {
-            this.server.AddCommand("echo", () => new EchoCommand());
-            this.server.AddCommand("ping", () => new PingCommand());
-            this.server.AddCommand("wait", () => new WaitCommand());
-
-            this.client = new HumbleClient().Connect("localhost", this.server.Port);
-        }
 
         [Test]
         public void Should_return_server_port()
@@ -153,6 +144,15 @@
             this.client.ReceiveTimeOut = 1000;
             this.client.Send("WAIT");
             this.client.Receive();
+        }
+
+        protected override void BeforeTest()
+        {
+            this.server.AddCommand("echo", () => new EchoCommand());
+            this.server.AddCommand("ping", () => new PingCommand());
+            this.server.AddCommand("wait", () => new WaitCommand());
+
+            this.client = new HumbleClient().Connect("localhost", this.server.Port);
         }
     }
 }

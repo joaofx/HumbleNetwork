@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://nant.sf.net/release/0.85/nant.xsd">
+
+    <property name="nant.settings.currentframework" value="net-4.0" />
+    <property name="nant.verbosity" overwrite="false" value="false" />
+
+    <property name="current.dir" value="${project::get-base-directory()}"/>
+	<property name="root.dir" value="${current.dir}"/>
+	<property name="build.dir" value="${current.dir}\build"/>
+    <property name="source.dir" value="${current.dir}\src"/>
+    <property name="tools.dir" value="${current.dir}\tools"/>
+    <property name="config.dir" value="${current.dir}\config"/>
+    <property name="lib.dir" value="${current.dir}\lib"/>
+    <property name="script.dir" value="${current.dir}\script"/>
+    <property name="setup.dir" value="${current.dir}\setup"/>
+    <property name="binary.dir" value="${build.dir}\binary"/>
+	<property name="package.dir" value="${build.dir}\package"/>
+	<property name="release.dir" value="${build.dir}\release"/>
+    <property name="report.dir" value="${build.dir}\report"/>
+	<property name="temp.dir" value="${build.dir}\temp"/>
+	<property name="buildtools.dir" value="${tools.dir}\build"/>
+
+	<!-- default values -->
+    <property name="env" value="development" overwrite="false" />
+	<property name="project.config" value="release" overwrite="false" />
+	<property name="is.running.statistic" value="false" />
+	<property name="version" value="0.0.0.0" overwrite="false" />
+	<property name="project.acceptable.coverage" value="80" />
+	
+	<if test="${property::exists('CCNetLabel')}">
+		<property name="version" value="${CCNetLabel}"/>
+	</if>
+		
+    <loadtasks assembly="${buildtools.dir}\nanttasks\NCoverExplorer.NAntTasks.dll" />
+    <loadtasks assembly="${buildtools.dir}\nanttasks\NauckIT.NAnt.dll" />
+	<loadtasks assembly="${buildtools.dir}\nanttasks\NAnt.Contrib.Tasks.dll" />
+	
+	<!-- modulos de build -->
+	<include buildfile="${buildtools.dir}\compile.build" />
+	<include buildfile="${buildtools.dir}\test.build" />
+	<include buildfile="${buildtools.dir}\package.build" />
+	<include buildfile="${buildtools.dir}\statistic.build" />
+	<include buildfile="${buildtools.dir}\nuget.build" />
+	<include buildfile="${buildtools.dir}\task.build" />
+	<include buildfile="${buildtools.dir}\setup.build" />
+	
+	<!-- builds desenvolvedor -->
+	<target name="quick" depends="clean, prepare, compile.execute" />
+	<target name="compile" depends="quick" />
+	<target name="test" depends="quick, test.execute" />
+	<target name="package" depends="quick, package.execute" />
+	<target name="statistic" depends="statistic.set, test, statistic.execute" />
+	
+	<!-- builds de integracao -->
+	<target name="integration" depends="test" />
+	<target name="release" depends="test, package, nuget.export.dependencies" />
+	<target name="night" depends="statistic" />
+	
+	<echo message="" />
+    <echo message="Build trabalhando na pasta ${current.dir}" />
+	<echo message="" />
+
+	<target name="clean">
+		<delete dir="${binary.dir}" failonerror="false" />
+		<delete dir="${report.dir}" failonerror="false" />
+		<delete dir="${package.dir}" failonerror="false" />
+		<delete dir="${release.dir}" failonerror="false" />
+		<delete dir="${temp.dir}" failonerror="false" />
+        <delete dir="${build.dir}" failonerror="false" />
+    </target>
+  	
+	<target name="prepare">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${binary.dir}"/>
+		<mkdir dir="${report.dir}"/>
+		<mkdir dir="${release.dir}"/>
+		<mkdir dir="${temp.dir}"/>
+		<mkdir dir="${package.dir}"/>
+	</target>
+
+</project>

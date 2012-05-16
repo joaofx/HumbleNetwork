@@ -17,12 +17,6 @@ namespace HumbleNetwork.Streams
             this.SendMessage(message);
         }
 
-        private void SendLength(string message)
-        {
-            var lengthBytes = BitConverter.GetBytes(message.Length);
-            this.stream.Write(lengthBytes, 0, lengthBytes.Length);
-        }
-
         public override string Receive()
         {
             if (this.ThereIsDataInBuffer)
@@ -59,6 +53,12 @@ namespace HumbleNetwork.Streams
             }
 
             return Encoding.Default.GetString(messageBytes);
+        }
+
+        private void SendLength(string message)
+        {
+            var lengthBytes = BitConverter.GetBytes(message.Length);
+            this.stream.Write(lengthBytes, 0, lengthBytes.Length);
         }
     }
 }

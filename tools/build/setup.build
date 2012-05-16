@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://nant.sf.net/release/0.85/nant.xsd">
+
+	<target name="setup">
+
+		<call target="setup.folders" />
+		<call target="setup.clean" />
+		<!--<call target="setup.settings" />-->
+		<call target="setup.resharper" />
+		<call target="setup.nuget.config" />
+		<call target="setup.csproj" />
+
+	</target>
+	
+	<!-- limpa todas as pastas removendo arquivos ignorados -->
+    <target name="setup.clean">
+	
+		<foreach item="Folder" property="foldername">
+            <in>
+                <items basedir=".">
+                    <include name="**\bin" />
+                    <include name="**\obj" />
+                    <include name="**\_ReSharper.*" />
+                </items>
+            </in>
+            <do>
+                <delete dir="${foldername}" failonerror="false" />
+            </do>
+        </foreach>
+        <foreach item="File" property="filename">
+            <in>
+                <items basedir=".">
+                    <include name="**\*.user" />
+                    <include name="**\*.suo" />
+					<include name="**\*.Cache" />
+                </items>
+            </in>
+            <do>
+                <delete file="${filename}" failonerror="false" />
+            </do>
+        </foreach>
+
+	</target>
+  
+	<target name="setup.folders">
+
+		<!-- cria pastas -->
+		<mkdir dir="${config.dir}" failonerror="false" />
+		<mkdir dir="${script.dir}" failonerror="false" />	
+
+	</target>
+	
+	<!--
+	<target name="setup.settings">
+
+		<copy 
+			file="${buildtools.dir}\template\config\_settings.config.template"
+			tofile="${config.dir}\_settings.config.template"
+			outputencoding="utf-8" />
+
+		<copy 
+			file="${buildtools.dir}\template\config\_settings.config.template"
+			tofile="${config.dir}\development_settings.config"
+			outputencoding="utf-8" />
+
+		<copy 
+			file="${buildtools.dir}\template\config\_settings.config.template"
+			tofile="${config.dir}\test_settings.config"
+			outputencoding="utf-8" />
+
+	</target>
+	-->
+	
+	<target name="setup.resharper">
+		
+		<foreach item="File" property="filename">
+            <in>
+                <items basedir="${source.dir}">
+                    <include name="*.*.sln" />
+                </items>
+            </in>
+            <do>
+				<copy 
+					file="${buildtools.dir}\resharper\sln.DotSettings"
+					tofile="${source.dir}\${path::get-file-name(filename)}.DotSettings"
+					outputencoding="utf-8"
+					overwrite="true" />	
+
+            </do>
+        </foreach>
+
+	</target>
+	
+	<target name="setup.nuget.config">
+
+		<!--
+		<copy 
+			file="${buildtools.dir}\nuget\nuget.config"
+			tofile="${sys::get-user-folder()}\NuGet\nuget.config"
+			outputencoding="utf-8"
+			overwrite="true" />	
+		-->
+		
+		<copy 
+			file="${buildtools.dir}\nuget\nuget.solution.config"
+			tofile="${source.dir}\nuget.config"
+			outputencoding="utf-8"
+			overwrite="true" />	
+			
+	</target>
+	
+	<target name="setup.csproj">
+
+		<foreach item="File" property="project">
+            <in>
+                <items basedir="${source.dir}">
+                    <include name="**\*.csproj" />
+                </items>
+            </in>
+            <do>
+				<echo message="Configurando projeto ${project}: ${proj::setup-csproj(project)}" />
+            </do>
+        </foreach>
+			
+	</target>
+		
+	<script language="C#" prefix="sys" >
+<code>
+<![CDATA[
+
+	[Function("get-user-folder")]
+	public static string userfolder() {
+		return System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+	}
+
+	[Function("get-program-files")]
+	public static string programFiles() 
+	{
+		return System.Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+	}
+  
+]]>
+</code>
+	</script>
+	
+	<script language="C#" prefix="proj" >
+ <references>
+	  <include name="Microsoft.Build.dll" />
+	  <include name="System.Core.dll" />
+	  <include name="System.Xml.dll" />
+</references>	
+<imports>
+	  <import namespace="System.Linq" />
+	  <import namespace="System.IO" />
+</imports>
+<code>
+<![CDATA[
+
+	[Function("setup-csproj")]
+	public static string SetupCsProj(string csprojPath)
+	{
+		var csproj = new Microsoft.Build.Evaluation.Project(csprojPath);
+		
+		if (csproj.Xml.Imports.FirstOrDefault(x => x.Project.Equals(@"..\..\tools\Custom.Targets")) == null)
+		{
+			csproj.Xml.AddImport(@"..\..\tools\Custom.Targets");    
+		}
+
+		var assemblyInfo = csproj.Items.FirstOrDefault(x => x.ItemType == "Compile" && x.EvaluatedInclude == "Properties\\AssemblyInfo.cs");
+
+		if (assemblyInfo != null)
+		{
+			if (assemblyInfo.Xml.Metadata.FirstOrDefault(x => x.Name == "ExcludeFromSourceAnalysis") == null)
+			{
+				assemblyInfo.Xml.AddMetadata("ExcludeFromSourceAnalysis", "true");
+			}
+		}
+
+		var projectIsTest = 
+			(Path.GetFileNameWithoutExtension(csprojPath).EndsWith("Tests") || Path.GetFileNameWithoutExtension(csprojPath).EndsWith("Test")) 
+			&& csproj.Items.Count(x => x.ItemType == "Reference" && x.EvaluatedInclude.ToLower().Contains("nunit.framework")) > 0
+			&& csproj.GetPropertyValue("OutputType").Equals("Library");
+
+		var configFile = "development_settings.config";
+
+		if (projectIsTest)
+		{
+			configFile = "test_settings.config";
+		}
+
+		var postBuild = string.Format(@"copy ""..\..\..\..\config\{0}"" ""$(TargetDir)\settings.config""", configFile);
+
+		if (csproj.Properties.FirstOrDefault(x => x.Name == "PostBuildEvent" && x.EvaluatedValue.ToLower().Contains("acceptance")) == null)
+		{
+			csproj.Xml.AddProperty("PostBuildEvent", postBuild);
+		}
+
+		csproj.Save();
+		return "ok";
+	}
+			
+]]>
+</code>
+	</script>
+	
+</project>

@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://nant.sf.net/release/0.85/nant.xsd">
+
+  <target name="statistic.set">
+    <property name="is.running.statistic" value="true" />	
+  </target>
+  
+  <target name="statistic.execute">
+    
+    <call target="statistic.sourcemonitor" />
+    <call target="statistic.simian" />
+    <call target="statistic.gendarme" />
+
+  </target>
+  
+  <target name="statistic.simian">
+    
+    <exec program="${buildtools.dir}\simian\simian-2.2.17.exe">
+        <arg value="-formatter=xml:${report.dir}\simian-results.xml"/>
+        <arg value="-failOnDuplication-"/>
+        <arg value="-excludes=**/*.Designer.cs"/>
+        <arg value="-excludes=***/AssemblyInfo.cs"/>
+        <arg value="${source.dir}\**\*.cs"/>
+    </exec>
+    
+  </target>
+
+  <target name="statistic.sourcemonitor">
+    
+    <property name="sourcemonitor.output.dir" value="${report.dir}\sourcemonitor" />
+    <property name="sourcemonitor.executable" value="${buildtools.dir}\sourcemonitor\SourceMonitor.exe" />
+    <property name="sourcemonitor.input" value="${report.dir}\sm_input.xml" />
+    <property name="sourcemonitor.summary.xsl" value="${buildtools.dir}\sourcemonitor\SourceMonitorTop30Generation.xsl" />
+
+    <echo file="${sourcemonitor.input}" append="false" failonerror="false">
+      <![CDATA[
+			  <?xml version="1.0" encoding="UTF-8" ?>
+  			
+			  <sourcemonitor_commands>
+				  <write_log>false</write_log>
+				  <command>
+				      <project_file>${report.dir}\sm_project.smp</project_file>
+				      <project_language>CSharp</project_language>
+				      <source_directory>${source.dir}</source_directory>
+				      <include_subdirectories>true</include_subdirectories>
+				      <checkpoint_name>${version}</checkpoint_name>
+				      <export>
+						  <export_file>${report.dir}\sm_summary.xml</export_file>
+						  <export_type>1</export_type>
+				      </export>
+			     </command>
+				  <command>
+					  <project_file>${report.dir}\sm_project.smp</project_file>
+					  <checkpoint_name>${version}</checkpoint_name> 
+					  <export>
+						  <export_file>${report.dir}\sm_details.xml</export_file>
+						  <export_type>2</export_type>
+					  </export>
+				  </command> 
+			  </sourcemonitor_commands>
+		  ]]>
+    </echo>
+
+    <exec program="${sourcemonitor.executable}" commandline="/C ${sourcemonitor.input}" failonerror="true" />
+    <style style="${sourcemonitor.summary.xsl}" in="${report.dir}\sm_details.xml" out="${report.dir}\sm_top30.xml" />
+
+    <delete file="${report.dir}\sm_project.smp" failonerror="false" />
+	
+  </target>
+
+  <target name="statistic.gendarme">
+
+    <property name="gendarme.output.file" value="gendarme.xml" />
+    
+    <gendarme
+      executable="${buildtools.dir}\gendarme\gendarme.exe"
+      outputType="XmlFile"
+      outputFile="${report.dir}\${gendarme.output.file}"
+      workingDirectory="${binary.dir}">
+      
+      <assemblies refid="project.binary.files" />
+
+    </gendarme>
+
+    <echo message="" />
+    <echo message="Relatório do gendarme gerado em: ${report.dir}\${gendarme.output.file}" />
+    <echo message="" />
+
+  </target>
+
+</project>

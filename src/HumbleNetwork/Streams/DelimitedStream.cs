@@ -59,7 +59,7 @@ namespace HumbleNetwork.Streams
                     return Encoding.Default.GetString(
                         buffer.GetBuffer(), 
                         0, 
-                        (int) (buffer.Length - this.delimiterBytes.Length));
+                        (int)(buffer.Length - this.delimiterBytes.Length));
                 }
             }
 

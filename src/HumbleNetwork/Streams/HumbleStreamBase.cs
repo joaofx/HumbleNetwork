@@ -1,6 +1,5 @@
 namespace HumbleNetwork.Streams
 {
-    using System;
     using System.Net.Sockets;
     using System.Text;
 
@@ -10,8 +9,11 @@ namespace HumbleNetwork.Streams
         private readonly TcpClient client;
         private readonly StringBuilder buffer = new StringBuilder();
 
-        public abstract void Send(string message);
-        public abstract string Receive();
+        protected HumbleStreamBase(TcpClient client)
+        {
+            this.client = client;
+            this.stream = client.GetStream();
+        }
 
         public NetworkStream NetworkStream
         {
@@ -29,12 +31,6 @@ namespace HumbleNetwork.Streams
             }
         }
 
-        protected HumbleStreamBase(TcpClient client)
-        {
-            this.client = client;
-            this.stream = client.GetStream();
-        }
-
         protected int BufferSize
         {
             get
@@ -50,6 +46,10 @@ namespace HumbleNetwork.Streams
                 return this.buffer.Length > 0;
             }
         }
+
+        public abstract void Send(string message);
+
+        public abstract string Receive();
 
         public string Receive(int length)
         {

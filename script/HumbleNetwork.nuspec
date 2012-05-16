@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>@project.id@</id>
+    <version>@version@</version>
+    <authors>@project.company@</authors>
+    <owners>@project.company@</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>@project.description@</description>
+  </metadata>
+	<files>
+		<file src="@release.dir@\*.*" target="lib" />
+	</files>  
+</package>

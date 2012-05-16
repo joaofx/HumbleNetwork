@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{52512409-21DA-4AF7-9555-EA106B2B16C4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{4982D055-135C-464B-A16C-456CD69F2818}"
+	ProjectSection(SolutionItems) = preProject
+		..\config\development_settings.config = ..\config\development_settings.config
+		..\config\test_settings.config = ..\config\test_settings.config
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

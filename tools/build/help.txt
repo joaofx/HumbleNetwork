@@ -1,0 +1,7 @@
+Comandos do script de build
+---------------------------------
+
+build quick		:compila os projetos da solucao
+build test		:compila e roda os testes
+
+---------------------------------

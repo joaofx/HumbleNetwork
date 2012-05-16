@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://nant.sf.net/release/0.85/nant.xsd">
+
+    <target name="package.copy.release.files">
+
+		<call target="package.before" />
+
+		<copy todir="${release.dir}">
+			<fileset refid="release.files" />
+		</copy>
+
+    </target>
+
+    <target name="package.execute">
+
+		<call target="package.copy.release.files" />
+		<call target="package.before" />
+
+		<choose>
+			<when test="${project.is.lib == 'false'}">
+			</when>
+			<otherwise>
+				<call target="nuget.pack" />
+			</otherwise>
+		</choose>
+
+		<echo message="" />
+		<echo message="Pacotes de distribuição gerados na pasta ${package.dir}" />
+		<echo message="" />
+		
+    </target>
+	
+</project>

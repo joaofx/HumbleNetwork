@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project default="quick" xmlns="http://nant.sourceforge.net/release/0.91/nant.xsd">
 
-    <include buildfile="tools\build\script\common.build" />
+    <include buildfile="tools\build\common.build" />
     
-    <property name="project.name" value="HumbleNetwork" />
-	<property name="project.company" value="HumbleNetwork" />
+	<property name="project.name" value="Humble Network" />
+	<property name="project.company" value="Joao Carlos Clementoni" />
+	<property name="project.description" value="Network library which offers a framework to build services based on socket" />
+	<property name="project.id" value="HumbleNetwork" />
 
-	<property name="project.file" value="${source.dir}\HumbleNetwork.sln" />
+	<property name="project.is.lib" value="true" />
+	
+	<fileset basedir="${binary.dir}" id="project.solutions">
+		<include name="${source.dir}\HumbleNetwork.sln" />
+	</fileset>
 	
 	<fileset id="test.files">
 		<include name="${binary.dir}\HumbleNetwork.Tests.dll" />
 	</fileset>
 	
-	<fileset id="release.files" basedir="${binary.dir}">
+	<fileset basedir="${binary.dir}" id="release.files">
 		<include name="HumbleNetwork.dll" />
 		<include name="HumbleNetwork.pdb" />
+		<include name="HumbleNetwork.xml" />
 	</fileset>
 	
 	<fileset id="project.binary.files">
 		<include name="${binary.dir}\HumbleNetwork.dll" />
 	</fileset>
+
+	<property name="project.nuspec" value="${script.dir}\HumbleNetwork.nuspec" />
 	
 	<target name="package.before" />
-	
+
 </project>

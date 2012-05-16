@@ -4,12 +4,6 @@ namespace HumbleNetwork
 
     public interface IHumbleStream
     {
-        void Send(string message);
-
-        string Receive();
-
-        string Receive(int length);
-
         /// <summary>
         /// TODO: encapsulate
         /// </summary>
@@ -22,5 +16,11 @@ namespace HumbleNetwork
         {
             get;
         }
+
+        void Send(string message);
+
+        string Receive();
+
+        string Receive(int length);
     }
 }

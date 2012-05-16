@@ -15,24 +15,6 @@ namespace HumbleNetwork.Streams
             this.SplitMessages();
         }
 
-        private void SplitMessages()
-        {
-            while (true)
-            {
-                var delimiterIndex = this.buffer.IndexOf(this.demiliter, System.StringComparison.Ordinal);
-
-                if (delimiterIndex == -1)
-                {
-                    return;
-                }
-
-                var message = this.buffer.Substring(0, delimiterIndex);
-
-                this.buffer = this.buffer.Remove(0, delimiterIndex + this.demiliter.Length);
-                this.messages.Enqueue(message);
-            }
-        }
-
         public bool HasCompleteMessage
         {
             get
@@ -56,6 +38,24 @@ namespace HumbleNetwork.Streams
             catch (Exception)
             {
                 return string.Empty;
+            }
+        }
+
+        private void SplitMessages()
+        {
+            while (true)
+            {
+                var delimiterIndex = this.buffer.IndexOf(this.demiliter, System.StringComparison.Ordinal);
+
+                if (delimiterIndex == -1)
+                {
+                    return;
+                }
+
+                var message = this.buffer.Substring(0, delimiterIndex);
+
+                this.buffer = this.buffer.Remove(0, delimiterIndex + this.demiliter.Length);
+                this.messages.Enqueue(message);
             }
         }
     }

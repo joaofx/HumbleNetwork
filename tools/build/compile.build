@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://nant.sf.net/release/0.85/nant.xsd">
+
+    <target name="compile.execute">
+
+		<if test="${version != '0.0.0.0'}">
+            <call target="compile.apply.version" />
+        </if>
+		
+		<echo message="" />
+		<echo message="Modo: ${project.config}" />
+		<echo message="Framework: ${framework::get-target-framework()}" />
+		<echo message="Plataforma: ${platform::get-name()}" />
+		<echo message="" />
+
+		<foreach item="File" property="project.solution">
+			<in>
+				<items refid="project.solutions" />
+			</in>
+			<do>
+
+				<echo message="" />
+				<echo message="Compilando: ${project.solution}" />	
+				<echo message="" />
+			
+				<msbuild projectFile="${project.solution}" targets="Clean" verbosity="Minimal" workingDirectory=".">
+					<property name="Configuration" value="${project.config}" />
+					<property name="OutputPath" value="${binary.dir}" />
+					<property name="PostBuildEvent" value="" />
+				</msbuild>
+
+				<msbuild projectFile="${project.solution}" targets="Build" verbosity="Minimal" workingDirectory=".">
+					<property name="Configuration" value="${project.config}" />
+					<property name="OutputPath" value="${binary.dir}" />
+					<property name="PostBuildEvent" value="" />
+				</msbuild>
+					
+			</do>
+		</foreach>
+
+    </target>
+
+    <target name="compile.apply.version">
+        <foreach item="File" property="assemblyinfo">
+            <in>
+                <items>
+                    <include name="${source.dir}**AssemblyInfo.cs" />
+                </items>
+            </in>
+            <do>
+                <asminfo output="${assemblyinfo}" language="CSharp">
+                    <imports>
+                        <import namespace="System" />
+                        <import namespace="System.Reflection" />
+                        <import namespace="System.Runtime.InteropServices" />
+                        <import namespace="System.Runtime.CompilerServices" />
+                    </imports>
+                    <attributes>
+                        <attribute type="ComVisibleAttribute" value="false" />
+                        <attribute type="AssemblyVersionAttribute" value="${version}" />
+                        <attribute type="AssemblyFileVersionAttribute" value="${version}" />
+                        <attribute type="AssemblyCopyrightAttribute" value="Copyright ${project.company} ${datetime::get-year(datetime::now())}" />
+                        <attribute type="AssemblyProductAttribute" value="${project.name}" />
+                        <attribute type="AssemblyCompanyAttribute" value="${project.company}" />
+                        <attribute type="AssemblyConfigurationAttribute" value="${project.config}" />
+                        <attribute type="AssemblyInformationalVersionAttribute" value="${version}" />
+                    </attributes>
+                    <references>
+                        <include name="System.dll" />
+                    </references>
+                </asminfo>
+            </do>
+        </foreach>
+    </target>
+
+</project>

@@ -69,7 +69,7 @@ namespace HumbleNetwork
 
         public void Dispose()
         {
-	        this.client.Close();
+            this.client.Close();
         }
 
         private T ExecuteHandlingExceptions<T>(Func<T> action)

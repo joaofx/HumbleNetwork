@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://nant.sf.net/release/0.85/nant.xsd">
+
+    <target name="test.execute">
+    
+		<!-- se tiver no ambiente de desenvolvimento, muda automaticamente para ambiente de teste -->
+		<!-- deve mudar pois os testes limpam e fazem várias alterações no banco de dados -->
+		<if test="${env=='development'}">
+			<echo message="" />
+			<echo message="Setando automaticamente para ambiente de testes" />
+			<echo message="" />
+			
+			<property name="env" value="test" />
+		</if>
+
+		<choose>
+			<when test="${is.running.statistic=='true'}">
+				<call target="test.execute.coverage" />
+			</when>
+			<otherwise>
+				<call target="test.execute.default" />
+			</otherwise>
+
+		</choose>
+				
+		<!--
+		<fileset id="settings.config.files">
+			<include name="${config.dir}\${env}_**_settings.config"></include>
+			<include name="${config.dir}\${env}_settings.config"></include> 
+		</fileset>
+
+		<foreach item="File" property="settings.config.file">
+			<in>
+				<items refid="settings.config.files" />
+			</in>
+			<do>
+				<call target="test.copy.config" />
+			
+				<choose>
+					<when test="${is.running.statistic=='true'}">
+						<call target="test.execute.coverage" />
+					</when>
+					<otherwise>
+						<call target="test.execute.default" />
+					</otherwise>
+
+				</choose>
+			</do>
+		</foreach>
+		-->
+		
+    </target>
+	
+    <target name="test.execute.default">
+
+		<property name="enviroment" value="test" />
+	
+		<!-- para cada assembly de teste, roda o teste no nunit --> 
+		<foreach item="File" property="test.file">
+			<in>
+				<items refid="test.files" />
+			</in>
+			<do>
+				
+				<nunitTest
+					executable="${buildtools.dir}\nunit\nunit-console.exe"
+					workingDirectory="${binary.dir}"
+					outputFile="${report.dir}\nunit-result.xml"
+					commandLineParameterFlag="-"
+					showLabels="true"
+					verbose="${nant.verbosity}">
+
+					<assemblies>
+						<include name="${test.file}" />
+					</assemblies>
+
+				</nunitTest>
+
+			</do>
+		</foreach> 
+	</target>
+	
+	<target name="test.execute.coverage">
+
+		<delete>
+    		<fileset basedir="${binary.dir}">
+    			<include name="*-results.xml" />
+				<include name="*-CoverageSummary.xml" />
+				<include name="*-coverage.xml" />
+    		</fileset>
+		</delete>
+		<delete>
+    		<fileset basedir="${report.dir}">
+    			<include name="*-results.xml" />
+				<include name="*-CoverageSummary.xml" />
+				<include name="*-coverage.xml" />
+    		</fileset>
+		</delete>		
+		
+		<setenv>
+		  <variable name="ProfAPI_ProfilerCompatibilitySetting" value="EnableV2Profiler" />
+		  <variable name="COMPLUS_ProfAPI_ProfilerCompatibilitySetting" value="EnableV2Profiler" />
+		</setenv>
+
+		<exec
+		  program="${buildtools.dir}\ncover\CorFlags.exe"
+		  workingdir="${binary.dir}"
+		  commandline="${path::get-full-path('tools\build\ncover\ncover.console.exe')} /32BIT+"/>
+
+		<foreach item="File" property="test.file">
+			<in>
+				<items refid="test.files" />
+			</in>
+			<do>
+
+				<exec 
+					verbose="true"
+					program="${buildtools.dir}\ncover\ncover.console.exe" 
+					workingdir="${binary.dir}" 
+					commandline="//reg &quot;${buildtools.dir}\nunit\nunit-console-x86.exe&quot; &quot;${test.file}&quot;  /xml:${test.file}-results.xml /nologo //w ${binary.dir} //x ${test.file}-coverage.xml"/>
+
+			</do>
+		</foreach> 
+
+		<move todir="${report.dir}">
+    		<fileset basedir="${binary.dir}">
+    			<include name="*-results.xml" />
+				<include name="*-CoverageSummary.xml" />
+				<include name="*-coverage.xml" />
+    		</fileset>
+		</move>
+
+		<ncoverexplorer 
+				program="${buildtools.dir}\ncoverexplorer\ncoverexplorer.console.exe" 
+				projectName="${project.name}" 
+				outputDir="${report.dir}" 
+				satisfactoryCoverage="${project.acceptable.coverage}" 
+				reportType="4" 
+				xmlReportName="CoverageSummary.xml">
+			<fileset basedir="${report.dir}">
+				<include name="*-coverage.xml" />
+			</fileset>
+			
+		</ncoverexplorer>
+
+	</target>
+	
+	<target name="test.copy.config">
+
+        <copy
+            file="${settings.config.file}"
+            tofile="${binary.dir}\settings.config" />
+
+        <xmlpeek
+		        file="${binary.dir}\settings.config"
+		        xpath="/appSettings/add[@key = 'Database.ConnectionString']/@value"
+		        property="database.connectionstring" />
+
+        <xmlpeek
+		        file="${binary.dir}\settings.config"
+		        xpath="/appSettings/add[@key = 'Database.Provider']/@value"
+		        property="database.provider" />
+
+		<echo message="" />
+        <echo message="Copiando config do ambiente: ${env}, ${settings.config.file}" />
+		<echo message="${settings.config.file}" />
+		<echo message="" />
+        <echo message="Provider do database: ${database.provider}" />
+        <echo message="String de conexão do database: ${database.connectionstring}" />
+        <echo message="" />
+		
+    </target>
+	
+</project>

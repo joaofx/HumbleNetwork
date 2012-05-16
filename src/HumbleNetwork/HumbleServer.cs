@@ -10,9 +10,9 @@ namespace HumbleNetwork
     public class HumbleServer
     {
         private readonly string delimiter;
-        private TcpListener listener;
-        private readonly IDictionary<string, Func<ICommand>> commands = new Dictionary<String, Func<ICommand>>();
+        private readonly IDictionary<string, Func<ICommand>> commands = new Dictionary<string, Func<ICommand>>();
         private readonly Framing framing;
+        private TcpListener listener;
            
         public HumbleServer(Framing framing = Framing.LengthPrefixed, string delimiter = MessageFraming.DefaultDelimiter)
         {
@@ -57,6 +57,16 @@ namespace HumbleNetwork
             return this.commands[commandName.ToLower()]();
         }
 
+        public void Stop()
+        {
+            this.listener.Stop();
+        }
+
+        public void AddCommand(string commandName, Func<ICommand> howToInstanceCommand)
+        {
+            this.commands.Add(commandName.ToLower(), howToInstanceCommand);
+        }
+
         private void AcceptClients()
         {
             this.listener.BeginAcceptTcpClient(ar =>
@@ -71,16 +81,6 @@ namespace HumbleNetwork
                 {
                 }
             }, null);
-        }
-
-        public void Stop()
-        {
-            this.listener.Stop();
-        }
-
-        public void AddCommand(string commandName, Func<ICommand> howToInstanceCommand)
-        {
-            this.commands.Add(commandName.ToLower(), howToInstanceCommand);
         }
     }
 }

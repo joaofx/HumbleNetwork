@@ -1,0 +1,19 @@
+<appSettings>
+
+    <!-- 
+    Configuracoes do Banco de Dados
+    
+    Provider 	| ConnectionString
+    ==============================
+    Postgre 	| Server=nome_ou_ip_servidor;Port=5432;Database=database;User Id=usuario;Password=senha
+    SqlServer	| Data Source=nome_ou_ip_servidor;Database=ecm;User Id=ecm;Password=ecm
+    Oracle		| Data Source=nome_ou_ip_servidor/orcl;User Id=ecm;Password=ecm; 
+	OracleGuest | Data Source=nome_ou_ip_servidor/orcl;User Id=veros_guest;Password=veros_guest; 
+		Deve adicioanr uma chave Database.Owner. Exemplo:
+		<add key="Database.Owner" value="MDI_PAPERLESS" />
+    -->
+    
+    <add key="Database.Provider" value="Postgre" />
+    <add key="Database.ConnectionString" value="Server=nome_ou_ip_servidor;Port=5432;Database=database;User Id=usuario;Password=senha" />
+
+</appSettings>

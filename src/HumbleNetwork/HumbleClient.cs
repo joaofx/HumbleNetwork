@@ -2,9 +2,6 @@ namespace HumbleNetwork
 {
     using System.Net.Sockets;
 
-    /// <summary>
-
-    /// </summary>
     public class HumbleClient : IHumbleClient
     {
         private readonly Framing framing;
@@ -42,17 +39,17 @@ namespace HumbleNetwork
             return this;
         }
 
-        private void CreateStream()
-        {
-            this.stream = MessageFraming.Create(this.framing, this.tcpClient, this.delimiter);
-        }
-
         /// <summary>
         /// TODO: good practices on disconnect
         /// </summary>
         public void Dispose()
         {
             this.tcpClient.Close();
+        }
+
+        private void CreateStream()
+        {
+            this.stream = MessageFraming.Create(this.framing, this.tcpClient, this.delimiter);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-namespace HumbleNetwork.Tests.Streams
+﻿namespace HumbleNetwork.Tests.Streams
 {
     using System;
     using System.Net;
@@ -10,8 +9,6 @@ namespace HumbleNetwork.Tests.Streams
 
     public abstract class StreamTestBase
     {
-        protected abstract IHumbleStream CreateStream(TcpClient client);
-
         [Test]
         public void Should_send_and_receive_message()
         {
@@ -82,6 +79,8 @@ namespace HumbleNetwork.Tests.Streams
                 Assert.That(receiver.Receive(), Is.EqualTo(message));
             });
         }
+
+        protected abstract IHumbleStream CreateStream(TcpClient client);
 
         protected void StreamTest(Action<IHumbleStream, IHumbleStream> action)
         {

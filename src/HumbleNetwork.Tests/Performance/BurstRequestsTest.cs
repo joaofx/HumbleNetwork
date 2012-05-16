@@ -1,10 +1,10 @@
 ﻿namespace HumbleNetwork.Tests.Performance
 {
     using System;
+    using System.Threading;
     using Helpers;
     using HumbleNetwork;
     using NUnit.Framework;
-    using System.Threading;
 
     /// <summary>
     /// TODO: This test pass and finish but seems that some threads still working
@@ -16,11 +16,6 @@
         private readonly ManualResetEvent mre = new ManualResetEvent(false);
         private const int NumThreads = 100;
         private CountdownEvent countdown;
-
-        protected override void BeforeTest()
-        {
-            this.server.AddCommand("wait", () => new WaitCommand());
-        }
 
         /// <summary>
         /// This test fires 100 request to server to command wait.
@@ -58,6 +53,11 @@
             {
                 Assert.Ignore("This test should't take more than to 4 seconds to run");
             }
+        }
+
+        protected override void BeforeTest()
+        {
+            this.server.AddCommand("wait", () => new WaitCommand());
         }
 
         private void OneThreadExecution()

@@ -3,9 +3,9 @@
     using System;
     using HumbleNetwork;
 
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             //// create the server, configure echo command and start listening
             var server = new HumbleServer();
@@ -19,15 +19,6 @@
 
             Console.WriteLine("Client received: " + client.Receive());
             Console.ReadKey();
-        }
-    }
-
-    public class EchoCommand : ICommand
-    {
-        public void Execute(IHumbleStream stream)
-        {
-            //// command echo send what was received
-            stream.Send(stream.Receive());
         }
     }
 }
