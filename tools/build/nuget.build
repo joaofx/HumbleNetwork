@@ -39,12 +39,14 @@
 	<!-- exporta nupkgs da pasta lib para pasta de pacote -->
 	<target name="nuget.export.dependencies">
 
+		<!--
 		<copy todir="${package.dir}" flatten="true">
 			<fileset basedir="${lib.dir}">
 				<include name="**\*.nupkg" />
 			</fileset>
 		</copy>
-			
+		-->
+		
 	</target>	
 	
 	<!-- checa se há atualizações -->
