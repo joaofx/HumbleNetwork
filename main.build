@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project default="quick" xmlns="http://nant.sourceforge.net/release/0.91/nant.xsd">
 
-    <include buildfile="tools\build\common.build" />
+    <include buildfile="${project::get-base-directory()}\tools\common.build" />
     
 	<property name="project.name" value="Humble Network" />
 	<property name="project.company" value="Joao Carlos Clementoni" />

@@ -1,5 +1,5 @@
 @echo off
-tools\build\build.bat %*
+tools\build.bat %*
 
 
 

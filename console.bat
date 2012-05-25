@@ -1,2 +1,2 @@
 @echo off
-start tools\build\console\console.exe
+start tools\console\console.exe

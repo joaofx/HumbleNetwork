@@ -5,14 +5,25 @@
 		<SourceAnalysisTreatErrorsAsWarnings>false</SourceAnalysisTreatErrorsAsWarnings>
 		<RestorePackages>true</RestorePackages>
 	</PropertyGroup>
-	
-<!--
-  <PropertyGroup>
-    <PostBuildEvent>copy "..\..\..\..\config\development_settings.config" "$(TargetDir)settings.config" /Y</PostBuildEvent>
-  </PropertyGroup>
--->
 
-  <Import Project="stylecop\StyleCop.targets" />
-  <Import Project="build\nuget\NuGet.targets" />
+	<Import Project="stylecop\StyleCop.targets" />
+	<Import Project="nuget\NuGet.targets" />
+
+    <Target Name="AfterBuild">
+	
+		<!-- TODO: projeto web -->
+		<Copy 
+			SourceFiles="$([System.IO.Path]::GetFullPath('..\..\config\test_settings.config'))" 			
+			DestinationFiles="$(TargetDir)\settings.config"
+			Condition="$(MSBuildProjectName.EndsWith('Tests'))"
+			ContinueOnError="true" />
+			
+		<Copy 
+			SourceFiles="$([System.IO.Path]::GetFullPath('..\..\config\development_settings.config'))" 			
+			DestinationFiles="$(TargetDir)\settings.config"
+			Condition="$(MSBuildProjectName.EndsWith('Tests'))==false"
+			ContinueOnError="true" />
+
+	</Target>
 
 </Project>

@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://nant.sf.net/release/0.85/nant.xsd">
+	
+	<!-- cria pacote de distribuição do nuget -->
+	<target name="nuget.pack">
+	
+		<delete>
+			<fileset>
+				<include name="${package.dir}\*.*" />
+			</fileset>
+		</delete>
+
+		<property name="project.nuspec.temp" value="${temp.dir}\temp.nuspec" />
+		
+		<!-- substitui tokens do nuspec -->
+		<copy file="${project.nuspec}" tofile="${project.nuspec.temp}" overwrite="true" outputencoding="utf-8">
+			<filterchain>
+				<replacetokens>
+					<token key="project.id" value="${project.id}" />
+					<token key="version" value="${version}" />
+					<token key="project.company" value="${project.company}" />
+					<token key="project.description" value="${project.description}" />
+					<token key="release.dir" value="${release.dir}" />
+					<token key="script.dir" value="${script.dir}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+
+		<!-- gera pacote nupkg -->
+		<exec program="${buildtools.dir}\nuget\NuGet.exe" workingdir="${current.dir}">
+			<arg value="pack" />
+			<arg value="${project.nuspec.temp}" />
+			<arg value="-OutputDirectory" />
+			<arg value="${package.dir}" />
+		</exec>		
+		
+	</target>
+	
+	<!-- exporta nupkgs da pasta lib para pasta de pacote -->
+	<target name="nuget.export.libs">
+
+		<copy todir="${package.dir}" flatten="true">
+			<fileset basedir="${lib.dir}">
+				<include name="**\*.nupkg" />
+			</fileset>
+		</copy>
+			
+	</target>	
+	
+	<!-- checa se há atualizações -->
+	<target name="nuget.check">
+
+		<exec program="${buildtools.dir}\nuget\NuGet.exe" workingdir="${current.dir}">
+			<arg value="update" />
+			<arg value="${project.solution}" />
+			<arg value="-Source" />
+			<arg value="Veros" />
+			<arg value="-RepositoryPath" />
+			<arg value="${lib.dir}" />
+			<arg value="-Verbose" />
+		</exec>		
+
+	</target>	
+
+	<target name="nuget.setup">
+
+		<exec program="${buildtools.dir}\nuget\NuGet.exe" workingdir="${current.dir}">
+			<arg value="update" />
+			<arg value="${project.solution}" />
+			<arg value="-Source" />
+			<arg value="Veros" />
+			<arg value="-RepositoryPath" />
+			<arg value="${lib.dir}" />
+			<arg value="-Verbose" />
+		</exec>		
+
+	</target>	
+	
+</project>
