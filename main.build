@@ -23,11 +23,11 @@
 		<include name="HumbleNetwork.pdb" />
 		<include name="HumbleNetwork.xml" />
 	</fileset>
-	
-	<fileset id="project.binary.files">
+
+	<fileset id="analyze.assembly.files">
 		<include name="${binary.dir}\HumbleNetwork.dll" />
 	</fileset>
-
+	
 	<property name="project.nuspec" value="${script.dir}\HumbleNetwork.nuspec" />
 	
 	<target name="package.before" />
