@@ -13,8 +13,8 @@
     [TestFixture]
     public class BurstRequestsTest : HumbleTestBase
     {
-        private readonly ManualResetEvent mre = new ManualResetEvent(false);
         private const int NumThreads = 100;
+        private readonly ManualResetEvent mre = new ManualResetEvent(false);
         private CountdownEvent countdown;
 
         /// <summary>
