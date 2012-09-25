@@ -9,10 +9,10 @@ namespace HumbleNetwork
 
     public class HumbleServer
     {
-        private readonly string delimiter;
-        private readonly IDictionary<string, Func<ICommand>> commands = new Dictionary<string, Func<ICommand>>();
-        private readonly Framing framing;
-        private TcpListener listener;
+        protected readonly string delimiter;
+        protected readonly IDictionary<string, Func<ICommand>> commands = new Dictionary<string, Func<ICommand>>();
+        protected readonly Framing framing;
+        protected TcpListener listener;
            
         public HumbleServer(Framing framing = Framing.LengthPrefixed, string delimiter = MessageFraming.DefaultDelimiter)
         {
@@ -39,7 +39,7 @@ namespace HumbleNetwork
             set;
         }
 
-        public HumbleServer Start(int port)
+        public virtual HumbleServer Start(int port)
         {
             this.listener = new TcpListener(IPAddress.Any, port);
             this.listener.Start();
@@ -67,7 +67,7 @@ namespace HumbleNetwork
             this.commands.Add(commandName.ToLower(), howToInstanceCommand);
         }
 
-        private void AcceptClients()
+        protected void AcceptClients()
         {
             this.listener.BeginAcceptTcpClient(ar =>
             {

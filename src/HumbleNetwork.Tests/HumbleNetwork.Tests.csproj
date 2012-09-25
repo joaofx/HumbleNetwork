@@ -38,6 +38,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivePassiveClusterTest.cs" />
+    <Compile Include="Helpers\DequeueCommand.cs" />
     <Compile Include="Helpers\CustomExceptionHandler.cs" />
     <Compile Include="Helpers\EchoCommand.cs" />
     <Compile Include="Helpers\PingCommand.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromSourceAnalysis>true</ExcludeFromSourceAnalysis>
     </Compile>
+    <Compile Include="Helpers\SendPortCommand.cs" />
     <Compile Include="Streams\ChunkMessageBufferTest.cs" />
     <Compile Include="Streams\DelimitedStreamTest.cs" />
     <Compile Include="Streams\FixedLengthStreamTest.cs" />

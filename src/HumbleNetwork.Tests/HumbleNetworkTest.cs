@@ -1,6 +1,9 @@
 ﻿namespace HumbleNetwork.Tests
 {
+    using System;
     using System.IO;
+    using System.Net.Sockets;
+    using System.Threading;
     using Helpers;
     using HumbleNetwork;
     using NUnit.Framework;
@@ -67,14 +70,9 @@
         [Test]
         public void Shoud_process_ping_command_many_times()
         {
-            this.client.Send("PING");
-            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
-
-            this.client.Send("PING");
-            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
-
-            this.client.Send("PING");
-            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
+            Assert.That(this.client.Send("PING").Receive(), Is.EqualTo("PONG"));
+            Assert.That(this.client.Send("PING").Receive(), Is.EqualTo("PONG"));
+            Assert.That(this.client.Send("PING").Receive(), Is.EqualTo("PONG"));
         }
 
         [Test]
@@ -144,6 +142,16 @@
             this.client.ReceiveTimeOut = 1000;
             this.client.Send("WAIT");
             this.client.Receive();
+        }
+
+        [Test]
+        [ExpectedException(typeof(SocketException))]
+        public void Bug_should_not_keep_buffer_in_memory_when_server_has_stopped()
+        {
+            Assert.That(this.client.Send("PING").Receive(), Is.EqualTo("PONG"));
+            this.server.Stop();
+            Thread.Sleep(2000);
+            Assert.That(this.client.Send("ECHO").Receive(), Is.Not.EqualTo("PONG"));
         }
 
         protected override void BeforeTest()

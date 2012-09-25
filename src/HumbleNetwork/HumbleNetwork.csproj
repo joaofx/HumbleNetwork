@@ -38,8 +38,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClusteredServer.cs" />
+    <Compile Include="ClusteredClient.cs" />
     <Compile Include="MessageFraming.cs" />
     <Compile Include="IHumbleClient.cs" />
+    <Compile Include="Server.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="IUnknowCommandHandler.cs" />
     <Compile Include="Handlers\DefaultExceptionHandler.cs" />

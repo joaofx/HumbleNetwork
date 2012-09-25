@@ -1,5 +1,6 @@
 namespace HumbleNetwork
 {
+    using System;
     using System.Net.Sockets;
 
     public class HumbleClient : IHumbleClient
@@ -29,7 +30,14 @@ namespace HumbleNetwork
 
         public string Receive()
         {
-            return this.stream.Receive();
+            ////if (this.tcpClient.IsItReallyConnected() == false)
+            ////{
+            ////    throw new SocketException(10057);
+            ////}
+
+            var data = this.stream.Receive();
+            this.stream.NetworkStream.Dispose();
+            return data;
         }
 
         public HumbleClient Connect(string host, int port)
