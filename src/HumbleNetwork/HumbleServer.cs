@@ -2,6 +2,7 @@ namespace HumbleNetwork
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Sockets;
     using Commands;
@@ -12,8 +13,9 @@ namespace HumbleNetwork
         private readonly string delimiter;
         private readonly IDictionary<string, Func<ICommand>> commands = new Dictionary<string, Func<ICommand>>();
         private readonly Framing framing;
+        private readonly IList<Session> sessions = new List<Session>();
         private TcpListener listener;
-           
+        
         public HumbleServer(Framing framing = Framing.LengthPrefixed, string delimiter = MessageFraming.DefaultDelimiter)
         {
             this.delimiter = delimiter;
@@ -60,6 +62,7 @@ namespace HumbleNetwork
         public void Stop()
         {
             this.listener.Stop();
+            this.CloseAllSessions();
         }
 
         public void AddCommand(string commandName, Func<ICommand> howToInstanceCommand)
@@ -75,12 +78,22 @@ namespace HumbleNetwork
                 {
                     TcpClient client = this.listener.EndAcceptTcpClient(ar);
                     this.AcceptClients();
-                    new Session(this, client, this.framing, this.delimiter).ProcessNextCommand();
+                    new Session(this, client, this.framing, this.delimiter, this.sessions).ProcessNextCommand();
                 }
                 catch (ObjectDisposedException)
                 {
                 }
             }, null);
+        }
+        
+        private void CloseAllSessions()
+        {
+            var sessionsCopy = this.sessions.ToArray();
+
+            foreach (var session in sessionsCopy)
+            {
+                session.Dispose();
+            }
         }
     }
 }

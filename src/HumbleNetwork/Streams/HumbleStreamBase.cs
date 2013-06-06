@@ -66,6 +66,12 @@ namespace HumbleNetwork.Streams
             return string.Empty;
         }
 
+        public void Close()
+        {
+            this.stream.Close();
+            this.TcpClient.Close();
+        }
+
         protected string GetFromBuffer(int length = 0)
         {
             if (length == 0)

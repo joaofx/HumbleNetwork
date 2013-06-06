@@ -30,12 +30,22 @@ public class EchoCommand : ICommand
 }
 </pre>
 
+Build
+----
+
+build quick
+
+build test
+
+build package
+
+
 TODO
 ----
 
-* Build script
-* Continous Integration
+* Continous Integration (where?)
 * Accept send and receive stream
+* Timeout when send or receive
 * Work with other types of data
 * Send and receive file
 * Server wait for command using async on streams

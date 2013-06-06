@@ -1,6 +1,7 @@
 namespace HumbleNetwork
 {
     using System;
+    using System.Collections.Generic;
     using System.Net.Sockets;
     using System.Threading.Tasks;
 
@@ -8,18 +9,16 @@ namespace HumbleNetwork
     {
         private readonly HumbleServer server;
         private readonly TcpClient client;
+        private readonly IList<Session> sessions;
         private readonly IHumbleStream stream;
 
-        public Session(HumbleServer server, TcpClient client, Framing framing, string delimiter)
+        public Session(HumbleServer server, TcpClient client, Framing framing, string delimiter, IList<Session> sessions)
         {
             this.stream = MessageFraming.Create(framing, client, delimiter);
             this.server = server;
             this.client = client;
-        }
-
-        ~Session()
-        {
-            this.Dispose();
+            this.sessions = sessions;
+            this.sessions.Add(this);
         }
 
         public void ProcessNextCommand()
@@ -44,20 +43,24 @@ namespace HumbleNetwork
                     }
 
                     var command = this.server.GetCommand(commandName);
-
-                    try
-                    {
-                        command.Execute(stream);
-                    }
-                    catch (Exception exception)
-                    {
-                        this.server.ExceptionHandler().Execute(stream, exception);
-                    }
+                    this.ExecuteCommand(command);
 
                     return true;
                 });
             });
 
+            this.ContinueProcessingNextCommand(commandProcessed);
+        }
+
+        public void Dispose()
+        {
+            this.sessions.Remove(this);
+            this.stream.Close();
+            this.client.Close();
+        }
+
+        private void ContinueProcessingNextCommand(Task<bool> commandProcessed)
+        {
             commandProcessed.ContinueWith(antecedent =>
             {
                 if (antecedent.Result)
@@ -67,9 +70,16 @@ namespace HumbleNetwork
             });
         }
 
-        public void Dispose()
+        private void ExecuteCommand(ICommand command)
         {
-            this.client.Close();
+            try
+            {
+                command.Execute(this.stream);
+            }
+            catch (Exception exception)
+            {
+                this.server.ExceptionHandler().Execute(this.stream, exception);
+            }
         }
 
         private T ExecuteHandlingExceptions<T>(Func<T> action)

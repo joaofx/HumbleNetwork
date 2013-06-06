@@ -16,7 +16,7 @@
         [TearDown]
         public void TearDown()
         {
-        this.server.Stop();
+            this.server.Stop();
         }
 
         protected virtual void BeforeTest()

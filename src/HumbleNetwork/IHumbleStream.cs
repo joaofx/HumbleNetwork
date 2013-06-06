@@ -22,5 +22,7 @@ namespace HumbleNetwork
         string Receive();
 
         string Receive(int length);
+        
+        void Close();
     }
 }
