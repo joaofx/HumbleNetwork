@@ -44,6 +44,8 @@ TODO
 ----
 
 * Continous Integration (where?)
+** http://stackoverflow.com/questions/16751772/how-do-i-use-travis-ci-with-c-sharp
+** https://github.com/OpenRA/OpenRA/blob/bleed/.travis.yml
 * Accept send and receive stream
 * Timeout when send or receive
 * Work with other types of data
