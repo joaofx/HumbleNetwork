@@ -1,6 +1,8 @@
 HumbleNetwork
 =============
 
+Not stable. Don't use it in production.
+
 It's a library to help build network services based in sockets. It offers a client and a server class and a stream helper. See the example:
 
 <pre>
@@ -43,6 +45,7 @@ build package
 TODO
 ----
 
+* License
 * Continous Integration (where?)
 ** http://stackoverflow.com/questions/16751772/how-do-i-use-travis-ci-with-c-sharp
 ** https://github.com/OpenRA/OpenRA/blob/bleed/.travis.yml
