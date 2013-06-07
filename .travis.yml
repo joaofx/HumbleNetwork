@@ -18,7 +18,7 @@ env:
   - EnableNuGetPackageRestore=true
 
 script:
-  - ./.travis/PackageRestore.sh
+  - .travis/PackageRestore.sh
   - xbuild src/HumbleNetwork.sln
 
 notifications:
