@@ -10,4 +10,7 @@ env:
   - EnableNuGetPackageRestore=true
 
 script:
-  - xbuild   
+  - xbuild 
+
+notifications:
+  email: false  
