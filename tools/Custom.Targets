@@ -10,8 +10,8 @@
 	<Import Project="nuget\NuGet.targets" />
 
     <Target Name="AfterBuild">
-	
-		<!-- TODO: projeto web -->
+
+		<!--
 		<Copy 
 			SourceFiles="$([System.IO.Path]::GetFullPath('..\..\config\test_settings.config'))" 			
 			DestinationFiles="$(TargetDir)\settings.config"
@@ -23,7 +23,8 @@
 			DestinationFiles="$(TargetDir)\settings.config"
 			Condition="$(MSBuildProjectName.EndsWith('Tests'))==false"
 			ContinueOnError="true" />
-
+		-->
+		
 	</Target>
 
 </Project>
