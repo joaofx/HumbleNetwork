@@ -3,6 +3,8 @@ HumbleNetwork
 
 Not stable. Don't use it in production.
 
+[![Build Status](https://travis-ci.org/joaofx/HumbleNetwork.png)](https://travis-ci.org/joaofx/HumbleNetwork)
+
 It's a library to help build network services based in sockets. It offers a client and a server class and a stream helper. See the example:
 
 <pre>
