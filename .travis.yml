@@ -7,4 +7,7 @@ before_install:
   - sudo apt-get install -qq mono-devel > /dev/null
   
 env:
-  - EnableNuGetPackageRestore=true  
+  - EnableNuGetPackageRestore=true
+
+script:
+  - xbuild   
