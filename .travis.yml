@@ -19,7 +19,7 @@ env:
 
 script:
   - xbuild src/HumbleNetwork.sln
-  - nunit-console HumbleNetwork.Tests/bin/Debug/HumbleNetwork.Tests.dll
+  - nunit-console src/HumbleNetwork.Tests/bin/Debug/HumbleNetwork.Tests.dll
 
 notifications:
   email: false  
