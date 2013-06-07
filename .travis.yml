@@ -7,12 +7,6 @@ before_install:
  - hdid MonoFramework-MDK-3.0.10.macos10.xamarin.x86.dmg
  - sudo installer -pkg "/Volumes/Mono Framework MDK 3.0.10/MonoFramework-MDK-3.0.10.macos10.xamarin.x86.pkg" -target /
 
-#before_install:
-  # Make sure mono is installed,
-  # pipe stdout to dev/null because qq is still too chatty
-  #- sudo apt-get update -qq > /dev/null
-  #- sudo apt-get install -qq mono-devel > /dev/null
-  
 branches:
  only:
    - master
