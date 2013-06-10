@@ -12,15 +12,27 @@ public class Program
 {
 	static void Main(string[] args)
 	{
+		// create the server
 		var server = new HumbleServer();
-		server.AddCommand("echo", () => new EchoCommand());
+		
+		// set a command to handle echo message
+		server.AddCommand("echo", () => new EchCommand());
+		
+		// start server at any port
 		server.Start(0);
 
+		// create the client
 		var client = new HumbleClient();
+		
+		// connect to the server
 		client.Connect("localhost", server.Port);
+		
+		// send a echo message and then hello world
 		client.Send("echo").Send("hello world");
 
+		// receive hello world
 		Console.WriteLine("Client received: " + client.Receive());
+		
 		Console.ReadKey();
 	}
 }
