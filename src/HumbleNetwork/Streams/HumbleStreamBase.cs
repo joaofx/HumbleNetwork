@@ -86,7 +86,7 @@ namespace HumbleNetwork.Streams
 
         protected void SendMessage(string message)
         {
-            var messageBytes = Encoding.Default.GetBytes(message);
+            var messageBytes = StreamEncoding.GetBytes(message);
             this.stream.Write(messageBytes, 0, messageBytes.Length);
         }
 

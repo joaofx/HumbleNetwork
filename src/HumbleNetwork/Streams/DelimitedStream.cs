@@ -1,9 +1,7 @@
 namespace HumbleNetwork.Streams
 {
-    using System;
     using System.IO;
     using System.Net.Sockets;
-    using System.Text;
 
     public class DelimitedStream : HumbleStreamBase
     {
@@ -13,7 +11,7 @@ namespace HumbleNetwork.Streams
         public DelimitedStream(TcpClient client, string delimiter) : base(client)
         {
             this.delimiter = delimiter;
-            this.delimiterBytes = Encoding.UTF8.GetBytes(this.delimiter);
+            this.delimiterBytes = StreamEncoding.GetBytes(this.delimiter);
         }
 
         public override void Send(string message)
@@ -56,7 +54,7 @@ namespace HumbleNetwork.Streams
                 if (possibleDelimiterIsComing && this.delimiterBytes.Length == possibleDelimiterCount)
                 {
                     // complete message received, return removing the delimiters
-                    return Encoding.Default.GetString(
+                    return StreamEncoding.GetString(
                         buffer.GetBuffer(), 
                         0, 
                         (int)(buffer.Length - this.delimiterBytes.Length));
@@ -64,7 +62,7 @@ namespace HumbleNetwork.Streams
             }
 
             // return incomplete message
-            return Encoding.Default.GetString(buffer.GetBuffer());
+            return StreamEncoding.GetString(buffer.GetBuffer());
         }
     }
 }

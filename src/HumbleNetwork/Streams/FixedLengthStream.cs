@@ -2,7 +2,6 @@ namespace HumbleNetwork.Streams
 {
     using System;
     using System.Net.Sockets;
-    using System.Text;
 
     public class FixedLengthStream : HumbleStreamBase
     {
@@ -32,7 +31,7 @@ namespace HumbleNetwork.Streams
         {
             var lengthBytes = new byte[4];
             this.stream.Read(lengthBytes, 0, lengthBytes.Length);
-            var length = BitConverter.ToInt32(lengthBytes, 0);
+            var length = StreamEncoding.GetInt32(lengthBytes);
             return length;
         }
 
@@ -52,12 +51,12 @@ namespace HumbleNetwork.Streams
                 currentBufferIndex += bytesRead;
             }
 
-            return Encoding.Default.GetString(messageBytes);
+            return StreamEncoding.GetString(messageBytes);
         }
 
         private void SendLength(string message)
         {
-            var lengthBytes = BitConverter.GetBytes(message.Length);
+            var lengthBytes = StreamEncoding.GetBytes(message.Length);
             this.stream.Write(lengthBytes, 0, lengthBytes.Length);
         }
     }

@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="Commands\DefaultUnknowCommandHandler.cs" />
     <Compile Include="IHumbleStream.cs" />
+    <Compile Include="Streams\StreamEncoding.cs" />
     <Compile Include="TcpClientExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
