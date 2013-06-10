@@ -47,10 +47,16 @@ namespace HumbleNetwork.Streams
             }
         }
 
-        public abstract void Send(string message);
-
         public abstract string Receive();
 
+        protected abstract void CustomSend(byte[] data);
+
+        public void Send(string message)
+        {
+            var data = StreamEncoding.GetBytes(message);
+            this.CustomSend(data);
+        }
+        
         public string Receive(int length)
         {
             if (this.ThereIsDataInBuffer == false)
@@ -84,10 +90,9 @@ namespace HumbleNetwork.Streams
             return tosend;
         }
 
-        protected void SendMessage(string message)
+        protected void SendMessage(byte[] message)
         {
-            var messageBytes = StreamEncoding.GetBytes(message);
-            this.stream.Write(messageBytes, 0, messageBytes.Length);
+            this.stream.Write(message, 0, message.Length);
         }
 
         protected void AppendBuffer(string data)

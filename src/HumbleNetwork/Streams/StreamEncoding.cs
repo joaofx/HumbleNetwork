@@ -14,7 +14,7 @@ namespace HumbleNetwork.Streams
                     return Encoding.UTF8;
                 }
 
-                return Encoding.Default;
+                return Encoding.UTF8;
             }
         }
 

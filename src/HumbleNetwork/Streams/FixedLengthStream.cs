@@ -1,6 +1,5 @@
 namespace HumbleNetwork.Streams
 {
-    using System;
     using System.Net.Sockets;
 
     public class FixedLengthStream : HumbleStreamBase
@@ -10,10 +9,10 @@ namespace HumbleNetwork.Streams
         {
         }
 
-        public override void Send(string message)
+        protected override void CustomSend(byte[] data)
         {
-            this.SendLength(message);
-            this.SendMessage(message);
+            this.SendLength(data);
+            this.SendMessage(data);
         }
 
         public override string Receive()
@@ -54,7 +53,7 @@ namespace HumbleNetwork.Streams
             return StreamEncoding.GetString(messageBytes);
         }
 
-        private void SendLength(string message)
+        private void SendLength(byte[] message)
         {
             var lengthBytes = StreamEncoding.GetBytes(message.Length);
             this.stream.Write(lengthBytes, 0, lengthBytes.Length);

@@ -1,5 +1,6 @@
 namespace HumbleNetwork.Streams
 {
+    using System;
     using System.IO;
     using System.Net.Sockets;
 
@@ -14,9 +15,12 @@ namespace HumbleNetwork.Streams
             this.delimiterBytes = StreamEncoding.GetBytes(this.delimiter);
         }
 
-        public override void Send(string message)
+        protected override void CustomSend(byte[] data)
         {
-            this.SendMessage(message + this.delimiter);
+            var message = new byte[data.Length + this.delimiterBytes.Length];
+            Buffer.BlockCopy(data, 0, message, 0, data.Length);
+            Buffer.BlockCopy(this.delimiterBytes, 0, message, data.Length, this.delimiterBytes.Length);
+            this.SendMessage(message);
         }
 
         public override string Receive()
