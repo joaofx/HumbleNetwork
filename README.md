@@ -7,7 +7,7 @@ Not stable. Don't use it in production.
 
 It's a library to help build network services based in sockets. It offers a client and a server class and a stream helper. See the example:
 
-<pre>
+``` csharp
 public class Program
 {
 	static void Main(string[] args)
@@ -44,7 +44,7 @@ public class EchoCommand : ICommand
 		stream.Send(stream.Receive());
 	}
 }
-</pre>
+```
 
 Build
 ----
