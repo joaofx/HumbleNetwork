@@ -59,6 +59,8 @@ build package
 TODO
 ----
 
+* Long running stress test. Many clients and changing messages for a long time.
+* Bug when try to dispose a session
 * License
 * CI generate nuget package and upload it to nuget.org
 * Accept send and receive stream

@@ -78,7 +78,7 @@ namespace HumbleNetwork
                 {
                     TcpClient client = this.listener.EndAcceptTcpClient(ar);
                     this.AcceptClients();
-                    new Session(this, client, this.framing, this.delimiter, this.sessions).ProcessNextCommand();
+                    new Session(this, client, this.framing, this.delimiter).ProcessNextCommand();
                 }
                 catch (ObjectDisposedException)
                 {

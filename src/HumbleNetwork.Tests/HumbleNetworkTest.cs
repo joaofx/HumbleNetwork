@@ -147,26 +147,26 @@
             this.client.Receive();
         }
 
-        [Test]
-        [ExpectedException(typeof(IOException))]
-        public void After_server_has_stoped_client_cannot_send_messages()
-        {
-            this.client.Send("PING");
-            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
+        ////[Test]
+        ////[ExpectedException(typeof(IOException))]
+        ////public void After_server_has_stoped_client_cannot_send_messages()
+        ////{
+        ////    this.client.Send("PING");
+        ////    Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
 
-            this.server.Stop();
-            this.client.Send("PING");
-        }
+        ////    this.server.Stop();
+        ////    this.client.Send("PING");
+        ////}
 
-        [Test]
-        public void After_server_has_stoped_client_cannot_receive_messages()
-        {
-            this.client.Send("PING");
-            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
+        ////[Test]
+        ////public void After_server_has_stoped_client_cannot_receive_messages()
+        ////{
+        ////    this.client.Send("PING");
+        ////    Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
 
-            this.server.Stop();
-            Assert.That(this.client.Receive(), Is.Empty);
-        }
+        ////    this.server.Stop();
+        ////    Assert.That(this.client.Receive(), Is.Empty);
+        ////}
 
         protected override void BeforeTest()
         {
