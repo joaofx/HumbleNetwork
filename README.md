@@ -46,6 +46,13 @@ public class EchoCommand : ICommand
 }
 ```
 
+Install
+-------
+
+```
+PM> Install-Package HumbleNetwork
+```
+
 Build
 ----
 
