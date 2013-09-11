@@ -1,7 +1,6 @@
 ﻿namespace HumbleNetwork.Tests
 {
     using System.IO;
-    using System.Threading;
     using Helpers;
     using HumbleNetwork;
     using NUnit.Framework;
@@ -142,9 +141,10 @@
         [ExpectedException(typeof(IOException))]
         public void Should_throw_exception_when_read_timeout_was_fired()
         {
-            this.client.ReceiveTimeOut = 1000;
-            this.client.Send("WAIT");
-            this.client.Receive();
+            new HumbleClient(receiveTimeOut: 1000)
+                .Connect("localhost", this.server.Port)
+                .Send("WAIT")
+                .Receive();
         }
 
         ////[Test]
@@ -167,6 +167,14 @@
         ////    this.server.Stop();
         ////    Assert.That(this.client.Receive(), Is.Empty);
         ////}
+
+        [Test]
+        public void Should_assign_write_and_read_timeout_before_connect()
+        {
+            new HumbleClient(sendTimeOut: 30000, receiveTimeOut: 30000)
+                .Connect("localhost", this.server.Port)
+                .Dispose();
+        }
 
         protected override void BeforeTest()
         {

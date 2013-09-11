@@ -7,7 +7,11 @@ namespace HumbleNetwork
         int ReceiveTimeOut
         {
             get;
-            set;
+        }
+
+        int SendTimeOut
+        {
+            get;
         }
 
         HumbleClient Send(string data);
