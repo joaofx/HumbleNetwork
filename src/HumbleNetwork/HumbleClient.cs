@@ -9,7 +9,9 @@ namespace HumbleNetwork
         private readonly TcpClient tcpClient = new TcpClient();
         private IHumbleStream stream;
 
-        public HumbleClient(Framing framing = Framing.LengthPrefixed, string delimiter = MessageFraming.DefaultDelimiter)
+        public HumbleClient(
+            Framing framing = Framing.LengthPrefixed, 
+            string delimiter = MessageFraming.DefaultDelimiter)
         {
             this.framing = framing;
             this.delimiter = delimiter;
@@ -19,6 +21,12 @@ namespace HumbleNetwork
         {
             get { return this.stream.NetworkStream.ReadTimeout; }
             set { this.stream.NetworkStream.ReadTimeout = value; }
+        }
+
+        public int SendTimeOut
+        {
+            get { return this.stream.NetworkStream.WriteTimeout; }
+            set { this.stream.NetworkStream.WriteTimeout = value; }
         }
 
         public HumbleClient Send(string data)

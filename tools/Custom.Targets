@@ -8,10 +8,11 @@
 	
 	<!--
 	<Import Project="stylecop\StyleCop.targets" />
-	-->
+	
 
 	<Import Project="$([System.IO.Path]::GetFullPath('src\.nuget\NuGet.targets'))" />
-
+	-->
+	
     <Target Name="AfterBuild">
 
 		<!--
