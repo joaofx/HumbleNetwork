@@ -137,26 +137,26 @@
                 .Receive();
         }
 
-        ////[Test]
-        ////[ExpectedException(typeof(IOException))]
-        ////public void After_server_has_stoped_client_cannot_send_messages()
-        ////{
-        ////    this.client.Send("PING");
-        ////    Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
+        [Test]
+        [ExpectedException(typeof(IOException))]
+        public void After_server_has_stoped_client_cannot_send_messages()
+        {
+            this.client.Send("PING");
+            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
 
-        ////    this.server.Stop();
-        ////    this.client.Send("PING");
-        ////}
+            this.server.Stop();
+            this.client.Send("PING");
+        }
 
-        ////[Test]
-        ////public void After_server_has_stoped_client_cannot_receive_messages()
-        ////{
-        ////    this.client.Send("PING");
-        ////    Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
+        [Test]
+        public void After_server_has_stoped_client_cannot_receive_messages()
+        {
+            this.client.Send("PING");
+            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
 
-        ////    this.server.Stop();
-        ////    Assert.That(this.client.Receive(), Is.Empty);
-        ////}
+            this.server.Stop();
+            Assert.That(this.client.Receive(), Is.Empty);
+        }
 
         [Test]
         public void Should_assign_write_and_read_timeout_before_connect()
@@ -169,6 +169,27 @@
         [Test]
         public void Client_can_connect_even_if_it_is_already_connected()
         {
+            this.client.Connect("localhost", this.server.Port);
+            this.client.Connect("localhost", this.server.Port);
+            this.client.Send("PING").Receive().ShouldEqual("PONG");
+        }
+
+        [Test]
+        public void Client_can_reconnect_when_server_stops_for_a_while()
+        {
+            this.server.Stop();
+
+            try
+            {
+                this.client.Send("PING").Receive().ShouldEqual("PONG");
+                Assert.Fail("Should thrown IOException");
+            }
+            catch
+            {
+            }
+
+            this.server.Start(this.server.Port);
+
             this.client.Connect("localhost", this.server.Port);
             this.client.Send("PING").Receive().ShouldEqual("PONG");
         }

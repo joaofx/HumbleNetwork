@@ -45,6 +45,7 @@
     <Compile Include="Handlers\DefaultExceptionHandler.cs" />
     <Compile Include="IExceptionHandler.cs" />
     <Compile Include="Framing.cs" />
+    <Compile Include="Sessions.cs" />
     <Compile Include="Streams\ChunkMessageBuffer.cs" />
     <Compile Include="Streams\HumbleStreamBase.cs" />
     <Compile Include="Streams\DelimitedStream.cs" />

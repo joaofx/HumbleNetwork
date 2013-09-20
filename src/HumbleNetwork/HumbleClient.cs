@@ -6,7 +6,7 @@ namespace HumbleNetwork
     {
         private readonly Framing framing;
         private readonly string delimiter;
-        private readonly TcpClient tcpClient = new TcpClient();
+        private TcpClient tcpClient = new TcpClient();
         private IHumbleStream stream;
 
         /// <summary>
@@ -55,7 +55,19 @@ namespace HumbleNetwork
         {
             if (this.tcpClient.Connected == false)
             {
-                this.tcpClient.Connect(host, port);
+                try
+                {
+                    this.tcpClient.Connect(host, port);
+                }
+                catch (SocketException ex)
+                {
+                    if (ex.ErrorCode == 10056)
+                    {
+                        this.tcpClient.Close();
+                        this.tcpClient = new TcpClient();
+                        this.tcpClient.Connect(host, port);
+                    }
+                }
             }
 
             this.CreateStream();

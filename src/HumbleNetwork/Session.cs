@@ -1,7 +1,6 @@
 namespace HumbleNetwork
 {
     using System;
-    using System.Collections.Generic;
     using System.Net.Sockets;
     using System.Threading.Tasks;
 
@@ -9,16 +8,15 @@ namespace HumbleNetwork
     {
         private readonly HumbleServer server;
         private readonly TcpClient client;
-        ////private readonly IList<Session> sessions;
+        private readonly Sessions sessions;
         private readonly IHumbleStream stream;
 
-        public Session(HumbleServer server, TcpClient client, Framing framing, string delimiter)
+        public Session(Sessions sessions, HumbleServer server, TcpClient client, Framing framing, string delimiter)
         {
             this.stream = MessageFraming.Create(framing, client, delimiter);
             this.server = server;
             this.client = client;
-            ////this.sessions = sessions;
-            ////this.sessions.Add(this);
+            this.sessions = sessions;
         }
 
         public void ProcessNextCommand()
@@ -54,7 +52,7 @@ namespace HumbleNetwork
 
         public void Dispose()
         {
-            ////this.sessions.Remove(this);
+            this.sessions.Disposed(this);
             this.stream.Close();
             this.client.Close();
         }
