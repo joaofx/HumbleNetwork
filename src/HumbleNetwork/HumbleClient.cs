@@ -53,7 +53,11 @@ namespace HumbleNetwork
 
         public HumbleClient Connect(string host, int port)
         {
-            this.tcpClient.Connect(host, port);
+            if (this.tcpClient.Connected == false)
+            {
+                this.tcpClient.Connect(host, port);
+            }
+
             this.CreateStream();
             return this;
         }

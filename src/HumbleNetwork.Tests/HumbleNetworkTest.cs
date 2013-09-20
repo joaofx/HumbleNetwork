@@ -3,6 +3,7 @@
     using System.IO;
     using Helpers;
     using HumbleNetwork;
+    using NBehave.Spec.NUnit;
     using NUnit.Framework;
 
     /// <summary>
@@ -22,59 +23,48 @@
         [Test]
         public void Should_process_echo_command()
         {
-            this.client.Send("ECHO").Send("hello");
-            Assert.That(this.client.Receive(), Is.EqualTo("hello"));
+            this.client.Send("ECHO").Send("hello").Receive().ShouldEqual("hello");
         }
 
         [Test]
         public void Should_process_echo_command_in_one_request()
         {
-            this.client.Send("ECHOhello");
-            Assert.That(this.client.Receive(), Is.EqualTo("hello"));
+            this.client.Send("ECHOhello").Receive().ShouldEqual("hello");
         }
 
         [Test]
         public void Shoud_process_echo_command_many_times()
         {
-            this.client.Send("ECHO").Send("hello");
-            Assert.That(this.client.Receive(), Is.EqualTo("hello"));
-
-            this.client.Send("ECHO").Send("Other hello");
-            Assert.That(this.client.Receive(), Is.EqualTo("Other hello"));
-
-            this.client.Send("ECHO").Send("Third hello");
-            Assert.That(this.client.Receive(), Is.EqualTo("Third hello"));
+            this.client.Send("ECHO").Send("hello").Receive().ShouldEqual("hello");
+            this.client.Send("ECHO").Send("Other hello").Receive().ShouldEqual("Other hello");
+            this.client.Send("ECHO").Send("Third hello").Receive().ShouldEqual("Third hello");
         }
 
         [Test]
         public void Should_process_echo_command_with_big_message()
         {
             var message = StringExtension.GenerateRandomString(1 << 16);
-            this.client.Send("ECHO").Send(message);
-            var received = this.client.Receive();
 
-            Assert.That(received.Length, Is.EqualTo(message.Length));
-            Assert.That(received, Is.EqualTo(message));
+            var received = this.client.Send("ECHO")
+                .Send(message)
+                .Receive();
+
+            received.Length.ShouldEqual(message.Length);
+            received.ShouldEqual(message);
         }
 
         [Test]
         public void Shoud_process_ping_command()
         {
-            this.client.Send("PING");
-            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
+            this.client.Send("PING").Receive().ShouldEqual("PONG");
         }
 
         [Test]
         public void Shoud_process_ping_command_many_times()
         {
-            this.client.Send("PING");
-            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
-
-            this.client.Send("PING");
-            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
-
-            this.client.Send("PING");
-            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
+            this.client.Send("PING").Receive().ShouldEqual("PONG");
+            this.client.Send("PING").Receive().ShouldEqual("PONG");
+            this.client.Send("PING").Receive().ShouldEqual("PONG");
         }
 
         [Test]
@@ -82,15 +72,13 @@
         {
             this.server.UnknowCommandHandler = () => new CustomUnknowCommandHandler();
 
-            this.client.Send("????");
-            Assert.That(this.client.Receive(), Is.EqualTo("CustomUnknowCommandHandler"));
+            this.client.Send("????").Receive().ShouldEqual("CustomUnknowCommandHandler");
         }
 
         [Test]
         public void Should_treat_unknow_command_without_set_a_handler()
         {
-            this.client.Send("????");
-            Assert.That(this.client.Receive(), Is.EqualTo("UNKN"));
+            this.client.Send("????").Receive().ShouldEqual("UNKN");
         }
 
         [Test]
@@ -98,8 +86,9 @@
         {
             this.server.AddCommand("EXCE", () => new ThrowExceptionCommand());
 
-            this.client.Send("EXCE");
-            Assert.That(this.client.Receive(), Is.EqualTo("InvalidOperationException: An exception was thrown"));
+            this.client
+                .Send("EXCE")
+                .Receive().ShouldEqual("InvalidOperationException: An exception was thrown");
         }
 
         [Test]
@@ -108,8 +97,9 @@
             this.server.ExceptionHandler = () => new CustomExceptionHandler();
             this.server.AddCommand("EXCE", () => new ThrowExceptionCommand());
 
-            this.client.Send("EXCEblablablablablablablabla");
-            Assert.That(this.client.Receive(), Is.EqualTo("CustomExceptionHandler: InvalidOperationException"));
+            this.client
+                .Send("EXCEblablablablablablablabla")
+                .Receive().ShouldEqual("CustomExceptionHandler: InvalidOperationException");
         }
 
         [Test]
@@ -130,8 +120,8 @@
             client1.Connect("localhost", server1.Port);
             client2.Connect("localhost", server2.Port);
 
-            Assert.That(client1.Send("echohello1").Receive(), Is.EqualTo("hello1"));
-            Assert.That(client2.Send("echohello2").Receive(), Is.EqualTo("hello2"));
+            client1.Send("echohello1").Receive().ShouldEqual("hello1");
+            client2.Send("echohello2").Receive().ShouldEqual("hello2");
 
             server1.Stop();
             server2.Stop();
@@ -176,13 +166,21 @@
                 .Dispose();
         }
 
+        [Test]
+        public void Client_can_connect_even_if_it_is_already_connected()
+        {
+            this.client.Connect("localhost", this.server.Port);
+            this.client.Send("PING").Receive().ShouldEqual("PONG");
+        }
+
         protected override void BeforeTest()
         {
             this.server.AddCommand("echo", () => new EchoCommand());
             this.server.AddCommand("ping", () => new PingCommand());
             this.server.AddCommand("wait", () => new WaitCommand());
 
-            this.client = new HumbleClient().Connect("localhost", this.server.Port);
+            this.client = new HumbleClient(receiveTimeOut: 5000, sendTimeOut: 5000)
+                .Connect("localhost", this.server.Port);
         }
     }
 }
