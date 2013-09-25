@@ -12,7 +12,7 @@ namespace HumbleNetwork
         private readonly string delimiter;
         private readonly IDictionary<string, Func<ICommand>> commands = new Dictionary<string, Func<ICommand>>();
         private readonly Framing framing;
-        private readonly Sessions sessions = new Sessions();
+        private Sessions sessions = new Sessions();
         private TcpListener listener;
         
         public HumbleServer(Framing framing = Framing.LengthPrefixed, string delimiter = MessageFraming.DefaultDelimiter)
@@ -44,6 +44,7 @@ namespace HumbleNetwork
         {
             this.listener = new TcpListener(IPAddress.Any, port);
             this.listener.Start();
+            this.sessions.Clear();
             this.AcceptClients();
             return this;
         }
