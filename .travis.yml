@@ -11,6 +11,7 @@ env:
   - EnableNuGetPackageRestore=true
 
 script:
+  - .travis/PackageRestore.sh
   - xbuild src/HumbleNetwork.sln
   - nunit-console src/HumbleNetwork.Tests/bin/Debug/HumbleNetwork.Tests.dll
 
