@@ -44,7 +44,7 @@ namespace HumbleNetwork
         {
             this.listener = new TcpListener(IPAddress.Any, port);
             this.listener.Start();
-            this.sessions.Clear();
+            this.sessions.DisposeAllSessions();
             this.AcceptClients();
             return this;
         }
