@@ -1,11 +1,9 @@
 HumbleNetwork
 =============
 
-Not stable. Don't use it in production.
+[![Build status](https://ci.appveyor.com/api/projects/status/whppw7n2ejs667ku?svg=true)](https://ci.appveyor.com/project/joaofx/humblenetwork)
 
-[![Build Status](https://travis-ci.org/joaofx/HumbleNetwork.png)](https://travis-ci.org/joaofx/HumbleNetwork)
-
-It's a library to help build network services based in sockets. It offers a client and a server class and a stream helper. See the example:
+HumbleNetwork is a library to help build simple network services based in sockets. It offers a client and a server class and a stream helper. See the example:
 
 ``` csharp
 public class Program
@@ -46,6 +44,12 @@ public class EchoCommand : ICommand
 }
 ```
 
+More Examples
+-------------
+
+Take a look on Tests files for more examples.
+
+
 Install
 -------
 
@@ -61,23 +65,3 @@ build quick
 build test
 
 build package
-
-
-TODO
-----
-
-* Long running stress test. Many clients and changing messages for a long time.
-* Bug when try to dispose a session
-* License
-* CI generate nuget package and upload it to nuget.org
-* Accept send and receive stream
-* Timeout when send or receive
-* Work with other types of data
-* Send and receive file
-* Server wait for command using async on streams
-* Server works with async on streams
-* Stream send command method
-* Client close or disconnect method
-* Control connected clients
-* Cryptography messages
-* Compact messages
