@@ -14,7 +14,7 @@ public class Program
 		var server = new HumbleServer();
 		
 		// set a command to handle echo message
-		server.AddCommand("echo", () => new EchCommand());
+		server.AddCommand("echo", () => new EchoCommand());
 		
 		// start server at any port
 		server.Start(0);
