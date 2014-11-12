@@ -64,4 +64,4 @@ build quick
 
 build test
 
-build package
+build package -D:version=YYYY.MM.DD.BUILD
