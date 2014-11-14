@@ -4,6 +4,7 @@ HumbleNetwork
 [![Build status](https://ci.appveyor.com/api/projects/status/whppw7n2ejs667ku?svg=true)](https://ci.appveyor.com/project/joaofx/humblenetwork)
 <a href="https://www.nuget.org/packages/HumbleNetwork/"><img src="http://img.shields.io/nuget/v/HumbleNetwork.svg?style=flat-square" alt="NuGet version" height="18"></a> 
 <a href="https://www.nuget.org/packages/HumbleNetwork/"><img src="http://img.shields.io/nuget/dt/HumbleNetwork.svg?style=flat-square" alt="NuGet version" height="18"></a>
+[![NuGet Status](http://nugetstatus.com/HumbleNetwork.png)](http://nugetstatus.com/packages/HumbleNetwork)
 
 HumbleNetwork is a library to help build simple network services based in sockets. It offers a client and a server class and a stream helper. See the example:
 
