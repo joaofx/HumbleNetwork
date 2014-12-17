@@ -6,7 +6,13 @@ HumbleNetwork
 <a href="https://www.nuget.org/packages/HumbleNetwork/"><img src="http://img.shields.io/nuget/dt/HumbleNetwork.svg?style=flat-square" alt="NuGet version" height="18"></a>
 [![NuGet Status](http://nugetstatus.com/HumbleNetwork.png)](http://nugetstatus.com/packages/HumbleNetwork)
 
-HumbleNetwork is a library to help build simple network services based in sockets. It offers a client and a server class and a stream helper. See the example:
+HumbleNetwork is a library to help build simple network services based in sockets. It offers a client and a server class, a stream helper and a request/response command handler protocol. 
+
+### Why use this?
+
+I worked on a project that had many VB6 clients talking by socket with some VB6 servers. We started migrating the VB6 servers to .NET and developed HumbleNetwork to make socket programming easy on the server. In the end we were using HumbleNetwork even in .NET clients
+
+### Example
 
 ``` csharp
 public class Program
@@ -63,9 +69,16 @@ PM> Install-Package HumbleNetwork
 Build
 ----
 
+```cmd
 build quick
+```
 
+```cmd
 build test
+```
 
+```cmd
 build package -D:version=YYYY.MM.DD.BUILD
-	.nupkg is saved in build\package
+```
+
+.nupkg is saved in build\package
