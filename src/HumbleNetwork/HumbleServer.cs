@@ -9,18 +9,18 @@ namespace HumbleNetwork
 
     public class HumbleServer
     {
-        private readonly string delimiter;
-        private readonly IDictionary<string, Func<ICommand>> commands = new Dictionary<string, Func<ICommand>>();
-        private readonly Framing framing;
-        private Sessions sessions = new Sessions();
-        private TcpListener listener;
+        private readonly string _delimiter;
+        private readonly IDictionary<string, Func<ICommand>> _commands = new Dictionary<string, Func<ICommand>>();
+        private readonly Framing _framing;
+        private readonly Sessions _sessions = new Sessions();
+        private TcpListener _listener;
         
         public HumbleServer(Framing framing = Framing.LengthPrefixed, string delimiter = MessageFraming.DefaultDelimiter)
         {
-            this.delimiter = delimiter;
-            this.UnknowCommandHandler = () => new DefaultUnknowCommandHandler();
-            this.ExceptionHandler = () => new DefaultExceptionHandler();
-            this.framing = framing;
+            _delimiter = delimiter;
+            UnknowCommandHandler = () => new DefaultUnknowCommandHandler();
+            ExceptionHandler = () => new DefaultExceptionHandler();
+            _framing = framing;
         }
 
         public Func<IUnknowCommandHandler> UnknowCommandHandler
@@ -31,7 +31,7 @@ namespace HumbleNetwork
 
         public int Port
         {
-            get { return ((IPEndPoint)this.listener.LocalEndpoint).Port; }
+            get { return ((IPEndPoint)_listener.LocalEndpoint).Port; }
         }
 
         public Func<IExceptionHandler> ExceptionHandler
@@ -42,45 +42,45 @@ namespace HumbleNetwork
 
         public HumbleServer Start(int port)
         {
-            this.listener = new TcpListener(IPAddress.Any, port);
-            this.listener.Start();
-            this.sessions.DisposeAllSessions();
-            this.AcceptClients();
+            _listener = new TcpListener(IPAddress.Any, port);
+            _listener.Start();
+            _sessions.DisposeAllSessions();
+            AcceptClients();
             return this;
         }
 
         public ICommand GetCommand(string commandName)
         {
-            if (this.commands.ContainsKey(commandName.ToLower()) == false)
+            if (_commands.ContainsKey(commandName.ToLower()) == false)
             {
-                return this.UnknowCommandHandler();
+                return UnknowCommandHandler();
             }
 
-            return this.commands[commandName.ToLower()]();
+            return _commands[commandName.ToLower()]();
         }
 
         public void Stop()
         {
-            this.listener.Stop();
-            this.sessions.DisposeAllSessions();
+            _listener.Stop();
+            _sessions.DisposeAllSessions();
         }
 
         public void AddCommand(string commandName, Func<ICommand> howToInstanceCommand)
         {
-            this.commands.Add(commandName.ToLower(), howToInstanceCommand);
+            _commands.Add(commandName.ToLower(), howToInstanceCommand);
         }
 
         private void AcceptClients()
         {
-            this.listener.BeginAcceptTcpClient(ar =>
+            _listener.BeginAcceptTcpClient(ar =>
             {
                 try
                 {
-                    TcpClient client = this.listener.EndAcceptTcpClient(ar);
-                    this.AcceptClients();
+                    TcpClient client = _listener.EndAcceptTcpClient(ar);
+                    AcceptClients();
 
-                    this.sessions
-                        .NewSession(this, client, this.framing, this.delimiter)
+                    _sessions
+                        .NewSession(this, client, _framing, _delimiter)
                         .ProcessNextCommand();
                 }
                 catch (ObjectDisposedException)

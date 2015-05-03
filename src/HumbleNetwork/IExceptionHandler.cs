@@ -1,7 +1,6 @@
 namespace HumbleNetwork
 {
     using System;
-    using Streams;
 
     public interface IExceptionHandler
     {

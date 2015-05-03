@@ -2,7 +2,6 @@ namespace HumbleNetwork.Tests.Helpers
 {
     using System;
     using HumbleNetwork;
-    using HumbleNetwork.Streams;
 
     internal class ThrowExceptionCommand : ICommand
     {

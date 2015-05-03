@@ -3,7 +3,6 @@ namespace HumbleNetwork.Tests.Helpers
     using System;
     using System.Threading;
     using HumbleNetwork;
-    using HumbleNetwork.Streams;
 
     internal class WaitCommand : ICommand
     {

@@ -1,7 +1,5 @@
 namespace HumbleNetwork
 {
-    using Streams;
-
     /// <summary>
     /// TODO: inverter client, stream
     /// </summary>

@@ -6,23 +6,23 @@ namespace HumbleNetwork
 
     public class Session : IDisposable
     {
-        private readonly HumbleServer server;
-        private readonly TcpClient client;
-        private readonly Sessions sessions;
-        private readonly IHumbleStream stream;
+        private readonly HumbleServer _server;
+        private readonly TcpClient _client;
+        private readonly Sessions _sessions;
+        private readonly IHumbleStream _stream;
 
         public Session(Sessions sessions, HumbleServer server, TcpClient client, Framing framing, string delimiter)
         {
-            this.stream = MessageFraming.Create(framing, client, delimiter);
-            this.server = server;
-            this.client = client;
-            this.sessions = sessions;
+            _stream = MessageFraming.Create(framing, client, delimiter);
+            _server = server;
+            _client = client;
+            _sessions = sessions;
         }
 
         public void ProcessNextCommand()
         {
             var taskExecute = Task<string>.Factory.StartNew(
-                () => this.ExecuteHandlingExceptions(() => this.stream.Receive(4)));
+                () => ExecuteHandlingExceptions(() => _stream.Receive(4)));
 
             var commandProcessed = taskExecute.ContinueWith(antecedent =>
             {
@@ -31,7 +31,7 @@ namespace HumbleNetwork
                     return false;
                 }
 
-                return this.ExecuteHandlingExceptions(() =>
+                return ExecuteHandlingExceptions(() =>
                 {
                     var commandName = antecedent.Result.ToLower();
 
@@ -40,21 +40,21 @@ namespace HumbleNetwork
                         return false;
                     }
 
-                    var command = this.server.GetCommand(commandName);
-                    this.ExecuteCommand(command);
+                    var command = _server.GetCommand(commandName);
+                    ExecuteCommand(command);
 
                     return true;
                 });
             });
 
-            this.ContinueProcessingNextCommand(commandProcessed);
+            ContinueProcessingNextCommand(commandProcessed);
         }
 
         public void Dispose()
         {
-            this.sessions.Disposed(this);
-            this.stream.Close();
-            this.client.Close();
+            _sessions.Disposed(this);
+            _stream.Close();
+            _client.Close();
         }
 
         private void ContinueProcessingNextCommand(Task<bool> commandProcessed)
@@ -63,7 +63,7 @@ namespace HumbleNetwork
             {
                 if (antecedent.Result)
                 {
-                    this.ProcessNextCommand();
+                    ProcessNextCommand();
                 }
             });
         }
@@ -72,11 +72,11 @@ namespace HumbleNetwork
         {
             try
             {
-                command.Execute(this.stream);
+                command.Execute(_stream);
             }
             catch (Exception exception)
             {
-                this.server.ExceptionHandler().Execute(this.stream, exception);
+                _server.ExceptionHandler().Execute(_stream, exception);
             }
         }
 
@@ -88,7 +88,7 @@ namespace HumbleNetwork
             }
             catch (Exception)
             {
-                this.Dispose();
+                Dispose();
                 return default(T);
             }
         }

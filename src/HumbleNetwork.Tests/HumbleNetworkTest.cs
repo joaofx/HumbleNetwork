@@ -6,38 +6,35 @@
     using NBehave.Spec.NUnit;
     using NUnit.Framework;
 
-    /// <summary>
-    /// TODO: client is not really connected 
-    /// </summary>
     [TestFixture]
     public class HumbleNetworkTest : HumbleTestBase
     {
-        private HumbleClient client;
+        private HumbleClient _client;
 
         [Test]
         public void Should_return_server_port()
         {
-            Assert.That(this.server.Port, Is.Not.EqualTo(0));
+            Assert.That(Server.Port, Is.Not.EqualTo(0));
         }
 
         [Test]
         public void Should_process_echo_command()
         {
-            this.client.Send("ECHO").Send("hello").Receive().ShouldEqual("hello");
+            _client.Send("ECHO").Send("hello").Receive().ShouldEqual("hello");
         }
 
         [Test]
         public void Should_process_echo_command_in_one_request()
         {
-            this.client.Send("ECHOhello").Receive().ShouldEqual("hello");
+            _client.Send("ECHOhello").Receive().ShouldEqual("hello");
         }
 
         [Test]
         public void Shoud_process_echo_command_many_times()
         {
-            this.client.Send("ECHO").Send("hello").Receive().ShouldEqual("hello");
-            this.client.Send("ECHO").Send("Other hello").Receive().ShouldEqual("Other hello");
-            this.client.Send("ECHO").Send("Third hello").Receive().ShouldEqual("Third hello");
+            _client.Send("ECHO").Send("hello").Receive().ShouldEqual("hello");
+            _client.Send("ECHO").Send("Other hello").Receive().ShouldEqual("Other hello");
+            _client.Send("ECHO").Send("Third hello").Receive().ShouldEqual("Third hello");
         }
 
         [Test]
@@ -45,7 +42,7 @@
         {
             var message = StringExtension.GenerateRandomString(1 << 16);
 
-            var received = this.client.Send("ECHO")
+            var received = _client.Send("ECHO")
                 .Send(message)
                 .Receive();
 
@@ -56,37 +53,37 @@
         [Test]
         public void Shoud_process_ping_command()
         {
-            this.client.Send("PING").Receive().ShouldEqual("PONG");
+            _client.Send("PING").Receive().ShouldEqual("PONG");
         }
 
         [Test]
         public void Shoud_process_ping_command_many_times()
         {
-            this.client.Send("PING").Receive().ShouldEqual("PONG");
-            this.client.Send("PING").Receive().ShouldEqual("PONG");
-            this.client.Send("PING").Receive().ShouldEqual("PONG");
+            _client.Send("PING").Receive().ShouldEqual("PONG");
+            _client.Send("PING").Receive().ShouldEqual("PONG");
+            _client.Send("PING").Receive().ShouldEqual("PONG");
         }
 
         [Test]
         public void Should_treat_unknow_command_with_a_custom_handler()
         {
-            this.server.UnknowCommandHandler = () => new CustomUnknowCommandHandler();
+            Server.UnknowCommandHandler = () => new CustomUnknowCommandHandler();
 
-            this.client.Send("????").Receive().ShouldEqual("CustomUnknowCommandHandler");
+            _client.Send("????").Receive().ShouldEqual("CustomUnknowCommandHandler");
         }
 
         [Test]
         public void Should_treat_unknow_command_without_set_a_handler()
         {
-            this.client.Send("????").Receive().ShouldEqual("UNKN");
+            _client.Send("????").Receive().ShouldEqual("UNKN");
         }
 
         [Test]
         public void Should_treat_exception_without_a_handler()
         {
-            this.server.AddCommand("EXCE", () => new ThrowExceptionCommand());
+            Server.AddCommand("EXCE", () => new ThrowExceptionCommand());
 
-            this.client
+            _client
                 .Send("EXCE")
                 .Receive().ShouldEqual("InvalidOperationException: An exception was thrown");
         }
@@ -94,10 +91,10 @@
         [Test]
         public void Should_treat_exception_with_a_custom_handler()
         {
-            this.server.ExceptionHandler = () => new CustomExceptionHandler();
-            this.server.AddCommand("EXCE", () => new ThrowExceptionCommand());
+            Server.ExceptionHandler = () => new CustomExceptionHandler();
+            Server.AddCommand("EXCE", () => new ThrowExceptionCommand());
 
-            this.client
+            _client
                 .Send("EXCEblablablablablablablabla")
                 .Receive().ShouldEqual("CustomExceptionHandler: InvalidOperationException");
         }
@@ -132,7 +129,7 @@
         public void Should_throw_exception_when_read_timeout_was_fired()
         {
             new HumbleClient(receiveTimeOut: 1000)
-                .Connect("localhost", this.server.Port)
+                .Connect("localhost", Server.Port)
                 .Send("WAIT")
                 .Receive();
         }
@@ -141,67 +138,67 @@
         [ExpectedException(typeof(IOException))]
         public void After_server_has_stoped_client_cannot_send_messages()
         {
-            this.client.Send("PING");
-            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
+            _client.Send("PING");
+            Assert.That(_client.Receive(), Is.EqualTo("PONG"));
 
-            this.server.Stop();
-            this.client.Send("PING");
+            Server.Stop();
+            _client.Send("PING");
         }
 
         [Test]
         public void After_server_has_stoped_client_cannot_receive_messages()
         {
-            this.client.Send("PING");
-            Assert.That(this.client.Receive(), Is.EqualTo("PONG"));
+            _client.Send("PING");
+            Assert.That(_client.Receive(), Is.EqualTo("PONG"));
 
-            this.server.Stop();
-            Assert.That(this.client.Receive(), Is.Empty);
+            Server.Stop();
+            Assert.That(_client.Receive(), Is.Empty);
         }
 
         [Test]
         public void Should_assign_write_and_read_timeout_before_connect()
         {
             new HumbleClient(sendTimeOut: 30000, receiveTimeOut: 30000)
-                .Connect("localhost", this.server.Port)
+                .Connect("localhost", Server.Port)
                 .Dispose();
         }
 
         [Test]
         public void Client_can_connect_even_if_it_is_already_connected()
         {
-            this.client.Connect("localhost", this.server.Port);
-            this.client.Connect("localhost", this.server.Port);
-            this.client.Send("PING").Receive().ShouldEqual("PONG");
+            _client.Connect("localhost", Server.Port);
+            _client.Connect("localhost", Server.Port);
+            _client.Send("PING").Receive().ShouldEqual("PONG");
         }
 
         [Test]
         public void Client_can_reconnect_when_server_stops_for_a_while()
         {
-            this.server.Stop();
+            Server.Stop();
 
             try
             {
-                this.client.Send("PING").Receive().ShouldEqual("PONG");
+                _client.Send("PING").Receive().ShouldEqual("PONG");
                 Assert.Fail("Should thrown IOException");
             }
             catch
             {
             }
 
-            this.server.Start(this.server.Port);
+            Server.Start(Server.Port);
 
-            this.client.Connect("localhost", this.server.Port);
-            this.client.Send("PING").Receive().ShouldEqual("PONG");
+            _client.Connect("localhost", Server.Port);
+            _client.Send("PING").Receive().ShouldEqual("PONG");
         }
 
         protected override void BeforeTest()
         {
-            this.server.AddCommand("echo", () => new EchoCommand());
-            this.server.AddCommand("ping", () => new PingCommand());
-            this.server.AddCommand("wait", () => new WaitCommand());
+            Server.AddCommand("echo", () => new EchoCommand());
+            Server.AddCommand("ping", () => new PingCommand());
+            Server.AddCommand("wait", () => new WaitCommand());
 
-            this.client = new HumbleClient(receiveTimeOut: 5000, sendTimeOut: 5000)
-                .Connect("localhost", this.server.Port);
+            _client = new HumbleClient(receiveTimeOut: 5000, sendTimeOut: 5000)
+                .Connect("localhost", this.Server.Port);
         }
     }
 }

@@ -4,19 +4,19 @@
 
     public class HumbleTestBase
     {
-        protected HumbleServer server;
+        protected HumbleServer Server;
 
         [SetUp]
         public void Setup()
         {
-            this.server = new HumbleServer().Start(0);
-            this.BeforeTest();  
+            Server = new HumbleServer().Start(0);
+            BeforeTest();  
         }
 
         [TearDown]
         public void TearDown()
         {
-            this.server.Stop();
+            Server.Stop();
         }
 
         protected virtual void BeforeTest()

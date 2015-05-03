@@ -5,16 +5,16 @@ namespace HumbleNetwork
 
     public class Sessions
     {
-        private readonly List<Session> sessions = new List<Session>();
-        private readonly object locker = new object();
+        private readonly List<Session> _sessions = new List<Session>();
+        private readonly object _locker = new object();
 
         public Session NewSession(HumbleServer humbleServer, TcpClient client, Framing framing, string delimiter)
         {
             var session = new Session(this, humbleServer, client, framing, delimiter);
             
-            lock (this.locker)
+            lock (_locker)
             {
-                this.sessions.Add(session);
+                _sessions.Add(session);
             }
 
             return session;
@@ -22,15 +22,15 @@ namespace HumbleNetwork
 
         public void Disposed(Session session)
         {
-            lock (this.locker)
+            lock (_locker)
             {
-                this.sessions.Remove(session);
+                _sessions.Remove(session);
             }
         }
 
         public void DisposeAllSessions()
         {
-            var sessionsCopy = this.sessions.ToArray();
+            var sessionsCopy = _sessions.ToArray();
 
             foreach (var session in sessionsCopy)
             {

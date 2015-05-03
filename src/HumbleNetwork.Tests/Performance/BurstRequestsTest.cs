@@ -14,8 +14,8 @@
     public class BurstRequestsTest : HumbleTestBase
     {
         private const int NumThreads = 100;
-        private readonly ManualResetEvent mre = new ManualResetEvent(false);
-        private CountdownEvent countdown;
+        private readonly ManualResetEvent _mre = new ManualResetEvent(false);
+        private CountdownEvent _countdown;
 
         /// <summary>
         /// This test fires 100 request to server to command wait.
@@ -31,19 +31,19 @@
 
             Console.WriteLine("Burst test started");
 
-            this.mre.Reset();
-            this.countdown = new CountdownEvent(NumThreads);
+            _mre.Reset();
+            _countdown = new CountdownEvent(NumThreads);
 
             for (var i = 0; i < NumThreads; i++)
             {
-                new Thread(this.OneThreadExecution) { Name = "Thread " + i }.Start();
+                new Thread(OneThreadExecution) { Name = "Thread " + i }.Start();
             }
 
-            this.countdown.Wait();
+            _countdown.Wait();
             var dateTime = DateTime.Now;
-            this.countdown = new CountdownEvent(NumThreads);
-            this.mre.Set();
-            this.countdown.Wait();
+            _countdown = new CountdownEvent(NumThreads);
+            _mre.Set();
+            _countdown.Wait();
             var timeSpan = DateTime.Now - dateTime;
 
             Console.WriteLine("Test finished");
@@ -57,16 +57,16 @@
 
         protected override void BeforeTest()
         {
-            this.server.AddCommand("wait", () => new WaitCommand());
+            Server.AddCommand("wait", () => new WaitCommand());
         }
 
         private void OneThreadExecution()
         {
-            this.countdown.Signal();
+            _countdown.Signal();
 
             var client = new HumbleClient();
-            this.mre.WaitOne();
-            client.Connect("localhost", this.server.Port);
+            _mre.WaitOne();
+            client.Connect("localhost", Server.Port);
             client.Send("wait");
 
             try
@@ -82,7 +82,7 @@
                 Assert.Ignore("Exception on thread " + Thread.CurrentThread.Name + ": " + exception.Message);
             }
 
-            this.countdown.Signal();
+            _countdown.Signal();
         }
     }
 }

@@ -4,10 +4,10 @@ namespace HumbleNetwork
 
     public class HumbleClient : IHumbleClient
     {
-        private readonly Framing framing;
-        private readonly string delimiter;
-        private TcpClient tcpClient = new TcpClient();
-        private IHumbleStream stream;
+        private readonly Framing _framing;
+        private readonly string _delimiter;
+        private TcpClient _tcpClient = new TcpClient();
+        private IHumbleStream _stream;
 
         /// <summary>
         /// Create a instance of HumbleClient
@@ -22,10 +22,10 @@ namespace HumbleNetwork
             int receiveTimeOut = -1,
             int sendTimeOut = -1)
         {
-            this.framing = framing;
-            this.delimiter = delimiter;
-            this.ReceiveTimeOut = receiveTimeOut;
-            this.SendTimeOut = sendTimeOut;
+            _framing = framing;
+            _delimiter = delimiter;
+            ReceiveTimeOut = receiveTimeOut;
+            SendTimeOut = sendTimeOut;
         }
 
         public int ReceiveTimeOut
@@ -42,35 +42,35 @@ namespace HumbleNetwork
 
         public HumbleClient Send(string data)
         {
-            this.stream.Send(data);
+            _stream.Send(data);
             return this;
         }
 
         public string Receive()
         {
-            return this.stream.Receive();
+            return _stream.Receive();
         }
 
         public HumbleClient Connect(string host, int port)
         {
-            if (this.tcpClient.Connected == false)
+            if (_tcpClient.Connected == false)
             {
                 try
                 {
-                    this.tcpClient.Connect(host, port);
+                    _tcpClient.Connect(host, port);
                 }
                 catch (SocketException ex)
                 {
                     if (ex.ErrorCode == 10056)
                     {
-                        this.tcpClient.Close();
-                        this.tcpClient = new TcpClient();
-                        this.tcpClient.Connect(host, port);
+                        _tcpClient.Close();
+                        _tcpClient = new TcpClient();
+                        _tcpClient.Connect(host, port);
                     }
                 }
             }
 
-            this.CreateStream();
+            CreateStream();
             return this;
         }
 
@@ -79,14 +79,14 @@ namespace HumbleNetwork
         /// </summary>
         public void Dispose()
         {
-            this.tcpClient.Close();
+            _tcpClient.Close();
         }
 
         private void CreateStream()
         {
-            this.stream = MessageFraming.Create(this.framing, this.tcpClient, this.delimiter);
-            this.stream.NetworkStream.WriteTimeout = this.SendTimeOut;
-            this.stream.NetworkStream.ReadTimeout = this.ReceiveTimeOut;
+            _stream = MessageFraming.Create(_framing, _tcpClient, _delimiter);
+            _stream.NetworkStream.WriteTimeout = SendTimeOut;
+            _stream.NetworkStream.ReadTimeout = ReceiveTimeOut;
         }
     }
 }
